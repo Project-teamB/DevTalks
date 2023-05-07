@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class TemplateApplicationTests {
 
+	/* test 0507 remote*/
+
 	@Test
 	void contextLoads() {
 	}

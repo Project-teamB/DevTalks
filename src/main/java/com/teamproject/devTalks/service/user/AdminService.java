@@ -1,5 +1,5 @@
 package com.teamproject.devTalks.service.user;
 
-public class AdminService {
+public interface AdminService {
     
 }

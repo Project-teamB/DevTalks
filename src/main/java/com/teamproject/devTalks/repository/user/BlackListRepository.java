@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.repository.user;
 
-public class BlackListRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BlackListRepository extends JpaRepository {
     
 }

@@ -1,5 +1,8 @@
 package com.teamproject.devTalks.repository.hashTag;
 
-public class UserHashTagRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserHashTagRepository {
     
 }

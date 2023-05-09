@@ -2,14 +2,18 @@ package com.teamproject.devTalks.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.teamproject.devTalks.filter.JwtAuthenticationFilter;
 
+@EnableWebSecurity
+@Configuration
 public class WebSecurityConfig {
 
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -26,6 +30,7 @@ public class WebSecurityConfig {
         httpSecurity.cors().and()
                 .csrf().disable()
                 .httpBasic().disable()
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/user/sign-up", "/user/sign-in").permitAll()

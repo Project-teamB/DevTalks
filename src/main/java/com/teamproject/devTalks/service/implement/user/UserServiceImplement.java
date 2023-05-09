@@ -71,7 +71,7 @@ public class UserServiceImplement implements UserService {
             userHashTagRepository.saveAll(userHashtagList);
 
 
-        }catch (Exception exception){
+        } catch (Exception exception){
             exception.printStackTrace();
             CustomResponse.databaseError();
         }

@@ -25,6 +25,7 @@ public class AdminSignUpRequestDto {
     private String adminPhoneNumber;
     @NotBlank
     private String adminName;
+    private String adminProfileImageUrl;
     @NotNull
     private boolean agreePersonalInformation;
 

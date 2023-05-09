@@ -20,6 +20,7 @@ public class AdminEntity {
     private String adminNickname;
     private String adminPhoneNumber;
     private String adminName;
+    private String adminProfileImageUrl;
     private boolean agreePersonalInformation;
 
     public AdminEntity(AdminSignUpRequestDto dto) {

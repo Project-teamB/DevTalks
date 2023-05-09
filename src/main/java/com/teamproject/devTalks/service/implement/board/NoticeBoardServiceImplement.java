@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class NoticeBoardServiceImplement implements NoticeBoardService {
@@ -25,6 +23,7 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(Integer boardNumber) {
 
         GetNoticeBoardResponseDto body = null;
+
         try {
             if(boardNumber == null) return CustomResponse.validationFailed();
 

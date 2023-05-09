@@ -1,4 +1,4 @@
-package com.teamproject.security;
+package com.teamproject.devTalks.security;
 
 import java.util.ArrayList;
 import java.util.Collection;

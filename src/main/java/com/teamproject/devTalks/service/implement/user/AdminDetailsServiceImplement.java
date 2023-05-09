@@ -1,14 +1,13 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.repository.user.AdminRepository;
-import com.teamproject.security.AdminPrinciple;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -25,9 +25,10 @@ public class PostUserRequestDto {
     private String userPhoneNumber;
     private String userIntroduction;
     private String userProfileImageUrl;
-    private List<String> userHashtag; //TODO: 해시태그 리스트 어떻게 받아올지 몰라 우선 주석처리
-    @NotNull
+    private List<String> userHashtag;
     private boolean chatAcceptance;
+    @NotNull
+    private boolean agreePersonalInformation;
 
 
 }

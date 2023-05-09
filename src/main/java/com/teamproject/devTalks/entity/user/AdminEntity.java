@@ -3,15 +3,13 @@ package com.teamproject.devTalks.entity.user;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "Admin")
 @Table(name = "Admin")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AdminEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +19,6 @@ public class AdminEntity {
     private String adminNickname;
     private String adminPhoneNumber;
     private String adminName;
+    private boolean agreePersonalInformation;
 
 }

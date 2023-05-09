@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.user.UserRepository;
-import com.teamproject.security.UserPrinciple;
+import com.teamproject.devTalks.security.UserPrinciple;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

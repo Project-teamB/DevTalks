@@ -1,7 +1,6 @@
 package com.teamproject.devTalks.entity.user;
 
-
-import com.teamproject.devTalks.dto.request.user.PostUserRequestDto;
+import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +33,7 @@ public class UserEntity {
     private String createdAt;
     private String updatedAt;
 
-    public UserEntity(PostUserRequestDto dto) {
+    public UserEntity(UserSignUpRequestDto dto) {
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

@@ -51,37 +51,27 @@ public class UserServiceImplement implements UserService {
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
 
+
             int userNumber = userEntity.getUserNumber();
-            List<String> userHashTagList = dto.getUserHashtag();
-            List<UserHashTagEntity> hashTagList = new ArrayList<>();
+            //TODO : 질문! 해시태그 리스트 위치는 위로 올리는 게 좋을까요?
+            List<String> hashtagList = dto.getUserHashtag();
+            List<UserHashTagEntity> UserHashtagList = new ArrayList<>();
 
-
-            for(String hashTag : userHashTagList) {
+            for(String hashTag : hashtagList) {
 
                 UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
 
                 userHashTagEntity.setUserNumber(userNumber);
                 userHashTagEntity.setHashTag(hashTag);
 
-                hashTagList.add(userHashTagEntity);
+                UserHashtagList.add(userHashTagEntity);
 
             }
-
-
-
-
-
-
-
-
-
-
 
         }catch (Exception exception){
             exception.printStackTrace();
             CustomResponse.databaseError();
         }
-
         return CustomResponse.success();
     }
 }

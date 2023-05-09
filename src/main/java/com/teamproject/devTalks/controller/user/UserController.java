@@ -1,7 +1,6 @@
 package com.teamproject.devTalks.controller.user;
 
-
-import com.teamproject.devTalks.dto.request.user.PostUserRequestDto;
+import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class UserController {
 
     @PostMapping("sign-up")
     ResponseEntity<ResponseDto> userSignUp(
-            @Valid @RequestBody PostUserRequestDto dto
+            @Valid @RequestBody UserSignUpRequestDto dto
     ){
         ResponseEntity<ResponseDto> response = userService.userSignUp(dto);
         return response;

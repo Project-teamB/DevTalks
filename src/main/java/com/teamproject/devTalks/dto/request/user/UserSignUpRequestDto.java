@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostUserRequestDto {
+public class UserSignUpRequestDto {
     @NotBlank @Email
     private String userEmail;
     @NotBlank
@@ -27,8 +26,6 @@ public class PostUserRequestDto {
     private String userProfileImageUrl;
     private List<String> userHashtag;
     private boolean chatAcceptance;
-    @NotNull
-    private boolean agreePersonalInformation;
 
 
 }

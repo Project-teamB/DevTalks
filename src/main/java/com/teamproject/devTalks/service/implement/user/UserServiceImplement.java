@@ -1,7 +1,7 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.request.user.PostUserRequestDto;
+import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
@@ -26,7 +26,7 @@ public class UserServiceImplement implements UserService {
 
 
     @Override
-    public ResponseEntity<ResponseDto> userSignUp(PostUserRequestDto dto) {
+    public ResponseEntity<ResponseDto> userSignUp(UserSignUpRequestDto dto) {
 
         String userEmail = dto.getUserEmail();
         String userNickname = dto.getUserNickname();
@@ -52,29 +52,23 @@ public class UserServiceImplement implements UserService {
             userRepository.save(userEntity);
 
             int userNumber = userEntity.getUserNumber();
-            List<String> userHashTagList = dto.getUserHashtag();
-            List<UserHashTagEntity> hashTagList = new ArrayList<>();
+            //TODO :질문! 이 두 개는 위로 가는 게 좋나요 밑에 있어도 되나요?
+            List<String> hashtagList = dto.getUserHashtag();
+            List<UserHashTagEntity> userHashtagList = new ArrayList<>();
 
 
-            for(String hashTag : userHashTagList) {
+            for(String hashTag : hashtagList) {
 
                 UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
 
                 userHashTagEntity.setUserNumber(userNumber);
                 userHashTagEntity.setHashTag(hashTag);
 
-                hashTagList.add(userHashTagEntity);
+                userHashtagList.add(userHashTagEntity);
 
             }
 
-
-
-
-
-
-
-
-
+            userHashTagRepository.saveAll(userHashtagList);
 
 
         }catch (Exception exception){

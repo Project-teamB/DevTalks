@@ -9,10 +9,8 @@ import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.security.UserPrinciple;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
 public class UserDetailsServiceImplement implements UserDetailsService {
 
     private final UserRepository userRepository;

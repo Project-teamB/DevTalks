@@ -20,7 +20,7 @@ public class JwtProvider {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String createJwt(String email, String rOLE) {
+    public String createJwt(String email, String role) {
 
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
@@ -30,7 +30,7 @@ public class JwtProvider {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(expiredDate)
-                .claim("role", rOLE)
+                .claim("role", role)
                 .compact();
         return jwt;
 

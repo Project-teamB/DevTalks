@@ -1,7 +1,9 @@
 package com.teamproject.devTalks.controller.user;
 
+import com.teamproject.devTalks.dto.request.user.AdminSignInRequestDto;
 import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,21 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("sign-up")
-    public ResponseEntity<ResponseDto> userSignUp(
+    public ResponseEntity<ResponseDto> adminSignUp(
 
             @Valid @RequestBody AdminSignUpRequestDto dto) {
 
         ResponseEntity<ResponseDto> response = adminService.adminSignUp(dto);
+        return response;
+
+    }
+
+    @PostMapping("sign-in")
+    public ResponseEntity<?super AdminSignInResponseDto> adminSignIn(
+            @Valid @RequestBody AdminSignInRequestDto dto
+
+    ){
+        ResponseEntity<? super AdminSignInResponseDto> response = adminService.adminSignIn(dto);
         return response;
 
     }

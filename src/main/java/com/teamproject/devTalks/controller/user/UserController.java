@@ -10,7 +10,6 @@ import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -48,6 +47,12 @@ public class UserController {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = userService.updateUser(userEmail,dto);
         return response;
+    }
+
+    @PatchMapping("delete")
+    ResponseEntity<ResponseDto> deleteUser(){
+
+        return  null;
     }
 
 

@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Data
@@ -24,8 +23,11 @@ public class UserSignUpRequestDto {
     private String userPhoneNumber;
     private String userIntroduction;
     private String userProfileImageUrl;
+    @NotNull
+    @Size(min = 0)
     private List<String> userHashtag;
     private boolean chatAcceptance;
+    private boolean agreePersonalInformation;
 
 
 }

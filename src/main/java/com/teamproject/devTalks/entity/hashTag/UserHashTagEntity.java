@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-@Entity(name = "userHashtag")
+@Entity(name = "userHashTag")
 @Table(name = "userHashtag")
 @IdClass(UserHashTagPk.class)
 
@@ -19,6 +19,6 @@ public class UserHashTagEntity {
     @Id
     private int userNumber;
     @Id
-    private String hashTag;
-    
+    private String hashtag;
+
 }

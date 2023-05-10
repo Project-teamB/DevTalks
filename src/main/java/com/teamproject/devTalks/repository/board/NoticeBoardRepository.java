@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NoticeBoardRepository extends JpaRepository<NoticeBoardEntity,Integer> {
 
-    public NoticeBoardEntity findByBoardNumber(int boardNumber);
+    public NoticeBoardEntity findByNoticeBoardNumber(int boardNumber);
     public NoticeBoardEntity findByWriterEmail(String email);
 }

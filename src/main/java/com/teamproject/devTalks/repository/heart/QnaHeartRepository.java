@@ -1,5 +1,8 @@
 package com.teamproject.devTalks.repository.heart;
 
-public class QnaHeartRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface QnaHeartRepository {
     
 }

@@ -27,7 +27,7 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         try {
             if(boardNumber == null) return CustomResponse.validationFailed();
 
-            NoticeBoardEntity noticeBoardEntity = noticeBoardRepository.findByBoardNumber(boardNumber);
+            NoticeBoardEntity noticeBoardEntity = noticeBoardRepository.findByNoticeBoardNumber(boardNumber);
             if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
             int viewCount = noticeBoardEntity.getViewCount();

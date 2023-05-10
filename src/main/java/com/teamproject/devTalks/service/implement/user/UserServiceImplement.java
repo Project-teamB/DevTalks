@@ -62,7 +62,7 @@ public class UserServiceImplement implements UserService {
                 UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
 
                 userHashTagEntity.setUserNumber(userNumber);
-                userHashTagEntity.setHashTag(hashTag);
+                userHashTagEntity.setHashtag(hashTag);
 
                 userHashtagList.add(userHashTagEntity);
 

@@ -1,15 +1,20 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
+import com.teamproject.devTalks.dto.request.user.UserSignInRequestDto;
 import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
+import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.repository.hashTag.UserHashTagRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,7 @@ public class UserServiceImplement implements UserService {
     private final UserRepository userRepository;
     private final UserHashTagRepository userHashTagRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
 
     @Override
@@ -31,6 +37,9 @@ public class UserServiceImplement implements UserService {
         String userEmail = dto.getUserEmail();
         String userNickname = dto.getUserNickname();
         String userPhoneNumber = dto.getUserPhoneNumber();
+
+        List<String> hashtagList = dto.getUserHashtag();
+        List<UserHashTagEntity> userHashtagList = new ArrayList<>();
 
 
 
@@ -52,10 +61,6 @@ public class UserServiceImplement implements UserService {
             userRepository.save(userEntity);
 
             int userNumber = userEntity.getUserNumber();
-            //TODO :질문! 이 두 개는 위로 가는 게 좋나요 밑에 있어도 되나요?
-            List<String> hashtagList = dto.getUserHashtag();
-            List<UserHashTagEntity> userHashtagList = new ArrayList<>();
-
 
             for(String hashTag : hashtagList) {
 
@@ -77,5 +82,34 @@ public class UserServiceImplement implements UserService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> userSignIn(UserSignInRequestDto dto) {
+
+        SignInResponseDto body = null;
+        String usrEmail = dto.getUserEmail();
+        String password = dto.getUserPassword();
+        String ROLE = "USER";
+
+        try{
+
+            UserEntity userEntity = userRepository.findByUserEmail(usrEmail);
+            if(userEntity == null) CustomResponse.signInFailed();
+
+            String encodedPassword = userEntity.getUserPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+            if(!isEqualPassword) return CustomResponse.signInFailed();
+
+            String jwt = jwtProvider.createJwt(usrEmail,ROLE);
+            body = new SignInResponseDto(jwt);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }

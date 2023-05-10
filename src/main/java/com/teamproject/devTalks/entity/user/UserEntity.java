@@ -29,6 +29,7 @@ public class UserEntity {
     private String userPhoneNumber;
     private String userIntroduction;
     private String userProfileImageUrl;
+    private boolean agreePersonalInformation;
     private boolean chatAcceptance;
     private String createdAt;
     private String updatedAt;
@@ -46,6 +47,7 @@ public class UserEntity {
         this.userIntroduction = dto.getUserIntroduction();
         this.userProfileImageUrl = dto.getUserProfileImageUrl();
         this.chatAcceptance = dto.isChatAcceptance();
+        this.agreePersonalInformation = dto.isAgreePersonalInformation();
         this.createdAt = now.format(formatter);
 
     }

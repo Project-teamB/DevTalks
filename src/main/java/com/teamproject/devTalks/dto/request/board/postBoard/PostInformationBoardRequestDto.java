@@ -13,6 +13,7 @@ public class PostInformationBoardRequestDto {
     @NotBlank
     private String informationBoardContent;
     private String informationBoardImageUrl;
+    @NotBlank
     private String contentSource;
 
     public PostInformationBoardRequestDto(PostInformationBoardRequestDto dto) {

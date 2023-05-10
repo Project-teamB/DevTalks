@@ -19,7 +19,7 @@ public class UserSignUpRequestDto {
     private String userNickname;
     @NotBlank
     private String userName;
-    @NotBlank
+    @NotBlank @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String userPhoneNumber;
     private String userIntroduction;
     private String userProfileImageUrl;

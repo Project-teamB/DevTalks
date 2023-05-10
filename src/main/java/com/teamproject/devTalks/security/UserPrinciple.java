@@ -22,9 +22,11 @@ public class UserPrinciple implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
-        authorities.add(new SimpleGrantedAuthority("ADMIN"));
         return authorities;
         }
+    public String getUserEmail(){
+        return userEntity.getUserEmail();
+    }
 
     @Override
     public String getPassword() {

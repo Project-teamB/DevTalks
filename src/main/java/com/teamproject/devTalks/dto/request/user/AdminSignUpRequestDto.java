@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 
 @Getter
@@ -21,7 +22,7 @@ public class AdminSignUpRequestDto {
     private String adminPassword;
     @NotBlank
     private String adminNickname;
-    @NotBlank
+    @NotBlank @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String adminPhoneNumber;
     @NotBlank
     private String adminName;

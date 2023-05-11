@@ -1,6 +1,6 @@
 package com.teamproject.devTalks.service.board;
 
-import com.teamproject.devTalks.dto.response.board.GetNoticeBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface NoticeBoardService {

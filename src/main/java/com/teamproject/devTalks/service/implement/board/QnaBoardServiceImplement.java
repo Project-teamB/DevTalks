@@ -1,6 +1,6 @@
 package com.teamproject.devTalks.service.implement.board;
 
-import com.teamproject.devTalks.dto.request.board.postBoard.PostQnaBoardRequestDto;
+import com.teamproject.devTalks.dto.request.board.qna.PostQnaBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.repository.board.QnaBoardRepository;
 import com.teamproject.devTalks.repository.comment.QnaCommentRepository;

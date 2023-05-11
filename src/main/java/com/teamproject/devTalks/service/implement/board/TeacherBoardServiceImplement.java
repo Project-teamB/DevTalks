@@ -1,7 +1,7 @@
 package com.teamproject.devTalks.service.implement.board;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.response.board.GetTeacherBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

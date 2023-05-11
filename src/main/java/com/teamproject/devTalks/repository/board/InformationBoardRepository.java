@@ -6,6 +6,6 @@ import com.teamproject.devTalks.entity.board.InformationBoardEntity;
 
 public interface InformationBoardRepository extends JpaRepository<InformationBoardEntity, Integer> {
     
-    public InformationBoardEntity findByBoardNumber(int informationBoardNumber);
+    public InformationBoardEntity findByInformationBoardNumber(int informationBoardNumber);
 
 }

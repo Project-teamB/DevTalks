@@ -19,6 +19,7 @@ public class TeacherBoardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int teacherBoardNumber;
     private String writerProfileImageUrl;
+    private String writerEmail;
     private String writerNickname;
     private String writeDatetime;
     private String teacherTitle;

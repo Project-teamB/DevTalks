@@ -2,8 +2,6 @@ package com.teamproject.devTalks.dto.response.board;
 
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
-import com.teamproject.devTalks.entity.user.AdminEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,8 +22,8 @@ public class GetTeacherBoardResponseDto extends ResponseDto {
     private String category;
 
     public GetTeacherBoardResponseDto(
-        TeacherBoardEntity teacherBoardEntity,
-        AdminEntity adminEntity
+        TeacherBoardEntity teacherBoardEntity
+        
         ){
             super("SU","Success");
             

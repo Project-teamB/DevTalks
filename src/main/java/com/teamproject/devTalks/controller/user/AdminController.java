@@ -1,9 +1,6 @@
 package com.teamproject.devTalks.controller.user;
 
-import com.teamproject.devTalks.dto.request.user.AdminSignInRequestDto;
-import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
-import com.teamproject.devTalks.dto.request.user.UpdateAdminPasswordRequestDto;
-import com.teamproject.devTalks.dto.request.user.UpdateAdminRequestDto;
+import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
@@ -68,9 +65,20 @@ public class AdminController {
                 adminService.updateAdminPassword(adminEmail,dto);
 
         return response;
+    }
 
+    @PatchMapping("delete")
+    public ResponseEntity<ResponseDto> deleteAdmin(
+            @Valid @RequestBody DeleteAdminRequestDto dto,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+
+        ResponseEntity<ResponseDto> response = adminService.deleteAdmin(adminEmail,dto);
+        return response;
 
     }
+
 
 
 }

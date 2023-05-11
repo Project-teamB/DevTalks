@@ -1,10 +1,7 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.request.user.AdminSignInRequestDto;
-import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
-import com.teamproject.devTalks.dto.request.user.UpdateAdminPasswordRequestDto;
-import com.teamproject.devTalks.dto.request.user.UpdateAdminRequestDto;
+import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
@@ -148,6 +145,34 @@ public class AdminServiceImplement implements AdminService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdmin(
+            String adminEmail, DeleteAdminRequestDto dto) {
+
+        String password = dto.getAdminPassword();
+
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) CustomResponse.noExistUserEmail();
+
+            String encodedPassword = adminEntity.getAdminPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+
+            if(!isEqualPassword) return CustomResponse.passwordMismatch();
+            adminRepository.deleteByAdminEmail(adminEmail);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
 
         return CustomResponse.success();
     }

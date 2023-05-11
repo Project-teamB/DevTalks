@@ -1,14 +1,14 @@
 package com.teamproject.devTalks.controller.user;
 
-import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -17,10 +17,10 @@ import javax.validation.Valid;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @PostMapping("sign-up")
-    public ResponseEntity<ResponseDto> userSignUp(
+    public ResponseEntity<ResponseDto> adminSignUp(
 
             @Valid @RequestBody AdminSignUpRequestDto dto) {
 
@@ -28,4 +28,57 @@ public class AdminController {
         return response;
 
     }
+
+    @PostMapping("sign-in")
+    public ResponseEntity<?super AdminSignInResponseDto> adminSignIn(
+            @Valid @RequestBody AdminSignInRequestDto dto
+
+    ){
+        ResponseEntity<? super AdminSignInResponseDto> response = adminService.adminSignIn(dto);
+        return response;
+
+    }
+
+    @PatchMapping("update")
+    public ResponseEntity<ResponseDto> updateAdmin(
+            @Valid @RequestBody UpdateAdminRequestDto dto,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+            ){
+
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response =
+                adminService.adminUpdate(adminEmail,dto);
+
+        return response;
+
+    }
+
+    @PatchMapping("update/password")
+    public ResponseEntity<ResponseDto> updateAdminPassword(
+            @Valid @RequestBody UpdateAdminPasswordRequestDto dto,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+            ){
+
+        String adminEmail = adminPrinciple.getAdminEmail();
+
+        ResponseEntity<ResponseDto> response =
+                adminService.updateAdminPassword(adminEmail,dto);
+
+        return response;
+    }
+
+    @PatchMapping("delete")
+    public ResponseEntity<ResponseDto> deleteAdmin(
+            @Valid @RequestBody DeleteAdminRequestDto dto,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+
+        ResponseEntity<ResponseDto> response = adminService.deleteAdmin(adminEmail,dto);
+        return response;
+
+    }
+
+
+
 }

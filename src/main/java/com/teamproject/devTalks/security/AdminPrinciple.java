@@ -25,7 +25,7 @@ public class AdminPrinciple implements UserDetails {
         return authorities;
     }
     
-    public String getEmail() {
+    public String getAdminEmail() {
         return adminEntity.getAdminEmail();
     }
 

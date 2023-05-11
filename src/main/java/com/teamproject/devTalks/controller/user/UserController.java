@@ -1,5 +1,6 @@
 package com.teamproject.devTalks.controller.user;
 
+import com.teamproject.devTalks.dto.request.user.DeleteUserRequestDto;
 import com.teamproject.devTalks.dto.request.user.UpdateUserRequestDto;
 import com.teamproject.devTalks.dto.request.user.UserSignInRequestDto;
 import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
@@ -50,10 +51,19 @@ public class UserController {
     }
 
     @PatchMapping("delete")
-    ResponseEntity<ResponseDto> deleteUser(){
+    ResponseEntity<ResponseDto> deleteUser(
+            @Valid @RequestBody DeleteUserRequestDto dto,
+            @AuthenticationPrincipal UserPrinciple userPrinciple
+    ){
 
-        return  null;
+        String userEmail = userPrinciple.getUserEmail();
+
+       ResponseEntity<ResponseDto> response = userService.userDelete(userEmail,dto);
+       return response;
+
+        }
     }
 
 
-}
+
+

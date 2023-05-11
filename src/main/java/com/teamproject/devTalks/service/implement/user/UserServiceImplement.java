@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
+import com.teamproject.devTalks.dto.request.user.DeleteUserRequestDto;
 import com.teamproject.devTalks.dto.request.user.UpdateUserRequestDto;
 import com.teamproject.devTalks.dto.request.user.UserSignInRequestDto;
 import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
@@ -184,6 +185,38 @@ public class UserServiceImplement implements UserService {
 
         }
 
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> userDelete(String userEmail, DeleteUserRequestDto dto) {
+
+        String password = dto.getUserPassword();
+
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.noExistUserEmail();
+
+            String encodedPassword = userEntity.getUserPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+
+            if(!isEqualPassword) return CustomResponse.passwordMismatch();
+
+            int userNumber = userEntity.getUserNumber();
+
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            userHashTagRepository.deleteAll(userHashTagEntities);
+            userRepository.deleteByUserEmail(userEmail);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
         return CustomResponse.success();
     }
 }

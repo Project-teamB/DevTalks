@@ -41,5 +41,5 @@ public class GetInformationBoardResponseDto extends ResponseDto {
     this.viewCount = informationBoardEntity.getViewCount();
     this.writeDatetime = informationBoardEntity.getWriteDatetime();
     this.updateDatetime = informationBoardEntity.getUpdateDatetime();
-}
+    }
 }

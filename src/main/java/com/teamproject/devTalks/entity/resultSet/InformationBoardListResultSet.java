@@ -1,15 +1,18 @@
 package com.teamproject.devTalks.entity.resultSet;
 
-public class InformationBoardListResultSet {
-    private int getInformationBoardNumber;
-    private String getWriterProfileImageUrl;
-    private String getWriterNickname;
-    private String getWriterEmail;
-    private String getInformationBoardTitle;
-    private String getInformationBoardContent;
-    private String getInformationBoardImageUrl;
-    private String getContentSource;
-    private int getViewCount;
-    private String getWriteDatetime;
-    private String getUpdateDatetime;
+public interface InformationBoardListResultSet {
+    public int getInformationBoardNumber();
+    public String getWriterProfileImageUrl();
+    public String getWriterNickname();
+    public String getWriterEmail();
+    public String getInformationBoardTitle();
+    public String getInformationBoardContent();
+    public String getInformationBoardImageUrl();
+    public String getContentSource();
+    public int getViewCount();
+    public String getWriteDatetime();
+    public String getUpdateDatetime();
+    public int getCommentCount();
+    public int getHeartCount();
+    public String getInformationBoardHashtag();
 }

@@ -1,5 +1,8 @@
 package com.teamproject.devTalks.service.board;
 
-public class TeacherBoardService {
-    
+import com.teamproject.devTalks.dto.response.board.GetTeacherBoardResponseDto;
+import org.springframework.http.ResponseEntity;
+
+public interface TeacherBoardService {
+    public ResponseEntity<? super GetTeacherBoardResponseDto> getBoard(Integer boardNumber);
 }

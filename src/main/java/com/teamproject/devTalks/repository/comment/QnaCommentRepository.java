@@ -7,9 +7,8 @@ import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface QnaCommentRepository extends JpaRepository<QnaCommentEntity, Integer>{
-    
-    List<QnaCommentEntity> findByQnaBoardNumber (int qnaBoardNumber);
-    
+public interface QnaCommentRepository extends JpaRepository<QnaCommentEntity, Integer> {
+
+    List<QnaCommentEntity> findByQnaBoardNumber(int qnaBoardNumber);
 
 }

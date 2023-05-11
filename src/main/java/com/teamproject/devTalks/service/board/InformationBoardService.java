@@ -2,10 +2,10 @@ package com.teamproject.devTalks.service.board;
 
 import org.springframework.http.ResponseEntity;
 
-import com.teamproject.devTalks.dto.response.board.GetInformationBoardResponseDto;
-import com.teamproject.devTalks.dto.response.board.GetInformationBoardListResponseDto;
-import com.teamproject.devTalks.dto.request.board.patchBoard.PatchInformationBoardRequestDto;
-import com.teamproject.devTalks.dto.request.board.postBoard.PostInformationBoardRequestDto;
+import com.teamproject.devTalks.dto.response.board.informaion.GetInformationBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.informaion.GetInformationBoardListResponseDto;
+import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
+import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 
 public interface InformationBoardService {

@@ -1,6 +1,6 @@
 package com.teamproject.devTalks.controller.user;
 
-import com.teamproject.devTalks.dto.request.user.*;
+import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;

@@ -3,7 +3,7 @@ package com.teamproject.devTalks.entity.user;
 
 import javax.persistence.*;
 
-import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.admin.AdminSignUpRequestDto;
 import lombok.*;
 
 @Entity(name = "admin")

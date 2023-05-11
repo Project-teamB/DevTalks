@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamproject.devTalks.dto.request.board.postBoard.PostQnaBoardRequestDto;
+import com.teamproject.devTalks.dto.request.board.qna.PostQnaBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
-import com.teamproject.devTalks.dto.response.board.qnaResponseDto.GetQnaBoardListResponseDto;
-import com.teamproject.devTalks.dto.response.board.qnaResponseDto.GetQnaBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
+import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardResponseDto;
 
 @RestController
 @RequestMapping("/board/qna")

@@ -1,7 +1,7 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.request.user.*;
+import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;

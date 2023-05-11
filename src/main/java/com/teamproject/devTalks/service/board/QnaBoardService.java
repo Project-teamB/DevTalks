@@ -2,7 +2,7 @@ package com.teamproject.devTalks.service.board;
 
 import org.springframework.http.ResponseEntity;
 
-import com.teamproject.devTalks.dto.request.board.postBoard.PostQnaBoardRequestDto;
+import com.teamproject.devTalks.dto.request.board.qna.PostQnaBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 
 

@@ -1,5 +1,12 @@
 package com.teamproject.devTalks.dto.response.board;
 
-public class GetInformationBoardListResponseDto {
+import com.teamproject.devTalks.dto.response.ResponseDto;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class GetInformationBoardListResponseDto extends ResponseDto {
     
 }

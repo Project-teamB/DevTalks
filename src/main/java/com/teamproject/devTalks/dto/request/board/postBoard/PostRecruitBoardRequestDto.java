@@ -21,4 +21,12 @@ public class PostRecruitBoardRequestDto {
     @NotBlank 
     private String hashtag;
     private boolean recruitmentStatus;
+
+    public PostRecruitBoardRequestDto(PostRecruitBoardRequestDto dto) {
+        this.writerEmail = dto.getWriterEmail();
+        this.recruitTitle = dto.getRecruitTitle();
+        this.recruitContent = dto.getRecruitContent();
+        this.recruitImageUrl = dto.getRecruitImageUrl();
+        this.hashtag = dto.getHashtag();
+    }
 }

@@ -15,8 +15,8 @@ import lombok.Data;
 @Table(name="qna")
 public class QnaBoardEntity {
     
-    @Id // pk
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ai
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private int qnaBoardNumber;
     private String writerProfileImageUrl;
     private String writerNickname;

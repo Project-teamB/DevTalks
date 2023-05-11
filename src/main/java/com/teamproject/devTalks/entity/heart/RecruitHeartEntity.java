@@ -23,4 +23,6 @@ public class RecruitHeartEntity {
     private int recruitBoardNumber;
     @Id
     private int userNumber;
+    private String userProfileImage;
+    private String userNickname;
 }

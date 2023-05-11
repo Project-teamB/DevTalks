@@ -20,7 +20,15 @@ public class PatchRecruitBoardRequestDto {
     private String recruitTitle;
     @NotBlank
     private String recruitContent;
-    private String recruitImageUrl;
+    private String recruitBoardImageUrl;
     private boolean recruitmentStatus;
+
+    public PatchRecruitBoardRequestDto(PatchRecruitBoardRequestDto dto) {
+        this.writerEmail = dto.getWriterEmail();
+        this.recruitBoardNumber = dto.getRecruitBoardNumber();
+        this.recruitTitle = dto.getRecruitTitle();
+        this.recruitContent = dto.getRecruitContent();
+        this.recruitBoardImageUrl = dto.getRecruitBoardImageUrl();
+    }
 
 }

@@ -1,8 +1,5 @@
 package com.teamproject.devTalks.entity.board;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +20,7 @@ public class InformationBoardEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int informationBoardNumber;
-    private String profileImageUrl;
+    private String writerProfileImageUrl;
     private String writerNickname;
     private String writerEmail;
     private String informationBoardTitle;
@@ -31,6 +28,9 @@ public class InformationBoardEntity {
     private String informationBoardImageUrl;
     private String contentSource;
     private int viewCount;
+    private String writeDatetime;
+    private String updateDatetime;
 
+   
 }
 

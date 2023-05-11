@@ -19,13 +19,11 @@ public class GetNoticeBoardResponseDto extends ResponseDto {
     private int viewCount;
     private String noticeImageUrl;
 
-
     public GetNoticeBoardResponseDto(
             NoticeBoardEntity noticeBoardEntity,
-            AdminEntity adminEntity
-            ){
+            AdminEntity adminEntity) {
 
-        super("SU","Success");
+        super("SU", "Success");
 
         this.noticeBoardNumber = noticeBoardEntity.getNoticeBoardNumber();
         this.writerNickname = adminEntity.getAdminNickname();
@@ -35,11 +33,6 @@ public class GetNoticeBoardResponseDto extends ResponseDto {
         this.noticeContent = noticeBoardEntity.getNoticeContent();
         this.viewCount = noticeBoardEntity.getViewCount();
         this.noticeImageUrl = getNoticeImageUrl();
-
-
-
-
-
 
     }
 

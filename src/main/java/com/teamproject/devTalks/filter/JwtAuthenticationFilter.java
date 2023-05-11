@@ -33,9 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImplement userDetailsService;
     private final AdminDetailsServiceImplement adminDetailsService;
 
-    private String parseToken(HttpServletRequest request){
+    private String parseToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        boolean hasToken = token!= null && token.startsWith("Bearer ");
+        boolean hasToken = token != null && token.startsWith("Bearer ");
         if (!hasToken) {
             return null;
         }
@@ -46,29 +46,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-                try {
-                    String jwt = parseToken(request);
-                    boolean hasJwt = jwt!= null;
-        
-                    if (hasJwt) {
-                        String subject = jwtProvider.validateJwt(jwt);
-                        List<GrantedAuthority> authorities = jwtProvider.getAuthoritiesFromJwt(jwt);
-                        UserDetails userDetails;
-                        if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-                            userDetails = adminDetailsService.loadUserByUsername(subject);
-                        } else {
-                            userDetails = userDetailsService.loadUserByUsername(subject);
-                        }
-                        UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-        
-                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    }
-                    filterChain.doFilter(request, response);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
+        try {
+            String jwt = parseToken(request);
+            boolean hasJwt = jwt != null;
+
+            if (hasJwt) {
+                String subject = jwtProvider.validateJwt(jwt);
+                List<GrantedAuthority> authorities = jwtProvider.getAuthoritiesFromJwt(jwt);
+                UserDetails userDetails;
+                if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                    userDetails = adminDetailsService.loadUserByUsername(subject);
+                } else {
+                    userDetails = userDetailsService.loadUserByUsername(subject);
                 }
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, authorities);
+
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
+            filterChain.doFilter(request, response);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            response.setStatus(HttpStatus.FORBIDDEN.value());
         }
+    }
+}

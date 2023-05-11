@@ -1,9 +1,6 @@
 package com.teamproject.devTalks.controller.user;
 
-import com.teamproject.devTalks.dto.request.user.DeleteUserRequestDto;
-import com.teamproject.devTalks.dto.request.user.UpdateUserRequestDto;
-import com.teamproject.devTalks.dto.request.user.UserSignInRequestDto;
-import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
 import com.teamproject.devTalks.security.UserPrinciple;
@@ -47,6 +44,18 @@ public class UserController {
     ){
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = userService.updateUser(userEmail,dto);
+        return response;
+    }
+
+    @PatchMapping("update/password")
+    ResponseEntity<ResponseDto> updateUserPassword(
+            @Valid @RequestBody UpdateUserPasswordRequestDto dto,
+            @AuthenticationPrincipal UserPrinciple userPrinciple
+            ){
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response =
+                userService.updateUserPassword(userEmail,dto);
+
         return response;
     }
 

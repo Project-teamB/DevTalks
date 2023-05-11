@@ -3,6 +3,8 @@ package com.teamproject.devTalks.service.implement.user;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.AdminSignInRequestDto;
 import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.user.UpdateAdminPasswordRequestDto;
+import com.teamproject.devTalks.dto.request.user.UpdateAdminRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
@@ -83,4 +85,72 @@ public class AdminServiceImplement implements AdminService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @Override
+    public ResponseEntity<ResponseDto> adminUpdate(
+            String adminEmail, UpdateAdminRequestDto dto) {
+
+        String password = dto.getPassword();
+        String adminNickname = dto.getAdminNickname();
+        String adminPhoneNumber = dto.getAdminPhoneNumber();
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.noExistUserEmail();
+
+            String encodedPassword = adminEntity.getAdminPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+
+            if(!isEqualPassword) CustomResponse.passwordMismatch();
+
+            Boolean isExistNickname = adminRepository.existsByAdminNickname(adminNickname);
+            if(isExistNickname) return CustomResponse.existNickname();
+            adminEntity.setAdminNickname(adminNickname);
+
+            Boolean isExistPhoneNumber = adminRepository.existsByAdminPhoneNumber(adminPhoneNumber);
+            if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
+            adminEntity.setAdminPhoneNumber(adminPhoneNumber);
+
+            adminRepository.save(adminEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> updateAdminPassword(
+            String adminEmail, UpdateAdminPasswordRequestDto dto
+    ) {
+
+        String currentPassword = dto.getCurrentPassword();
+        String changePassword = dto.getChangePassword();
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.noExistUserEmail();
+
+            String encodedCurrentPassword = adminEntity.getAdminPassword();
+
+            boolean isEqualPassword  = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
+            if(!isEqualPassword) return CustomResponse.passwordMismatch();
+
+            String encodedChangePassword = passwordEncoder.encode(changePassword);
+            adminEntity.setAdminPassword(encodedChangePassword);
+
+            adminRepository.save(adminEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
+
 }

@@ -94,7 +94,7 @@ public class AdminServiceImplement implements AdminService {
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.noExistUserEmail();
+            if(adminEntity == null) return CustomResponse.noExistUser();
 
             String encodedPassword = adminEntity.getAdminPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
@@ -129,7 +129,7 @@ public class AdminServiceImplement implements AdminService {
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.noExistUserEmail();
+            if(adminEntity == null) return CustomResponse.noExistUser();
 
             String encodedCurrentPassword = adminEntity.getAdminPassword();
 
@@ -159,7 +159,7 @@ public class AdminServiceImplement implements AdminService {
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) CustomResponse.noExistUserEmail();
+            if(adminEntity == null) CustomResponse.noExistUser();
 
             String encodedPassword = adminEntity.getAdminPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);

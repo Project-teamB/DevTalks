@@ -6,5 +6,5 @@ import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
 
 public interface InformationCommentRepository extends JpaRepository<InformationCommentEntity, Integer> {
     
-    public InformationCommentEntity findByBoardNumber(int informationBoardNumber);
+    public InformationCommentEntity findByInformationBoardNumber(int informationBoardNumber);
 }

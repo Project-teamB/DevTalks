@@ -70,7 +70,7 @@ public class QnaBoardController {
         return null;
     }
 
-    @DeleteMapping("/{qnaBoardNumber}")
+    @DeleteMapping("")
     public ResponseEntity<ResponseDto> deleteQnaHeart() {
         return null;
     }

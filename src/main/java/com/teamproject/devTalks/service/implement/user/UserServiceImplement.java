@@ -116,6 +116,35 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
+    public ResponseEntity<? super UpdateUserResponseDto> getUserUpdate(String userEmail) {
+
+        UpdateUserResponseDto body = null;
+        List<String> hashtagList = new ArrayList<>();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.noExistUser();
+
+            int userNumber = userEntity.getUserNumber();
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
+                String hashtag = userHashTagEntity.getHashtag();
+                hashtagList.add(hashtag);
+            }
+
+            body = new UpdateUserResponseDto(hashtagList,userEntity);
+
+        }catch (Exception exception){
+
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
     public ResponseEntity<ResponseDto> updateUser(String userEmail, UpdateUserRequestDto dto) {
 
         String password = dto.getPassword();
@@ -140,12 +169,12 @@ public class UserServiceImplement implements UserService {
 
             boolean isExistUserNickname = userRepository.existsByUserNickname(userNickname);
             if(isExistUserNickname) return CustomResponse.existNickname();
-            if(userNickname != null) userEntity.setUserNickname(userNickname);
 
             boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(userPhoneNumber);
             if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
-            if(userPhoneNumber !=  null) userEntity.setUserPhoneNumber(userPhoneNumber);
 
+            userEntity.setUserNickname(userNickname);
+            userEntity.setUserPhoneNumber(userPhoneNumber);
             userEntity.setUserIntroduction(userIntroduction);
             userEntity.setUserProfileImageUrl(userProfileImageUrl);
             userEntity.setChatAcceptance(chatAcceptance);
@@ -174,13 +203,31 @@ public class UserServiceImplement implements UserService {
         }catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
-
-
         }
 
         return CustomResponse.success();
     }
+    @Override
+    public ResponseEntity<ResponseDto> updateUserPassword(
+            String userEmail, UpdateUserPasswordRequestDto dto
+    ) {
+        String currentPassword = dto.getCurrentPassword();
+        String changePassword = dto.getChangePassword();
 
+        UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+        if(userEntity == null) CustomResponse.noExistUser();
+
+        String encodedCurrentPassword = userEntity.getUserPassword();
+        boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
+
+        if(!isEqualPassword) return CustomResponse.passwordMismatch();
+        String encodedChangePassword = passwordEncoder.encode(changePassword);
+
+        userEntity.setUserPassword(encodedChangePassword);
+        userRepository.save(userEntity);
+
+        return CustomResponse.success();
+    }
     @Override
     public ResponseEntity<ResponseDto> userDelete(String userEmail, DeleteUserRequestDto dto) {
 
@@ -223,54 +270,6 @@ public class UserServiceImplement implements UserService {
         return CustomResponse.success();
     }
 
-    @Override
-    public ResponseEntity<ResponseDto> updateUserPassword(
-            String userEmail, UpdateUserPasswordRequestDto dto
-    ) {
-        String currentPassword = dto.getCurrentPassword();
-        String changePassword = dto.getChangePassword();
 
-        UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-        if(userEntity == null) CustomResponse.noExistUser();
 
-        String encodedCurrentPassword = userEntity.getUserPassword();
-        boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
-
-        if(!isEqualPassword) return CustomResponse.passwordMismatch();
-        String encodedChangePassword = passwordEncoder.encode(changePassword);
-
-        userEntity.setUserPassword(encodedChangePassword);
-        userRepository.save(userEntity);
-
-        return CustomResponse.success();
-    }
-
-    @Override
-    public ResponseEntity<? super UpdateUserResponseDto> getUserUpdate(String userEmail) {
-
-        UpdateUserResponseDto body = null;
-        List<String> hashtagList = new ArrayList<>();
-
-        try {
-
-            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.noExistUser();
-
-            int userNumber = userEntity.getUserNumber();
-            List<UserHashTagEntity> userHashTagEntities =
-                    userHashTagRepository.findAllByUserNumber(userNumber);
-
-            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
-                String hashtag = userHashTagEntity.getHashtag();
-                hashtagList.add(hashtag);
-            }
-
-            body = new UpdateUserResponseDto(hashtagList,userEntity);
-
-        }catch (Exception exception){
-
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
 }

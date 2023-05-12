@@ -21,7 +21,8 @@ public class GetNoticeBoardResponseDto extends ResponseDto {
 
     public GetNoticeBoardResponseDto(
             NoticeBoardEntity noticeBoardEntity,
-            AdminEntity adminEntity) {
+            AdminEntity adminEntity
+    ) {
 
         super("SU", "Success");
 

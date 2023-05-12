@@ -1,6 +1,5 @@
 package com.teamproject.devTalks.service.implement.user;
 
-
 import com.teamproject.devTalks.security.AdminPrinciple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminDetailsServiceImplement implements UserDetailsService {
 
-
     private final AdminRepository adminRepository;
 
     @Override
@@ -26,5 +24,5 @@ public class AdminDetailsServiceImplement implements UserDetailsService {
         }
         return new AdminPrinciple(admin);
     }
-    
+
 }

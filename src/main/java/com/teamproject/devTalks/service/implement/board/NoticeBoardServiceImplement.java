@@ -1,7 +1,7 @@
 package com.teamproject.devTalks.service.implement.board;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.response.board.GetNoticeBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.repository.board.NoticeBoardRepository;

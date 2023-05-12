@@ -1,5 +1,6 @@
 package com.teamproject.devTalks.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +23,12 @@ public class CustomExceptionHandler {
     public ResponseEntity<ResponseDto> handlerMethodArgumentNotValidException(
         MethodArgumentNotValidException exception) {
         return CustomResponse.validationFailed();
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ResponseDto> handlerExpiredJwt(
+            ExpiredJwtException exception){
+        return CustomResponse.expiredJwt();
     }
 
 }

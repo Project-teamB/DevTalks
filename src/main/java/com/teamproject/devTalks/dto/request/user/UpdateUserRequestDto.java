@@ -16,8 +16,7 @@ import java.util.List;
 public class UpdateUserRequestDto {
 
     @NotBlank
-    private String currentPassword;
-    private String changePassword;
+    private String password;
     private String userNickname;
     @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String userPhoneNumber;

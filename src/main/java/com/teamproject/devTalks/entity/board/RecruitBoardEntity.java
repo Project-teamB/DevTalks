@@ -27,7 +27,7 @@ public class RecruitBoardEntity {
     private String updateDatetime;
     private String recruitTitle;
     private String recruitContent;
-    private String recruitImageUrl;
+    private String recruitBoardImageUrl;
     private int viewCount;
     private boolean recruitmentStatus;
 

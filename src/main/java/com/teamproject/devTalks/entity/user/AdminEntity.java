@@ -3,11 +3,11 @@ package com.teamproject.devTalks.entity.user;
 
 import javax.persistence.*;
 
-import com.teamproject.devTalks.dto.request.user.AdminSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.admin.AdminSignUpRequestDto;
 import lombok.*;
 
-@Entity(name = "Admin")
-@Table(name = "Admin")
+@Entity(name = "admin")
+@Table(name = "admin")
 @Getter
 @Setter
 @NoArgsConstructor

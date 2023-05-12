@@ -1,11 +1,10 @@
 package com.teamproject.devTalks.service.implement.user;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.request.user.UpdateUserRequestDto;
-import com.teamproject.devTalks.dto.request.user.UserSignInRequestDto;
-import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
+import com.teamproject.devTalks.dto.response.user.UpdateUserResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
@@ -116,8 +115,7 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseEntity<ResponseDto> updateUser(String userEmail, UpdateUserRequestDto dto) {
 
-        String currentPassword = dto.getCurrentPassword();
-        String changePassword = dto.getChangePassword();
+        String password = dto.getPassword();
         String userNickname = dto.getUserNickname();
         String userPhoneNumber = dto.getUserPhoneNumber();
         String userIntroduction = dto.getUserIntroduction();
@@ -130,11 +128,11 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) CustomResponse.noExistUserEmail();
+            if(userEntity == null) CustomResponse.noExistUser();
 
             String encodedCurrentPassword = userEntity.getUserPassword();
 
-            boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedCurrentPassword);
             if(!isEqualPassword) return CustomResponse.passwordMismatch();
 
             boolean isExistUserNickname = userRepository.existsByUserNickname(userNickname);
@@ -144,11 +142,6 @@ public class UserServiceImplement implements UserService {
             boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(userPhoneNumber);
             if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
             if(userPhoneNumber !=  null) userEntity.setUserPhoneNumber(userPhoneNumber);
-
-            if(changePassword != null){
-                String encodedChangePassword = passwordEncoder.encode(changePassword);
-                userEntity.setUserPassword(encodedChangePassword);
-            }
 
             userEntity.setUserIntroduction(userIntroduction);
             userEntity.setUserProfileImageUrl(userProfileImageUrl);
@@ -175,8 +168,6 @@ public class UserServiceImplement implements UserService {
 
             userHashTagRepository.saveAll(userHashtagList);
 
-
-
         }catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -185,5 +176,86 @@ public class UserServiceImplement implements UserService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> userDelete(String userEmail, DeleteUserRequestDto dto) {
+
+        String password = dto.getUserPassword();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.noExistUser();
+
+            String encodedPassword = userEntity.getUserPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+
+            if(!isEqualPassword) return CustomResponse.passwordMismatch();
+
+            int userNumber = userEntity.getUserNumber();
+
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            userHashTagRepository.deleteAll(userHashTagEntities);
+            userRepository.deleteByUserEmail(userEmail);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> updateUserPassword(
+            String userEmail, UpdateUserPasswordRequestDto dto
+    ) {
+        String currentPassword = dto.getCurrentPassword();
+        String changePassword = dto.getChangePassword();
+
+        UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+        if(userEntity == null) CustomResponse.noExistUser();
+
+        String encodedCurrentPassword = userEntity.getUserPassword();
+        boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
+
+        if(!isEqualPassword) return CustomResponse.passwordMismatch();
+        String encodedChangePassword = passwordEncoder.encode(changePassword);
+
+        userEntity.setUserPassword(encodedChangePassword);
+        userRepository.save(userEntity);
+
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super UpdateUserResponseDto> getUserUpdate(String userEmail) {
+
+        UpdateUserResponseDto body = null;
+        List<String> hashtagList = new ArrayList<>();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.noExistUser();
+
+            int userNumber = userEntity.getUserNumber();
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
+                String hashtag = userHashTagEntity.getHashtag();
+                hashtagList.add(hashtag);
+            }
+
+            body = new UpdateUserResponseDto(hashtagList,userEntity);
+
+        }catch (Exception exception){
+
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }

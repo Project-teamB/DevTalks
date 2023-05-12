@@ -1,6 +1,6 @@
 package com.teamproject.devTalks.controller.board;
 
-import com.teamproject.devTalks.dto.response.board.GetTeacherBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

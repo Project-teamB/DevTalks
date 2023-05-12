@@ -1,7 +1,7 @@
 package com.teamproject.devTalks.controller.board;
 
 
-import com.teamproject.devTalks.dto.response.board.GetNoticeBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import com.teamproject.devTalks.service.board.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

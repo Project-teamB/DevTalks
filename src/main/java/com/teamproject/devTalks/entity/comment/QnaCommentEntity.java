@@ -8,9 +8,11 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "qnaComment")
 @Table(name = "qnaComment")
 public class QnaCommentEntity {
@@ -24,6 +26,6 @@ public class QnaCommentEntity {
     private String writerEmail;
     private String writeDatetime;
     private String userNumber;
-    private String quaBoardNumber;
+    private int qnaBoardNumber;
 
 }

@@ -18,8 +18,40 @@ public class RecommendationServiceImplement implements RecommendationService {
     private final RecommendationRepository recommendationRepository;
     private final UserRepository userRepository;
     @Override
-    public ResponseEntity<ResponseDto> postRecommendation(int senderId, int receiverId) {
+        public ResponseEntity<ResponseDto> postRecommendation(int senderId, int receiverId) {
 
+
+            try {
+
+                UserEntity sendUserEntity = userRepository.findByUserNumber(senderId);
+                if(sendUserEntity == null) return CustomResponse.authenticationFailed();
+
+                UserEntity receiveUserEntity = userRepository.findByUserNumber(receiverId);
+                if(receiveUserEntity == null) return CustomResponse.noExistUser();
+
+                boolean isSameUser = (senderId == receiverId);
+                if(isSameUser) return CustomResponse.cannotRecommendToSelf();
+
+                boolean isExistRecommendation =
+                        recommendationRepository.existsBySenderUserNumberAndReceiverUserNumber(senderId,receiverId);
+
+                if(isExistRecommendation) return CustomResponse.alreadyRecommended();
+
+                RecommendationEntity recommendation =
+                        new RecommendationEntity(senderId,receiverId);
+
+                recommendationRepository.save(recommendation);
+
+            }catch (Exception exception){
+                exception.printStackTrace();
+                return CustomResponse.databaseError();
+            }
+
+            return CustomResponse.success();
+        }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteRecommendation(int senderId, int receiverId) {
 
         try {
 
@@ -29,21 +61,18 @@ public class RecommendationServiceImplement implements RecommendationService {
             UserEntity receiveUserEntity = userRepository.findByUserNumber(receiverId);
             if(receiveUserEntity == null) return CustomResponse.noExistUser();
 
+
+
             RecommendationEntity recommendationEntity =
                     recommendationRepository.findBySenderUserNumberAndReceiverUserNumber(senderId,receiverId);
 
-            if(receiveUserEntity != null) return CustomResponse.alreadyRecommended();
-
-            RecommendationEntity recommendation =
-                    new RecommendationEntity(senderId,receiverId);
-
-            recommendationRepository.save(recommendation);
-
+            if(recommendationEntity == null) return CustomResponse.noExistRecommendation();
 
         }catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+
         return CustomResponse.success();
     }
 }

@@ -1,4 +1,4 @@
-package com.teamproject.devTalks.dto.response.board.informaion;
+package com.teamproject.devTalks.dto.response.board.information;
 
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.board.InformationBoardEntity;

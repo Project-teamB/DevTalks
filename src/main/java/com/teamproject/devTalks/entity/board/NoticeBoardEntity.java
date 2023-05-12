@@ -44,9 +44,5 @@ public class NoticeBoardEntity {
         this.noticeContent = dto.getNoticeContent();
         this.noticeImageUrl = dto.getNoticeImageUrl();
         this.writeDatetime = now.format(formatter);
-
-
-
-
     }
 }

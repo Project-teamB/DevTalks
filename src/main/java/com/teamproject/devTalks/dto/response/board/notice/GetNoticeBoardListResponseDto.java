@@ -42,6 +42,7 @@ public class GetNoticeBoardListResponseDto extends ResponseDto {
         private String writeDatetime;
         private int viewCount;
         private String writerNickname;
+        private String writerEmail;
         private String noticeImageUrl;
 
         public NoticeSummary(NoticeBoardEntity noticeBoardEntity) {
@@ -51,6 +52,7 @@ public class GetNoticeBoardListResponseDto extends ResponseDto {
             this.writeDatetime = noticeBoardEntity.getWriteDatetime();
             this.viewCount = noticeBoardEntity.getViewCount();
             this.writerNickname = noticeBoardEntity.getWriterNickname();
+            this.writerEmail = noticeBoardEntity.getWriterEmail();
             this.noticeImageUrl = noticeBoardEntity.getNoticeImageUrl();
         }
     }

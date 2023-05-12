@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.controller.board;
 
 
+import com.teamproject.devTalks.dto.request.board.notice.PatchNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
@@ -53,6 +54,22 @@ public class NoticeBoardController {
         ResponseEntity<? super GetNoticeBoardListResponseDto> response
                 = noticeBoardService.getNoticeList();
         return response;
+
+    }
+
+    @PatchMapping("")
+    public ResponseEntity<ResponseDto> updateNotice(
+            @Valid @RequestBody PatchNoticeBoardRequestDto dto,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response
+                =noticeBoardService.updateNotice(adminEmail,dto);
+
+        return response;
+
+
 
     }
 

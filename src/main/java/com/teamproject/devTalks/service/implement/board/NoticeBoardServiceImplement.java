@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.service.implement.board;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
+import com.teamproject.devTalks.dto.request.board.notice.PatchNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
@@ -57,6 +58,41 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto) {
+
+        int noticeBoardNumber = dto.getNoticeBoardNumber();
+        String noticeTitle = dto.getNoticeTitle();
+        String noticeContent = dto.getNoticeContent();
+        String noticeImageUrl = dto.getBoardImageUrl();
+
+        try {
+
+            NoticeBoardEntity noticeBoardEntity =
+                    noticeBoardRepository.findByNoticeBoardNumber(noticeBoardNumber);
+
+            if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!existAdmin) return CustomResponse.authenticationFailed();
+
+            boolean equalWriter = noticeBoardEntity.getWriterEmail().equals(adminEmail);
+            if(!equalWriter) return CustomResponse.noPermission();
+
+            noticeBoardEntity.setNoticeTitle(noticeTitle);
+            noticeBoardEntity.setNoticeContent(noticeContent);
+            noticeBoardEntity.setNoticeImageUrl(noticeImageUrl);
+
+            noticeBoardRepository.save(noticeBoardEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 
     @Override

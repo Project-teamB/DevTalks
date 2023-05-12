@@ -1,5 +1,6 @@
 package com.teamproject.devTalks.service.board;
 
+import com.teamproject.devTalks.dto.request.board.notice.PatchNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
@@ -14,4 +15,6 @@ public interface NoticeBoardService {
 
 
     ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeList();
+
+    ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto);
 }

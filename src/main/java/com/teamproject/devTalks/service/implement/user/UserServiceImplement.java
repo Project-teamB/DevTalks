@@ -140,12 +140,12 @@ public class UserServiceImplement implements UserService {
 
             boolean isExistUserNickname = userRepository.existsByUserNickname(userNickname);
             if(isExistUserNickname) return CustomResponse.existNickname();
-            if(userNickname != null) userEntity.setUserNickname(userNickname);
 
             boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(userPhoneNumber);
             if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
-            if(userPhoneNumber !=  null) userEntity.setUserPhoneNumber(userPhoneNumber);
 
+            userEntity.setUserNickname(userNickname);
+            userEntity.setUserPhoneNumber(userPhoneNumber);
             userEntity.setUserIntroduction(userIntroduction);
             userEntity.setUserProfileImageUrl(userProfileImageUrl);
             userEntity.setChatAcceptance(chatAcceptance);

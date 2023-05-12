@@ -10,6 +10,5 @@ import java.util.List;
 public interface NoticeBoardRepository extends JpaRepository<NoticeBoardEntity,Integer> {
 
     public NoticeBoardEntity findByNoticeBoardNumber(int boardNumber);
-
     List<NoticeBoardEntity> findAllByOrderByWriteDatetimeDesc();
 }

@@ -3,6 +3,7 @@ package com.teamproject.devTalks.controller.board;
 
 import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.security.AdminPrinciple;
@@ -36,12 +37,21 @@ public class NoticeBoardController {
     }
 
     @GetMapping("/{noticeBoardNumber}")
-    public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(
+    public ResponseEntity<? super GetNoticeBoardResponseDto> getNoticeBoard(
             @PathVariable("noticeBoardNumber") Integer boardNumber
     ){
         ResponseEntity<? super GetNoticeBoardResponseDto> response =
                 noticeBoardService.getBoard(boardNumber);
 
+        return response;
+
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeList(){
+
+        ResponseEntity<? super GetNoticeBoardListResponseDto> response
+                = noticeBoardService.getNoticeList();
         return response;
 
     }

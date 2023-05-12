@@ -66,8 +66,6 @@ public class AdminController {
 
     }
 
-
-
     @PatchMapping("update/password")
     public ResponseEntity<ResponseDto> updateAdminPassword(
             @Valid @RequestBody UpdateAdminPasswordRequestDto dto,

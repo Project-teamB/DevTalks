@@ -3,6 +3,7 @@ package com.teamproject.devTalks.service.implement.board;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
 import com.teamproject.devTalks.entity.user.AdminEntity;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,24 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeList() {
+
+        GetNoticeBoardListResponseDto body = null;
+        try {
+
+            List<NoticeBoardEntity> noticeBoardEntityList =
+                    noticeBoardRepository.findAllByOrderByWriteDatetimeDesc();
+
+            body = new GetNoticeBoardListResponseDto(noticeBoardEntityList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

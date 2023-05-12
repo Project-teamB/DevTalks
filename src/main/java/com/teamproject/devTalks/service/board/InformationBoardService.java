@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.service.board;
 
-import java.nio.file.attribute.UserPrincipal;
+
+import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 
@@ -15,17 +16,17 @@ import com.teamproject.devTalks.dto.response.board.information.GetInformationBoa
 
 public interface InformationBoardService {
 
-    public ResponseEntity<ResponseDto> postInformationBoard(UserPrincipal userPrincipal, PostInformationBoardRequestDto dto);
-    public ResponseEntity<ResponseDto> postInformationComment(UserPrincipal userPrincipal, PostInformationCommentRequestDto dto);
-    public ResponseEntity<ResponseDto> postInformationHeart(UserPrincipal userPrincipal, PostInformationHeartRequestDto dto);
+    public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto);
+    public ResponseEntity<ResponseDto> postInformationComment(String userEmail, PostInformationCommentRequestDto dto);
+    public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, PostInformationHeartRequestDto dto);
 
-    public ResponseEntity<ResponseDto> patchInformationBoard(UserPrincipal userPrincipal, PatchInformationBoardRequestDto dto);
-    public ResponseEntity<ResponseDto> patchInformationComment(UserPrincipal userPrincipal, PatchInformationCommentRequestDto dto);
-    public ResponseEntity<ResponseDto> deleteInformationBoard(UserPrincipal userPrincipal, Integer informationBoardNumber);
+    public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto);
+    public ResponseEntity<ResponseDto> patchInformationComment(String userEmail, PatchInformationCommentRequestDto dto);
+    public ResponseEntity<ResponseDto> deleteInformationBoard(String userEmail, Integer informationBoardNumber);
     
-    public ResponseEntity<ResponseDto> deleteInformationComment(UserPrincipal userPrincipal, Integer informationCommentNumber);
-    public ResponseEntity<ResponseDto> deleteInformationHeart();
+    public ResponseEntity<ResponseDto> deleteInformationComment(String userEmail, Integer informationCommentNumber);
+    public ResponseEntity<ResponseDto> deleteInformationHeart(String userEmail, Integer informationBoardNumber);
 
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber);
-    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList();
+    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort);
 }

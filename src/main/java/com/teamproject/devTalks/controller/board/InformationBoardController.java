@@ -1,13 +1,9 @@
 package com.teamproject.devTalks.controller.board;
 
-import java.nio.file.attribute.UserPrincipal;
-
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -37,89 +33,109 @@ public class InformationBoardController {
     
     private final InformationBoardService informationBoardService;
 
-    @GetMapping("/list")
-    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList() {
+    @GetMapping("/list/{sort}")
+    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(
+        @PathVariable("sort") String informationSort
+    ) {
         ResponseEntity<? super GetInformationBoardListResponseDto> response =
-          informationBoardService.getInformationBoardList();
+        informationBoardService.getInformationBoardList(informationSort);
         return response;
-    }
+        }
 
     @GetMapping("/{informationBoardNumber}") 
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(
         @PathVariable("informationBoardNumber") Integer informationBoardNumber
     ) {
         ResponseEntity<? super GetInformationBoardResponseDto> response = 
-            informationBoardService.getInformationBoard(informationBoardNumber);
+        informationBoardService.getInformationBoard(informationBoardNumber);
+        return response;
+        }
+
+    @PostMapping("")
+    public ResponseEntity<ResponseDto> PostInformationBoard(
+        @Valid @RequestBody PostInformationBoardRequestDto requestBody,
+        @AuthenticationPrincipal UserPrinciple userPrinciple
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.postInformationBoard(userEmail, requestBody);
         return response;
     }
 
-    // @PostMapping("")
-    // public ResponseEntity<ResponseDto> PostInformationBoard(
-    //     @Valid @RequestBody PostInformationBoardRequestDto requestBody,
-    //     @AuthenticationPrincipal UserDetails userDetails
-    // ) {
-    //     ResponseEntity<ResponseDto> response = 
-    //         informationBoardService.postInformationBoard(userDetails, requestBody);
-    //     return response;
-    // }
+    @PatchMapping("")
+    public ResponseEntity<ResponseDto> patchInformationBoard(
+        @Valid @RequestBody PatchInformationBoardRequestDto requestBody,
+        @AuthenticationPrincipal UserPrinciple userPrinciple
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.patchInformationBoard(userEmail, requestBody);
+        return response;
+    }
 
-    // @PatchMapping("")
-    // public ResponseEntity<ResponseDto> patchInformationBoard(
-    //     @Valid @RequestBody PatchInformationBoardRequestDto requestBody,
-    //     @AuthenticationPrincipal UserDetails userDetails
-    // ) {
-    //     String userEmail = userPrinciple.getUserEmail();
-    //     ResponseEntity<ResponseDto> response = 
-    //         informationBoardService.patchInformationBoard(userEmail, requestBody);
-    //     return response;
-    // }
+    @DeleteMapping("/{informationBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteInformationBoard(
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @PathVariable("informationBoardNumber") Integer informationBoardNumber
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response =
+        informationBoardService.deleteInformationBoard(userEmail, informationBoardNumber);
+        return response;
+    }
 
-    // @DeleteMapping("/{informationBoardNumber}")
-    // public ResponseEntity<ResponseDto> deleteInformationBoard(
-    //     @AuthenticationPrincipal UserDetails userDetails,
-    //     @PathVariable("informationBoardNumber") Integer informationBoardNumber
-    // ) {
-    //     ResponseEntity<ResponseDto> response =
-    //         informationBoardService.deleteInformationBoard(userDetails, informationBoardNumber);
-    //     return response;
-    // }
+    @PostMapping("/comment")
+    public ResponseEntity<ResponseDto> postInformationComment(
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody PostInformationCommentRequestDto requestBody
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.postInformationComment(userEmail, requestBody);
+        return response;
+    }
 
-    // @PostMapping("/comment")
-    // public ResponseEntity<ResponseDto> postInformationComment(
-    //         @AuthenticationPrincipal UserDetails userDetails,
-    //         @Valid @RequestBody PostInformationCommentRequestDto requestBody
-    //         ) {
-    //         ResponseEntity<ResponseDto> response = informationBoardService.postInformationComment(userDetails, requestBody);
-    //         return response;
-    // }
+    @PatchMapping("/comment")
+    public ResponseEntity<ResponseDto> patchInformationComment(
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody PatchInformationCommentRequestDto requestBody
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.patchInformationComment(userEmail, requestBody);
+        return response;
+    }
 
-    // @PatchMapping("/comment")
-    // public ResponseEntity<ResponseDto> patchInformationComment(
-    //         @AuthenticationPrincipal UserDetails userDetails,
-    //         @Valid @RequestBody PatchInformationCommentRequestDto requestBody
-    //         ) {
-    //         ResponseEntity<ResponseDto> response = informationBoardService.patchInformationComment(userDetails, requestBody);
-    //         return response;
-    // }
+    @DeleteMapping("/comment/{informationCommentNumber}")
+    public ResponseEntity<ResponseDto> deleteInformationComment(
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody Integer InformationCommentNumber
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.deleteInformationComment(userEmail, InformationCommentNumber);
+        return response;
+    }
 
-    // @DeleteMapping("/comment/{informationCommentNumber}")
-    // public ResponseEntity<ResponseDto> deleteInformationComment(
-    //         @AuthenticationPrincipal UserDetails userDetails,
-    //         @Valid @RequestBody Integer InformationCommentNumber
-    //         ) {
-    //         ResponseEntity<ResponseDto> response = informationBoardService.deleteInformationComment(userDetails, InformationCommentNumber);
-    //         return response;
-    // }
+    @PostMapping("/heart")
+    public ResponseEntity<ResponseDto> postInformationHeart(
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody PostInformationHeartRequestDto requestBody
+    ) {                
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.postInformationHeart(userEmail, requestBody);
+        return response;
+    }   
 
-    // @PostMapping("/heart")
-    // public ResponseEntity<ResponseDto> postInformationHeart(
-    //         @Valid @RequestBody PostInformationHeartRequestDto requestBody) {
-    //     return null;
-    // }
-
-    // @DeleteMapping("/heart/{informationBoardNumber}")
-    // public ResponseEntity<ResponseDto> deleteInformationHeart(
-    //         @PathVariable("informationBoardNumber") int informationBoardNumber) {
-    //     return null;
-    // }
+    @DeleteMapping("/heart/{informationBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteInformationHeart(
+        @PathVariable("informationBoardNumber") int informationBoardNumber,
+        @AuthenticationPrincipal UserPrinciple userPrinciple
+    ) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+        informationBoardService.deleteInformationHeart(userEmail, informationBoardNumber);
+        return response;
+    }
 }

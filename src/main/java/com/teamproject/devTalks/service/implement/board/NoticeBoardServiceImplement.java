@@ -26,20 +26,32 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     private final AdminRepository adminRepository;
 
     @Override
-    public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
+    public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(Integer boardNumber) {
+
+        if(boardNumber == null) return CustomResponse.validationFailed();
+        GetNoticeBoardResponseDto body = null;
+
         try {
 
-            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.authenticationFailed();
 
-            NoticeBoardEntity noticeBoardEntity = new NoticeBoardEntity(dto,adminEntity);
+            NoticeBoardEntity noticeBoardEntity = noticeBoardRepository.findByNoticeBoardNumber(boardNumber);
+            if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            int viewCount = noticeBoardEntity.getViewCount();
+            noticeBoardEntity.setViewCount(++viewCount);
             noticeBoardRepository.save(noticeBoardEntity);
 
-        }catch (Exception exception) {
+            String writerEmail = noticeBoardEntity.getWriterEmail();
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(writerEmail);
+
+            body = new GetNoticeBoardResponseDto(noticeBoardEntity,adminEntity);
+
+        }catch (Exception exception){
             exception.printStackTrace();
+            return CustomResponse.databaseError();
         }
 
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
@@ -59,6 +71,24 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+    @Override
+    public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
+
+            NoticeBoardEntity noticeBoardEntity = new NoticeBoardEntity(dto,adminEntity);
+            noticeBoardRepository.save(noticeBoardEntity);
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return CustomResponse.success();
+    }
+
+
 
     @Override
     public ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto) {
@@ -70,13 +100,13 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
 
         try {
 
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!existAdmin) return CustomResponse.authenticationFailed();
+
             NoticeBoardEntity noticeBoardEntity =
                     noticeBoardRepository.findByNoticeBoardNumber(noticeBoardNumber);
 
             if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();
-
-            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
-            if(!existAdmin) return CustomResponse.authenticationFailed();
 
             boolean equalWriter = noticeBoardEntity.getWriterEmail().equals(adminEmail);
             if(!equalWriter) return CustomResponse.noPermission();
@@ -117,35 +147,4 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
 
         return CustomResponse.success();
     }
-
-    @Override
-    public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(Integer boardNumber) {
-
-        if(boardNumber == null) return CustomResponse.validationFailed();
-        GetNoticeBoardResponseDto body = null;
-
-        try {
-
-
-            NoticeBoardEntity noticeBoardEntity = noticeBoardRepository.findByNoticeBoardNumber(boardNumber);
-            if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();
-
-            int viewCount = noticeBoardEntity.getViewCount();
-            noticeBoardEntity.setViewCount(++viewCount);
-            noticeBoardRepository.save(noticeBoardEntity);
-
-            String writerEmail = noticeBoardEntity.getWriterEmail();
-            AdminEntity adminEntity = adminRepository.findByAdminEmail(writerEmail);
-
-            body = new GetNoticeBoardResponseDto(noticeBoardEntity,adminEntity);
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
-
-
 }

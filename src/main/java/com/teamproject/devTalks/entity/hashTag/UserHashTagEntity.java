@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.entity.hashTag;
 
 import com.teamproject.devTalks.entity.primaryKey.user.UserHashTagPk;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,6 @@ import javax.persistence.Table;
 @Entity(name = "userHashTag")
 @Table(name = "userHashtag")
 @IdClass(UserHashTagPk.class)
-
 public class UserHashTagEntity {
     @Id
     private int userNumber;

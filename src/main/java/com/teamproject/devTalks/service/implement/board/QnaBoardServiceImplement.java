@@ -10,6 +10,7 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardResponseDto;
 import com.teamproject.devTalks.entity.board.QnaBoardEntity;
+import com.teamproject.devTalks.entity.hashTag.QnaBoardHashTagEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.board.QnaBoardRepository;
 import com.teamproject.devTalks.repository.comment.QnaCommentRepository;
@@ -21,7 +22,9 @@ import com.teamproject.devTalks.service.board.QnaBoardService;
 import lombok.RequiredArgsConstructor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.crypto.Data;
 
@@ -55,22 +58,36 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(String userEmail, PostQnaBoardRequestDto dto) {
 
+        List<String> hashtagList = dto.getHashtag();
+        List<QnaBoardHashTagEntity> qnaHashtagList = new ArrayList<>();
+
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-        if(userEntity == null) return CustomResponse.noExistUser();
+            if(userEntity == null) return CustomResponse.noExistUser();
 
-        // Date now = new Date();
-        // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            // Date now = new Date();
+            // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-        // String writerProfileImageUrl = userEntity.getUserProfileImageUrl();
-        // String writerNickname = userEntity.getUserNickname();
-        // String writerDatetime = dateFormat.format(now);
-        // String qnaTitle = dto.getQnaTitle();
-        // String qnaContent = dto.getQnaContent();
-        // String qnaBoardImageUrl = dto.getQnaBoardImageUrl();
-        // QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(0, writerProfileImageUrl, writerNickname, writerDatetime, qnaTitle, qnaContent, qnaBoardImageUrl);
-        QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(userEntity, dto);
-        qnaBoardRepository.save(qnaBoardEntity);
+            // String writerProfileImageUrl = userEntity.getUserProfileImageUrl();
+            // String writerNickname = userEntity.getUserNickname();
+            // String writerDatetime = dateFormat.format(now);
+            // String qnaTitle = dto.getQnaTitle();
+            // String qnaContent = dto.getQnaContent();
+            // String qnaBoardImageUrl = dto.getQnaBoardImageUrl();
+            // QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(0, writerProfileImageUrl, writerNickname, writerDatetime, qnaTitle, qnaContent, qnaBoardImageUrl);
+            QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(userEntity, dto);
+            qnaBoardRepository.save(qnaBoardEntity);
+
+            for (String hashTag: hashtagList) {
+                QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag, qnaBoardEntity.getQnaBoardNumber());
+
+                // qnaBoardHashTagRepository.save(qnaBoardHashTagEntity);
+
+                qnaHashtagList.add(qnaBoardHashTagEntity); // 하나의 qnaHasgEntity라는 객체를 닮을 리스트에 담은거
+            }
+
+            qnaBoardHashTagRepository.saveAll(qnaHashtagList);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();

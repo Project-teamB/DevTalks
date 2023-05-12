@@ -10,7 +10,9 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardResponseDto;
 import com.teamproject.devTalks.entity.board.QnaBoardEntity;
+import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
 import com.teamproject.devTalks.entity.hashTag.QnaBoardHashTagEntity;
+import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.board.QnaBoardRepository;
 import com.teamproject.devTalks.repository.comment.QnaCommentRepository;
@@ -32,8 +34,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-@Service //component로 쓰려고
+@Service // component로 쓰려고
 @RequiredArgsConstructor
 public class QnaBoardServiceImplement implements QnaBoardService {
 
@@ -48,13 +49,13 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getQnaBoardList'");
     }
-    
+
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getQnaBoard'");
     }
-    
+
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(String userEmail, PostQnaBoardRequestDto dto) {
 
@@ -62,8 +63,10 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         List<QnaBoardHashTagEntity> qnaHashtagList = new ArrayList<>();
 
         try {
+            // 존재하지 않는 유저(이메일)
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.noExistUser();
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
 
             // Date now = new Date();
             // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -74,66 +77,143 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             // String qnaTitle = dto.getQnaTitle();
             // String qnaContent = dto.getQnaContent();
             // String qnaBoardImageUrl = dto.getQnaBoardImageUrl();
-            // QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(0, writerProfileImageUrl, writerNickname, writerDatetime, qnaTitle, qnaContent, qnaBoardImageUrl);
+            // QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(0, writerProfileImageUrl,
+            // writerNickname, writerDatetime, qnaTitle, qnaContent, qnaBoardImageUrl);
+
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(userEntity, dto);
             qnaBoardRepository.save(qnaBoardEntity);
 
-            for (String hashTag: hashtagList) {
-                QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag, qnaBoardEntity.getQnaBoardNumber());
+            for (String hashTag : hashtagList) {
+                QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag,
+                        qnaBoardEntity.getQnaBoardNumber());
 
                 // qnaBoardHashTagRepository.save(qnaBoardHashTagEntity);
 
-                qnaHashtagList.add(qnaBoardHashTagEntity); // 하나의 qnaHasgEntity라는 객체를 닮을 리스트에 담은거
+                qnaHashtagList.add(qnaBoardHashTagEntity); // 하나의 qnaHasgEntity라는 객체를 담을 리스트에 담은거
             }
 
             qnaBoardHashTagRepository.saveAll(qnaHashtagList);
 
+            // 데이터베이스오류
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        
 
-        // return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("SU", "Success"));
+        // return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("SU",
+        // "Success"));
         return CustomResponse.success();
     }
+
     @Override
     public ResponseEntity<ResponseDto> postQnaComment(String userEmail, PostQnaCommentRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'postQnaComment'");
+        try {
+            // 존재하지 않는 유저(이메일)
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
+
+            // 존재하지 않는 게시물(게시물번호)
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            if (qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(userEntity, qnaBoardEntity, dto);
+            qnaCommentRepository.save(qnaCommentEntity);
+
+            // 데이터베이스 오류
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+
     }
+
     @Override
     public ResponseEntity<ResponseDto> postQnaHeart(String userEmail, PostQnaHeartRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'postQnaHeart'");
+        try {
+            // 존재하지 않는 유저(이메일)
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
+            // 존재하지 않는 게시물(게시물번호)
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            if (qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            QnaHeartEntity qnaHeartEntity = new QnaHeartEntity(userEntity, qnaBoardEntity);
+            qnaHeartRepository.save(qnaHeartEntity);
+
+            // 데이터베이스 오류
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
+
     @Override
     public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'patchQnaBoard'");
+        try {
+            // 존재하지 않는 유저(이메일)
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
+            // 존재하지 않는 게시물(게시물번호)
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            if (qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            // 저장하는거??
+
+            // 데이터베이스 오류
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
     }
+
     @Override
     public ResponseEntity<ResponseDto> patchQnaComment(String userEmail, PatchQnaCommentRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'patchQnaComment'");
+        try {
+            // 존재하지 않는 유저(이메일)
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
+            // 존재하지 않는 게시물(게시물번호)
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            if (qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            // 데이터베이스 오류
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+
     }
+
     @Override
     public ResponseEntity<ResponseDto> deleteQnaBoard(String userEmail, int qnaBoardNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteQnaBoard'");
     }
+
     @Override
     public ResponseEntity<ResponseDto> deleteQnaComment(String userEmail, int qnaCommentNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteQnaComment'");
     }
+
     @Override
     public ResponseEntity<ResponseDto> deleteQnaHeart(String userEmail, int qnaBoardNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteQnaHeart'");
     }
-   
-
-
 
 }

@@ -15,11 +15,13 @@ public class PostInformationBoardRequestDto {
     private String informationBoardImageUrl;
     @NotBlank
     private String contentSource;
+    private String hashtag;
 
     public PostInformationBoardRequestDto(PostInformationBoardRequestDto dto) {
         this.informationBoardTitle = dto.getInformationBoardTitle();
         this.informationBoardContent = dto.getInformationBoardContent();
         this.informationBoardImageUrl = dto.getInformationBoardImageUrl();
         this.contentSource = dto.getContentSource();
+        this.hashtag = dto.getHashtag();
     }
 }

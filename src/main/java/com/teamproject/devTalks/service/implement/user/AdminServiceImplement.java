@@ -4,6 +4,7 @@ import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
+import com.teamproject.devTalks.dto.response.user.UpdateAdminResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.repository.user.AdminRepository;
@@ -94,7 +95,7 @@ public class AdminServiceImplement implements AdminService {
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.noExistUser();
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
 
             String encodedPassword = adminEntity.getAdminPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
@@ -129,7 +130,7 @@ public class AdminServiceImplement implements AdminService {
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.noExistUser();
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
 
             String encodedCurrentPassword = adminEntity.getAdminPassword();
 
@@ -159,7 +160,7 @@ public class AdminServiceImplement implements AdminService {
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) CustomResponse.noExistUser();
+            if(adminEntity == null) CustomResponse.authenticationFailed();
 
             String encodedPassword = adminEntity.getAdminPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
@@ -175,6 +176,23 @@ public class AdminServiceImplement implements AdminService {
 
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super UpdateAdminResponseDto> getAdminUpdate(String adminEmail) {
+
+        UpdateAdminResponseDto body = null;
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 

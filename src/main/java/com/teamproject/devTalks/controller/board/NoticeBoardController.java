@@ -35,7 +35,7 @@ public class NoticeBoardController {
 
     }
 
-    @GetMapping("{noticeBoardNumber}")
+    @GetMapping("/{noticeBoardNumber}")
     public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(
             @PathVariable("noticeBoardNumber") Integer boardNumber
     ){

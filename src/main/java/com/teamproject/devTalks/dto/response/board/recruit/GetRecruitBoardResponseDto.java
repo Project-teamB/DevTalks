@@ -101,14 +101,11 @@ class RecruitComment {
 class RecruitHeart {
     private int recruitBoardNumber;
     private int userNumber;
-    private String userProfileImageUrl;
-    private String userNickname;
+    
 
     RecruitHeart(RecruitHeartEntity recruitHeartEntity) {
     this.recruitBoardNumber = recruitHeartEntity.getRecruitBoardNumber();
     this.userNumber = recruitHeartEntity.getUserNumber();
-    this.userProfileImageUrl = recruitHeartEntity.getUserProfileImage();
-    this.userNickname = recruitHeartEntity.getUserNickname();
     }
 
     static List<RecruitHeart> createList(List<RecruitHeartEntity> recruitHeartEntities) {

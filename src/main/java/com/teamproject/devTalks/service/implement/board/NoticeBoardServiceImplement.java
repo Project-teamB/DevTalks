@@ -101,8 +101,8 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
 
         try {
 
-            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) CustomResponse.authenticationFailed();
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) CustomResponse.authenticationFailed();
 
             NoticeBoardEntity noticeBoardEntity =
                     noticeBoardRepository.findByNoticeBoardNumber(noticeBoardNumber);
@@ -121,10 +121,11 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     @Override
     public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(Integer boardNumber) {
 
+        if(boardNumber == null) return CustomResponse.validationFailed();
         GetNoticeBoardResponseDto body = null;
 
         try {
-            if(boardNumber == null) return CustomResponse.validationFailed();
+
 
             NoticeBoardEntity noticeBoardEntity = noticeBoardRepository.findByNoticeBoardNumber(boardNumber);
             if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();

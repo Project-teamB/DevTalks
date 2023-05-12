@@ -69,8 +69,20 @@ public class NoticeBoardController {
 
         return response;
 
+    }
 
+    @DeleteMapping("/{noticeBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteNotice(
+            @PathVariable Integer noticeBoardNumber,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response =
+                noticeBoardService.deleteNotice(noticeBoardNumber, adminEmail);
+
+        return response;
 
     }
+
 
 }

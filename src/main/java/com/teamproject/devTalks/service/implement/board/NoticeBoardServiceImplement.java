@@ -96,6 +96,29 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     }
 
     @Override
+    public ResponseEntity<ResponseDto> deleteNotice(Integer noticeBoardNumber, String adminEmail) {
+        if(noticeBoardNumber == null) return CustomResponse.validationFailed();
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) CustomResponse.authenticationFailed();
+
+            NoticeBoardEntity noticeBoardEntity =
+                    noticeBoardRepository.findByNoticeBoardNumber(noticeBoardNumber);
+
+            if(noticeBoardEntity == null) return CustomResponse.notExistBoardNumber();
+            noticeBoardRepository.deleteById(noticeBoardNumber);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
+    @Override
     public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(Integer boardNumber) {
 
         GetNoticeBoardResponseDto body = null;

@@ -17,4 +17,6 @@ public interface NoticeBoardService {
     ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeList();
 
     ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto);
+
+    ResponseEntity<ResponseDto> deleteNotice(Integer noticeBoardNumber, String adminEmail);
 }

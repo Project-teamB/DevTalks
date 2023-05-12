@@ -41,7 +41,8 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.POST, "/information",  "/qna", "/recruit", "/teacher").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/information/**", "/qna/**", "/recruit/**", "/teacher/**").hasRole("USER")
                 .antMatchers(HttpMethod.PATCH, "/information/**", "/qna/**", "/recruit/**", "/teacher/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST,"/notice/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/notice/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"notice/**").hasRole("ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
                     

@@ -3,6 +3,7 @@ package com.teamproject.devTalks.controller.user;
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
+import com.teamproject.devTalks.dto.response.user.UpdateUserResponseDto;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,9 @@ public class UserController {
 
     private final UserService userService;
 
+
+
+
     @PostMapping("sign-up")
     ResponseEntity<ResponseDto> userSignUp(
             @Valid @RequestBody UserSignUpRequestDto dto
@@ -35,6 +39,16 @@ public class UserController {
 
         ResponseEntity<? super SignInResponseDto> response = userService.userSignIn(dto);
         return response;
+    }
+
+    @GetMapping("update")
+    ResponseEntity<? super UpdateUserResponseDto> updateUser(
+           @AuthenticationPrincipal UserPrinciple userPrinciple
+    ){
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<? super UpdateUserResponseDto> response = userService.getUserUpdate(userEmail);
+        return response;
+
     }
 
     @PatchMapping("update")

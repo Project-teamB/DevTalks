@@ -35,7 +35,7 @@ public class CustomResponse {
 
     }
 
-    public static ResponseEntity<ResponseDto> noExistUserEmail() {
+    public static ResponseEntity<ResponseDto> noExistUser() {
 
         ResponseDto errorBody =
             new ResponseDto("NU", "Non-Existent User");

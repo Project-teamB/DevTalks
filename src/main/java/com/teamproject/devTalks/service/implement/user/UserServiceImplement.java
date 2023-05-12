@@ -4,6 +4,7 @@ import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
+import com.teamproject.devTalks.dto.response.user.UpdateUserResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
@@ -127,7 +128,7 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) CustomResponse.noExistUserEmail();
+            if(userEntity == null) CustomResponse.noExistUser();
 
             String encodedCurrentPassword = userEntity.getUserPassword();
 
@@ -185,7 +186,7 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.noExistUserEmail();
+            if(userEntity == null) return CustomResponse.noExistUser();
 
             String encodedPassword = userEntity.getUserPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
@@ -215,7 +216,7 @@ public class UserServiceImplement implements UserService {
         String changePassword = dto.getChangePassword();
 
         UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-        if(userEntity == null) CustomResponse.noExistUserEmail();
+        if(userEntity == null) CustomResponse.noExistUser();
 
         String encodedCurrentPassword = userEntity.getUserPassword();
         boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
@@ -227,5 +228,34 @@ public class UserServiceImplement implements UserService {
         userRepository.save(userEntity);
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super UpdateUserResponseDto> getUserUpdate(String userEmail) {
+
+        UpdateUserResponseDto body = null;
+        List<String> hashtagList = new ArrayList<>();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.noExistUser();
+
+            int userNumber = userEntity.getUserNumber();
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
+                String hashtag = userHashTagEntity.getHashtag();
+                hashtagList.add(hashtag);
+            }
+
+            body = new UpdateUserResponseDto(hashtagList,userEntity);
+
+        }catch (Exception exception){
+
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }

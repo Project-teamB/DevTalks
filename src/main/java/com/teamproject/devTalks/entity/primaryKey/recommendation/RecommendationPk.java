@@ -14,4 +14,6 @@ public class RecommendationPk implements Serializable {
     private int senderUserNumber;
     @Column(name = "receiver_user_number")
     private int receiverUserNumber;
+
+
 }

@@ -21,8 +21,10 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecommendationEntity {
-    @Id
-    private int receiverUserNumber;
+
     @Id
     private int senderUserNumber;
+    @Id
+    private int receiverUserNumber;
+
 }

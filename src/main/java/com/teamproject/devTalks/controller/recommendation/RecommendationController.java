@@ -32,4 +32,17 @@ public class RecommendationController {
 
     }
 
+    @DeleteMapping({"receiverId"})
+    public ResponseEntity<ResponseDto> deleteRecommendation(
+            @AuthenticationPrincipal UserPrinciple userPrinciple,
+            @PathVariable int receiverId
+    ){
+        int senderId = userPrinciple.getUserNumber();
+        ResponseEntity<ResponseDto> response =
+                recommendationService.deleteRecommendation(senderId,receiverId);
+
+        return response;
+
+    }
+
 }

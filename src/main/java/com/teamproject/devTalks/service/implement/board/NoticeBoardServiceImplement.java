@@ -1,6 +1,8 @@
 package com.teamproject.devTalks.service.implement.board;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
+import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
+import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
 import com.teamproject.devTalks.entity.user.AdminEntity;
@@ -45,5 +47,22 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
+
+            NoticeBoardEntity noticeBoardEntity = new NoticeBoardEntity(dto,adminEntity);
+            noticeBoardRepository.save(noticeBoardEntity);
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return CustomResponse.success();
     }
 }

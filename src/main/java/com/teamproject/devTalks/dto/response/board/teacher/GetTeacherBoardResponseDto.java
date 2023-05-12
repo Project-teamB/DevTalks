@@ -11,6 +11,7 @@ public class GetTeacherBoardResponseDto extends ResponseDto {
     
     private int teacherBoardNumber;
     private String writerProfileImageUrl;
+    private String writerEmail;
     private String writerNickname;
     private String writeDatetime;
     private String teacherTitle;
@@ -29,6 +30,7 @@ public class GetTeacherBoardResponseDto extends ResponseDto {
             
             this.teacherBoardNumber = teacherBoardEntity.getTeacherBoardNumber();
             this.writerProfileImageUrl = teacherBoardEntity.getWriterProfileImageUrl();
+            this.writerEmail = teacherBoardEntity.getWriterEmail();
             this.writerNickname = teacherBoardEntity.getWriterNickname();
             this.writeDatetime = teacherBoardEntity.getWriteDatetime();
             this.teacherTitle = teacherBoardEntity.getTeacherTitle();

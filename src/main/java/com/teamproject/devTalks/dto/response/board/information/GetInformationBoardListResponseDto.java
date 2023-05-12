@@ -1,4 +1,4 @@
-package com.teamproject.devTalks.dto.response.board.informaion;
+package com.teamproject.devTalks.dto.response.board.information;
 
 import java.util.ArrayList;
 import java.util.List;

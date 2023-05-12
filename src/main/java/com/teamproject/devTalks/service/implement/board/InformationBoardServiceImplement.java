@@ -28,50 +28,45 @@ public class InformationBoardServiceImplement implements InformationBoardService
     private InformationBoardRepository informationBoardRepository;
     private InformationCommentRepository informationCommentRepository;
     private InformationHeartRepository informationHeartRepository;
+    
     @Override
-    public ResponseEntity<ResponseDto> postInformationBoard(UserPrincipal userPrincipal,
-            PostInformationBoardRequestDto dto) {
+    public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'postInformationBoard'");
     }
     @Override
-    public ResponseEntity<ResponseDto> postInformationComment(UserPrincipal userPrincipal,
-            PostInformationCommentRequestDto dto) {
+    public ResponseEntity<ResponseDto> postInformationComment(String userEmail, PostInformationCommentRequestDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'postInformationComment'");
     }
     @Override
-    public ResponseEntity<ResponseDto> postInformationHeart(UserPrincipal userPrincipal,
-            PostInformationHeartRequestDto dto) {
+    public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, PostInformationHeartRequestDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'postInformationHeart'");
     }
     @Override
-    public ResponseEntity<ResponseDto> patchInformationBoard(UserPrincipal userPrincipal,
-            PatchInformationBoardRequestDto dto) {
+    public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'patchInformationBoard'");
     }
     @Override
-    public ResponseEntity<ResponseDto> patchInformationComment(UserPrincipal userPrincipal,
+    public ResponseEntity<ResponseDto> patchInformationComment(String userEmail,
             PatchInformationCommentRequestDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'patchInformationComment'");
     }
     @Override
-    public ResponseEntity<ResponseDto> deleteInformationBoard(UserPrincipal userPrincipal,
-            Integer informationBoardNumber) {
+    public ResponseEntity<ResponseDto> deleteInformationBoard(String userEmail, Integer informationBoardNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteInformationBoard'");
     }
     @Override
-    public ResponseEntity<ResponseDto> deleteInformationComment(UserPrincipal userPrincipal,
-            Integer informationCommentNumber) {
+    public ResponseEntity<ResponseDto> deleteInformationComment(String userEmail, Integer informationCommentNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteInformationComment'");
     }
     @Override
-    public ResponseEntity<ResponseDto> deleteInformationHeart() {
+    public ResponseEntity<ResponseDto> deleteInformationHeart(String userEmail, Integer informationBoardNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteInformationHeart'");
     }
@@ -81,9 +76,10 @@ public class InformationBoardServiceImplement implements InformationBoardService
         throw new UnsupportedOperationException("Unimplemented method 'getInformationBoard'");
     }
     @Override
-    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList() {
+    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getInformationBoardList'");
     }
+    
     
 }

@@ -123,4 +123,9 @@ public class CustomResponse {
         ResponseDto body = new ResponseDto("CR", "You cannot recommend yourself.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
+
+    public static ResponseEntity<ResponseDto> alreadyBlacklisted(){
+        ResponseDto body = new ResponseDto("AB", "ALREADY BLACKLISTED");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 }

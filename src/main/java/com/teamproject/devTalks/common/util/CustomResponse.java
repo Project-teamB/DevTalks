@@ -108,4 +108,9 @@ public class CustomResponse {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
+
+    public static ResponseEntity<ResponseDto> alreadyRecommended(){
+        ResponseDto body = new ResponseDto("AR", "ALREADY RECOMMENDED");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 }

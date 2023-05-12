@@ -40,6 +40,18 @@ public class AdminController {
 
     }
 
+    @GetMapping("update")
+    public ResponseEntity<? super UpdateAdminResponseDto> updateAdmin(
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<? super UpdateAdminResponseDto> response =
+                adminService.getAdminUpdate(adminEmail);
+
+
+        return response;
+    }
+
     @PatchMapping("update")
     public ResponseEntity<ResponseDto> updateAdmin(
             @Valid @RequestBody UpdateAdminRequestDto dto,
@@ -54,17 +66,7 @@ public class AdminController {
 
     }
 
-    @GetMapping("update")
-    public ResponseEntity<? super UpdateAdminResponseDto> updateAdmin(
-            @AuthenticationPrincipal AdminPrinciple adminPrinciple
-    ){
-        String adminEmail = adminPrinciple.getAdminEmail();
-        ResponseEntity<? super UpdateAdminResponseDto> response =
-                adminService.getAdminUpdate(adminEmail);
 
-
-        return response;
-    }
 
     @PatchMapping("update/password")
     public ResponseEntity<ResponseDto> updateAdminPassword(

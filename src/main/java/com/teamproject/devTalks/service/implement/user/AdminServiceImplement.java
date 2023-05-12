@@ -188,6 +188,8 @@ public class AdminServiceImplement implements AdminService {
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
             if(adminEntity == null) return CustomResponse.authenticationFailed();
 
+            body = new UpdateAdminResponseDto(adminEntity);
+
         }catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();

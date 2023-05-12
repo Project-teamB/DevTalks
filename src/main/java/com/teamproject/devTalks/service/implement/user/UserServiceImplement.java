@@ -6,9 +6,11 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.UpdateUserResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
+import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.repository.hashTag.UserHashTagRepository;
+import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class UserServiceImplement implements UserService {
 
     private final UserRepository userRepository;
     private final UserHashTagRepository userHashTagRepository;
+    private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
@@ -199,7 +202,19 @@ public class UserServiceImplement implements UserService {
                     userHashTagRepository.findAllByUserNumber(userNumber);
 
             userHashTagRepository.deleteAll(userHashTagEntities);
+
+
+            List<RecommendationEntity> sendRecommendations =
+                    recommendationRepository.findBySenderUserNumber(userNumber);
+
+            List<RecommendationEntity> receiveRecommendations=
+                    recommendationRepository.findByReceiverUserNumber(userNumber);
+
+            recommendationRepository.deleteAll(sendRecommendations);
+            recommendationRepository.deleteAll(receiveRecommendations);
+
             userRepository.deleteByUserEmail(userEmail);
+
 
         }catch (Exception exception){
             exception.printStackTrace();

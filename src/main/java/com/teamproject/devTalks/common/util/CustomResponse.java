@@ -108,4 +108,19 @@ public class CustomResponse {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
+
+    public static ResponseEntity<ResponseDto> alreadyRecommended(){
+        ResponseDto body = new ResponseDto("AR", "ALREADY RECOMMENDED");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> noExistRecommendation() {
+        ResponseDto body = new ResponseDto("NR","Non-Exist Recommendation");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> cannotRecommendToSelf() {
+        ResponseDto body = new ResponseDto("CR", "You cannot recommend yourself.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 }

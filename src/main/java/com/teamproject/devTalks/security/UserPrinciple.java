@@ -27,6 +27,9 @@ public class UserPrinciple implements UserDetails{
     public String getUserEmail(){
         return userEntity.getUserEmail();
     }
+    public int getUserNumber(){
+        return userEntity.getUserNumber();
+    }
 
     @Override
     public String getPassword() {

@@ -22,6 +22,23 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     private final AdminRepository adminRepository;
 
     @Override
+    public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
+
+            NoticeBoardEntity noticeBoardEntity = new NoticeBoardEntity(dto,adminEntity);
+            noticeBoardRepository.save(noticeBoardEntity);
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return CustomResponse.success();
+    }
+
+    @Override
     public ResponseEntity<? super GetNoticeBoardResponseDto> getBoard(Integer boardNumber) {
 
         GetNoticeBoardResponseDto body = null;
@@ -49,20 +66,5 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    @Override
-    public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
-        try {
 
-            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.authenticationFailed();
-
-            NoticeBoardEntity noticeBoardEntity = new NoticeBoardEntity(dto,adminEntity);
-            noticeBoardRepository.save(noticeBoardEntity);
-
-        }catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        return CustomResponse.success();
-    }
 }

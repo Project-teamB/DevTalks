@@ -19,5 +19,11 @@ public class UpdateAdminResponseDto extends ResponseDto {
 
     public UpdateAdminResponseDto(AdminEntity adminEntity) {
         super("SU", "Success");
+
+        this.adminNumber = adminEntity.getAdminNumber();
+        this.adminEmail = adminEntity.getAdminEmail();
+        this.adminNickname = adminEntity.getAdminNickname();
+        this.adminPhoneNumber = adminEntity.getAdminPhoneNumber();
+        this.adminProfileImageUrl = adminEntity.getAdminProfileImageUrl();
     }
 }

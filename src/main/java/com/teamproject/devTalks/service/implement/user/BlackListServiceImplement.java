@@ -30,11 +30,11 @@ public class BlackListServiceImplement implements BlackListService {
 
         try {
 
-            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.authenticationFailed();
+           boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+           if (!isExistAdmin) return CustomResponse.authenticationFailed();
 
-            UserEntity userEntity = userRepository.findByUserNumber(userNumber);
-            if(userEntity == null) return CustomResponse.noExistUser();
+           boolean isExistUser = userRepository.existsByUserNumber(userNumber);
+           if(!isExistUser) return CustomResponse.noExistUser();
 
             boolean isExistBlackUser = blackListRepository.existsByUserNumber(userNumber);
             if(isExistBlackUser) return CustomResponse.alreadyBlacklisted();
@@ -47,6 +47,29 @@ public class BlackListServiceImplement implements BlackListService {
             return CustomResponse.databaseError();
         }
 
+
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteBlackList(String adminEmail, Integer userNumber) {
+
+        try {
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFailed();
+
+            boolean isExistUser = userRepository.existsByUserNumber(userNumber);
+            if(!isExistUser) return CustomResponse.noExistUser();
+
+            BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
+            if(blackListEntity == null) return CustomResponse.noExistUser();
+
+            blackListRepository.delete(blackListEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
 
         return CustomResponse.success();
     }

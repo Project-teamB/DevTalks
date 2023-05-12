@@ -7,10 +7,7 @@ import com.teamproject.devTalks.service.user.BlackListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -32,6 +29,17 @@ public class BlackListController {
 
         return response;
 
+    }
+
+    @DeleteMapping("{userNumber}")
+    public ResponseEntity<ResponseDto> deleteBlackList(
+            @PathVariable Integer userNumber,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = blackListService.deleteBlackList(adminEmail,userNumber);
+
+        return response;
     }
 
 

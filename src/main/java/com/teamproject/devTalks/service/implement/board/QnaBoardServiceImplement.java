@@ -23,14 +23,9 @@ import com.teamproject.devTalks.service.board.QnaBoardService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.xml.crypto.Data;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -84,8 +79,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             qnaBoardRepository.save(qnaBoardEntity);
 
             for (String hashTag : hashtagList) {
-                QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag,
-                        qnaBoardEntity.getQnaBoardNumber());
+                QnaBoardHashTagEntity qnaBoardHashTagEntity = 
+                                            new QnaBoardHashTagEntity(hashTag, qnaBoardEntity.getQnaBoardNumber());
 
                 // qnaBoardHashTagRepository.save(qnaBoardHashTagEntity);
 
@@ -167,7 +162,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
-            // 저장하는거??
+             QnaBoardEntity qnaBoardEntityPathch = new QnaBoardEntity(userEntity, dto);
+             qnaBoardRepository.save(qnaBoardEntityPathch);
 
             // 데이터베이스 오류
         } catch (Exception exception) {
@@ -188,6 +184,14 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
+            // 존재하지 않는 댓글(댓글번호)
+            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(0);
+            if (qnaCommentEntity == null)
+                return CustomResponse.notExistCommentNumber();
+
+
+            QnaCommentEntity qnaCommentEntityPatch = new QnaCommentEntity(userEntity, qnaBoardEntity, dto);
+            qnaCommentRepository.save(qnaCommentEntityPatch);
 
             // 데이터베이스 오류
         } catch (Exception exception) {

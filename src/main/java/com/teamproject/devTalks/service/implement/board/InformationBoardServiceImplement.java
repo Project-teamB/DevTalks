@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.service.implement.board;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,10 @@ import com.teamproject.devTalks.repository.heart.InformationHeartRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;
+import com.teamproject.devTalks.entity.board.InformationBoardEntity;
+import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.service.board.InformationBoardService;
+import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PatchInformationCommentRequestDto;
@@ -41,8 +45,21 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
     @Override
     public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'postInformationBoard'");
+
+        try {
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.authenticationFailed();
+        
+            InformationBoardEntity informationBoardEntity = new InformationBoardEntity(userEmail, dto);
+            informationBoardRepository.save(informationBoardEntity);
+    
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+
     }
 
     @Override

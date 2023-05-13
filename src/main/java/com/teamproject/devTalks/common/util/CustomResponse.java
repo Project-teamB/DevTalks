@@ -3,6 +3,7 @@ package com.teamproject.devTalks.common.util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.databind.deser.impl.ErrorThrowingDeserializer;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 
 public class CustomResponse {
@@ -31,6 +32,14 @@ public class CustomResponse {
 
         ResponseDto errorBody =
             new ResponseDto("NB", "Non-Existent Board Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> notExistCommentNumber() {
+
+        ResponseDto errorBody = 
+            new ResponseDto("NC", "Non-Existent Comment Number");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
 
     }

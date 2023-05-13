@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.teamproject.devTalks.dto.request.comment.qna.PatchQnaCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.qna.PostQnaCommentRequestDto;
 import com.teamproject.devTalks.entity.board.QnaBoardEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
@@ -49,4 +50,22 @@ public class QnaCommentEntity {
         this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
 
     }
+
+    public QnaCommentEntity(UserEntity userEntity, QnaBoardEntity qnaBoardEntity, PatchQnaCommentRequestDto dto) {
+
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        this.commentContent = dto.getCommentContent();
+        this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
+        this.writerNickname = userEntity.getUserNickname();
+        this.writerEmail = userEntity.getUserEmail();
+        this.writeDatetime = dateFormat.format(now);
+        this.userNumber = userEntity.getUserNumber();
+        this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
+
+    }
+
+
+
 }

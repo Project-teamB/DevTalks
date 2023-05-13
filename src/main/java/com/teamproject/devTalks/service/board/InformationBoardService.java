@@ -5,11 +5,11 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 
-import com.teamproject.devTalks.dto.heart.information.PostInformationHeartRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PatchInformationCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PostInformationCommentRequestDto;
+import com.teamproject.devTalks.dto.request.heart.information.PostInformationHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;

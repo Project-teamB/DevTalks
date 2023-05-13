@@ -1,10 +1,7 @@
 package com.teamproject.devTalks.service.implement.board;
 
-import java.nio.file.attribute.UserPrincipal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.teamproject.devTalks.dto.response.ResponseDto;
@@ -15,11 +12,11 @@ import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;
 import com.teamproject.devTalks.service.board.InformationBoardService;
-import com.teamproject.devTalks.dto.heart.information.PostInformationHeartRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PatchInformationCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PostInformationCommentRequestDto;
+import com.teamproject.devTalks.dto.request.heart.information.PostInformationHeartRequestDto;
 
 @Service
 public class InformationBoardServiceImplement implements InformationBoardService {

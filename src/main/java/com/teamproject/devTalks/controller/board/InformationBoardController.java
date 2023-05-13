@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamproject.devTalks.dto.heart.information.PostInformationHeartRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
@@ -23,6 +22,7 @@ import com.teamproject.devTalks.dto.response.board.information.GetInformationBoa
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.dto.request.comment.information.PatchInformationCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PostInformationCommentRequestDto;
+import com.teamproject.devTalks.dto.request.heart.information.PostInformationHeartRequestDto;
 
 import lombok.RequiredArgsConstructor;
 

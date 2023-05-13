@@ -1,11 +1,11 @@
 package com.teamproject.devTalks.service.implement.board;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
-import com.teamproject.devTalks.dto.heart.qna.PostQnaHeartRequestDto;
 import com.teamproject.devTalks.dto.request.board.qna.PatchQnaBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.qna.PostQnaBoardRequestDto;
 import com.teamproject.devTalks.dto.request.comment.qna.PatchQnaCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.qna.PostQnaCommentRequestDto;
+import com.teamproject.devTalks.dto.request.heart.qna.PostQnaHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardResponseDto;

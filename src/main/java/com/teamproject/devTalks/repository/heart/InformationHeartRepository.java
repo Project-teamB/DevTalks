@@ -11,6 +11,6 @@ import com.teamproject.devTalks.entity.primaryKey.information.InformationHeartPk
 @Repository
 public interface InformationHeartRepository  extends JpaRepository<InformationHeartEntity, InformationHeartPk> {
 
-    List<InformationHeartEntity> findAllByInformationBoardNumber(String informationBoardNumber);
+    List<InformationHeartEntity> findAllByInformationBoardNumber(Integer informationBoardNumber);
 
 }

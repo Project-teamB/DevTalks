@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.service.implement.board;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;
 import com.teamproject.devTalks.entity.board.InformationBoardEntity;
+import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
+import com.teamproject.devTalks.entity.heart.InformationHeartEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.service.board.InformationBoardService;
 import com.teamproject.devTalks.common.util.CustomResponse;
@@ -107,8 +111,35 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
     @Override
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getInformationBoard'");
+
+        GetInformationBoardResponseDto body = null;
+
+        try {
+            if (informationBoardNumber == null) return CustomResponse.validationFailed();
+
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
+            if(informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            int viewCount = informationBoardEntity.getViewCount();
+            informationBoardEntity.setViewCount(++viewCount);
+            informationBoardRepository.save(informationBoardEntity);
+
+            String writerEmail = informationBoardEntity.getWriterEmail();
+            UserEntity userEntity = userRepository.findByUserEmail(writerEmail);
+            List<InformationCommentEntity> informationCommentEntities = 
+            informationCommentRepository.findByInformationBoardNumber(informationBoardNumber);
+            List<InformationHeartEntity> informationHeartEntities = 
+            informationHeartRepository.findAllByInformationBoardNumber(informationBoardNumber);
+
+            body = new GetInformationBoardResponseDto(informationBoardEntity, userEntity, informationCommentEntities, informationHeartEntities);
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

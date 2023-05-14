@@ -3,6 +3,7 @@ package com.teamproject.devTalks.service.implement.user;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.PostBlackListRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetBlackListUserResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
@@ -11,6 +12,7 @@ import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.BlackListService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +74,32 @@ public class BlackListServiceImplement implements BlackListService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetBlackListUserResponseDto> getBlackListUser(
+            Integer userNumber,
+            String adminEmail
+    ) {
+
+        if(userNumber == null) return CustomResponse.validationFailed();
+        GetBlackListUserResponseDto body = null;
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.authenticationFailed();
+
+            BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
+            if(blackListEntity == null) return CustomResponse.noExistUser();
+
+            body = new GetBlackListUserResponseDto(blackListEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }

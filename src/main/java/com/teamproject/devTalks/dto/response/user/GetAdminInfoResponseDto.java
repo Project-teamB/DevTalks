@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateAdminResponseDto extends ResponseDto {
+public class GetAdminInfoResponseDto extends ResponseDto {
 
     private int adminNumber;
     private String adminEmail;
@@ -17,7 +17,7 @@ public class UpdateAdminResponseDto extends ResponseDto {
     private String adminPhoneNumber;
     private String adminProfileImageUrl;
 
-    public UpdateAdminResponseDto(AdminEntity adminEntity) {
+    public GetAdminInfoResponseDto(AdminEntity adminEntity) {
         super("SU", "Success");
 
         this.adminNumber = adminEntity.getAdminNumber();

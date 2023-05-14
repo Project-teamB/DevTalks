@@ -3,7 +3,7 @@ package com.teamproject.devTalks.controller.user;
 import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
-import com.teamproject.devTalks.dto.response.user.UpdateAdminResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +40,12 @@ public class AdminController {
 
     }
 
-    @GetMapping("update")
-    public ResponseEntity<? super UpdateAdminResponseDto> updateAdmin(
+    @GetMapping("me")
+    public ResponseEntity<? super GetAdminInfoResponseDto> GetAdminInfo(
             @AuthenticationPrincipal AdminPrinciple adminPrinciple
     ){
         String adminEmail = adminPrinciple.getAdminEmail();
-        ResponseEntity<? super UpdateAdminResponseDto> response =
+        ResponseEntity<? super GetAdminInfoResponseDto> response =
                 adminService.getAdminUpdate(adminEmail);
 
 
@@ -91,7 +91,5 @@ public class AdminController {
         return response;
 
     }
-
-
 
 }

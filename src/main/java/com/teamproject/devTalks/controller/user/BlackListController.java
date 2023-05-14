@@ -2,6 +2,7 @@ package com.teamproject.devTalks.controller.user;
 
 import com.teamproject.devTalks.dto.request.user.PostBlackListRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetBlackListResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetBlackListUserResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.BlackListService;
@@ -42,6 +43,16 @@ public class BlackListController {
 
         return response;
 
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<? super GetBlackListResponseDto> getBlakList(
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<? super GetBlackListResponseDto> response = blackListService.getBlackList(adminEmail);
+
+        return response;
     }
 
     @DeleteMapping("{userNumber}")

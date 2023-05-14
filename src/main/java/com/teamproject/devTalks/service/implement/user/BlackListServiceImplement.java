@@ -3,6 +3,7 @@ package com.teamproject.devTalks.service.implement.user;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.PostBlackListRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetBlackListResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetBlackListUserResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -87,8 +90,8 @@ public class BlackListServiceImplement implements BlackListService {
 
         try {
 
-            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
-            if(adminEntity == null) return CustomResponse.authenticationFailed();
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFailed();
 
             BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
             if(blackListEntity == null) return CustomResponse.noExistUser();
@@ -102,4 +105,29 @@ public class BlackListServiceImplement implements BlackListService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @Override
+    public ResponseEntity<? super GetBlackListResponseDto> getBlackList(String adminEmail) {
+
+        GetBlackListResponseDto body = null;
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFailed();
+
+            List<BlackListEntity> blackListEntityList
+                    = blackListRepository.findAllByOrderByCreatedAtDesc();
+
+            body = new GetBlackListResponseDto(blackListEntityList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+
 }

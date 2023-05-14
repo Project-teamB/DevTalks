@@ -16,6 +16,7 @@ public class GetBlackListUserResponseDto extends ResponseDto {
     private String createdAt;
 
     public GetBlackListUserResponseDto(BlackListEntity blackListEntity) {
+        super("SU","Success");
         this.userNumber = blackListEntity.getUserNumber();
         this.reason = blackListEntity.getReason();
         this.createdAt = blackListEntity.getCreatedAt();

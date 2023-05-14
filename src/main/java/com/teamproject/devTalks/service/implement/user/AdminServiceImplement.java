@@ -5,9 +5,16 @@ import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
+import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
+import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.user.AdminEntity;
+import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
+import com.teamproject.devTalks.repository.hashTag.UserHashTagRepository;
+import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.user.AdminRepository;
+import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +22,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImplement implements AdminService {
 
     private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
+    private final UserHashTagRepository userHashTagRepository;
+    private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
@@ -194,6 +207,42 @@ public class AdminServiceImplement implements AdminService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserForAdminResponseDto> getUserDetail(Integer userNumber, String adminEmail) {
+
+        if(userNumber == null) return CustomResponse.validationFailed();
+        GetUserForAdminResponseDto body = null;
+        List<String> hashtagList = new ArrayList<>();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserNumber(userNumber);
+            if(userEntity == null) return CustomResponse.noExistUser();
+
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
+                String hashtag = userHashTagEntity.getHashtag();
+                hashtagList.add(hashtag);
+            }
+
+            List<RecommendationEntity> recommendation =
+                    recommendationRepository.findByReceiverUserNumber(userNumber);
+
+            int recommendationCount = recommendation.size();
+
+            body = new GetUserForAdminResponseDto(hashtagList,userEntity,recommendationCount);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 

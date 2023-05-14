@@ -4,6 +4,7 @@ import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +89,19 @@ public class AdminController {
         String adminEmail = adminPrinciple.getAdminEmail();
 
         ResponseEntity<ResponseDto> response = adminService.deleteAdmin(adminEmail,dto);
+        return response;
+
+    }
+
+    @GetMapping("/user/{userNumber}")
+    public ResponseEntity<? super GetUserForAdminResponseDto> getUserDetail(
+            @PathVariable Integer userNumber,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
+
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<? super GetUserForAdminResponseDto>response =
+                adminService.getUserDetail(userNumber,adminEmail);
         return response;
 
     }

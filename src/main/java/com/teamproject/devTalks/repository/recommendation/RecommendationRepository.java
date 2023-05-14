@@ -12,6 +12,6 @@ public interface RecommendationRepository extends JpaRepository<RecommendationEn
    public RecommendationEntity findBySenderUserNumberAndReceiverUserNumber(int senderId,int receiverId);
 
    public List<RecommendationEntity> findBySenderUserNumber(int SenderId);
-    public List<RecommendationEntity> findByReceiverUserNumber(int SenderId);
+   public List<RecommendationEntity> findByReceiverUserNumber(int receiverId);
 
 }

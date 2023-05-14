@@ -20,7 +20,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("sign-up")
+    @PostMapping("signUp")
     public ResponseEntity<ResponseDto> adminSignUp(
 
             @Valid @RequestBody AdminSignUpRequestDto dto) {
@@ -30,7 +30,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("sign-in")
+    @PostMapping("signIn")
     public ResponseEntity<?super AdminSignInResponseDto> adminSignIn(
             @Valid @RequestBody AdminSignInRequestDto dto
 
@@ -66,7 +66,7 @@ public class AdminController {
 
     }
 
-    @PatchMapping("update/password")
+    @PatchMapping("password")
     public ResponseEntity<ResponseDto> updateAdminPassword(
             @Valid @RequestBody UpdateAdminPasswordRequestDto dto,
             @AuthenticationPrincipal AdminPrinciple adminPrinciple

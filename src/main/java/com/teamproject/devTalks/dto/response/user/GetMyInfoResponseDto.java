@@ -3,14 +3,13 @@ package com.teamproject.devTalks.dto.response.user;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class UpdateUserResponseDto extends ResponseDto {
+public class GetMyInfoResponseDto extends ResponseDto {
 
     private int userNumber;
     private String userEmail;
@@ -22,7 +21,13 @@ public class UpdateUserResponseDto extends ResponseDto {
     private List<String> userHashTag;
     private int recommendationCount;
 
-    public UpdateUserResponseDto(List<String> hashtagList , UserEntity userEntity){
+    public GetMyInfoResponseDto(
+
+            List<String> hashtagList ,
+            UserEntity userEntity,
+            int recommendationCount
+
+    ){
         super("SU","Success");
         this.userNumber = userEntity.getUserNumber();
         this.userEmail = userEntity.getUserEmail();
@@ -32,8 +37,7 @@ public class UpdateUserResponseDto extends ResponseDto {
         this.userProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.chatAcceptance = userEntity.isChatAcceptance();
         this.userHashTag = hashtagList;
-        this.recommendationCount = 0;
-        //TODO : 추천 수 - 관련 내용 작성 후 추가할 것!
+        this.recommendationCount = recommendationCount;
 
     }
 

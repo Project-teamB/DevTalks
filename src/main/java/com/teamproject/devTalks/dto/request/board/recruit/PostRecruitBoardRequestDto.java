@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.dto.request.board.recruit;
 
-import javax.validation.constraints.Email;
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
@@ -10,16 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostRecruitBoardRequestDto {
     
-    @Email
+    
     @NotBlank
-    private String writerEmail;
+    private String recruitBoardTitle;
     @NotBlank
-    private String recruitTitle;
-    @NotBlank
-    private String recruitContent;
-    private String recruitImageUrl;
-    @NotBlank 
-    private String hashtag;
+    private String recruitBoardContent;
+    private String recruitBoardImageUrl;
+    private List<String> hashtag;
     private boolean recruitmentStatus;
     
 }

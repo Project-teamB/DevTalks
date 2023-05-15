@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("update")
     ResponseEntity<? super UpdateUserResponseDto> updateUser(
-           @AuthenticationPrincipal UserPrinciple userPrinciple
+            @AuthenticationPrincipal UserPrinciple userPrinciple
     ){
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<? super UpdateUserResponseDto> response = userService.getUserUpdate(userEmail);

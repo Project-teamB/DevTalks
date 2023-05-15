@@ -21,8 +21,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetRecruitBoardResponseDto extends ResponseDto {
     private int recruitBoardNumber;
-    private String recruitTitle;
-    private String recruitContent;
+    private String recruitBoardTitle;
+    private String recruitBoardContent;
     private String recruitBoardImageUrl;
     private String writeDatetime;
     private String writerEmail;
@@ -32,6 +32,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
     private List<RecruitComment> commentList;
     private List<RecruitHeart> heartList;
     private String hashtag;
+    private boolean recruitmentStatus;
 
     public GetRecruitBoardResponseDto(
         RecruitBoardEntity recruitBoardEntity, UserEntity userEntity, RecruitBoardHashTagEntity recruitBoardHashTagEntity,
@@ -40,9 +41,10 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
         super("SU", "Success");
 
         this.recruitBoardNumber = recruitBoardEntity.getRecruitBoardNumber();
-        this.recruitTitle = recruitBoardEntity.getRecruitTitle();
-        this.recruitContent = recruitBoardEntity.getRecruitContent();
+        this.recruitBoardTitle = recruitBoardEntity.getRecruitBoardTitle();
+        this.recruitBoardContent = recruitBoardEntity.getRecruitBoardContent();
         this.recruitBoardImageUrl = recruitBoardEntity.getRecruitBoardImageUrl();
+        this.recruitmentStatus = recruitBoardEntity.isRecruitmentStatus();
         this.writeDatetime = recruitBoardEntity.getWriteDatetime();
         this.writerEmail = userEntity.getUserEmail();
         this.writerNickname = userEntity.getUserNickname();

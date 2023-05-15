@@ -2,15 +2,16 @@ package com.teamproject.devTalks.entity.resultSet;
 
 public interface RecruitBoardListResultSet {
     public int getRecruitBoardNumber();
-    public String getRecruitTitle();
-    public String getRecruitContent();
+    public String getRecruitBoardTitle();
+    public String getRecruitBoardContent();
     public String getRecruitBoardImageUrl();
-    public String GetWriteDatetime();
-    public String GetUpdateDatetime();
-    public String GetWriterEmail();
-    public String GetWriterNickname();
-    public String GetWriterProfileImageUrl();
-    public int GetCommentCount();
-    public int GetHeartCount();
-    public String GetHashTag();
+    public String getWriteDatetime();
+    public String getUpdateDatetime();
+    public String getWriterEmail();
+    public String getWriterNickname();
+    public String getWriterProfileImageUrl();
+    public int getCommentCount();
+    public int getHeartCount();
+    public String getHashTag();
+    public boolean isRecruitmentStatus();
 }

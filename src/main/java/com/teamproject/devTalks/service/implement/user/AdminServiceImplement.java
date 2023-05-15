@@ -6,8 +6,10 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserListForAdminResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
+import com.teamproject.devTalks.entity.resultSet.UserListResultSet;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
@@ -237,6 +239,27 @@ public class AdminServiceImplement implements AdminService {
 
             body = new GetUserForAdminResponseDto(hashtagList,userEntity,recommendationCount);
 
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserListForAdminResponseDto> getUserList(String adminEmail) {
+
+        GetUserListForAdminResponseDto body = null;
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFailed();
+
+            List<UserListResultSet> resultSets = userRepository.getUserList();
+            body = new GetUserListForAdminResponseDto(resultSets);
 
         }catch (Exception exception){
             exception.printStackTrace();

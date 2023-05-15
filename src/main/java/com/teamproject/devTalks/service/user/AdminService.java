@@ -5,6 +5,7 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserListForAdminResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface AdminService {
@@ -22,4 +23,6 @@ public interface AdminService {
     ResponseEntity<? super GetAdminInfoResponseDto> getAdminUpdate(String adminEmail);
 
     ResponseEntity<? super GetUserForAdminResponseDto> getUserDetail(Integer userNumber, String adminEmail);
+
+    ResponseEntity<? super GetUserListForAdminResponseDto> getUserList(String adminEmail);
 }

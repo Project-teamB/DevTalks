@@ -5,6 +5,7 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserListForAdminResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -104,6 +105,17 @@ public class AdminController {
                 adminService.getUserDetail(userNumber,adminEmail);
         return response;
 
+    }
+
+    @GetMapping("/user/list")
+    public ResponseEntity<? super GetUserListForAdminResponseDto> getUserList(
+        @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<? super GetUserListForAdminResponseDto> response =
+                adminService.getUserList(adminEmail);
+        return response;
     }
 
 }

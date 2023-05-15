@@ -17,5 +17,6 @@ public class UpdateAdminRequestDto {
     private String adminNickname;
     @NotBlank
     private String adminPhoneNumber;
+    private String adminProfileImageUrl;
 
 }

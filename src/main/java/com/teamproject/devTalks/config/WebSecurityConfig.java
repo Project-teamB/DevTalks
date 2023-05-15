@@ -33,9 +33,9 @@ public class WebSecurityConfig {
 
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/users/sign-up", "/users/sign-in").permitAll()
+                .antMatchers("/user/signUp", "/user/signIn","/user/{userNumber}").permitAll()
                 .antMatchers(HttpMethod.PATCH, "/user/update").hasRole("USER")
-                .antMatchers("/admin/sign-up", "/admin/sign-in").permitAll()
+                .antMatchers("/admin/signUp", "/admin/signIn").permitAll()
                 .antMatchers("/recommendation/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/information", "/notice/**", "/qna", "/recruit", "/teacher").permitAll()
                 .antMatchers(HttpMethod.POST, "/information",  "/qna", "/recruit", "/teacher").hasRole("USER")

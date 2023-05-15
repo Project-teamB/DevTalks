@@ -2,8 +2,9 @@ package com.teamproject.devTalks.service.user;
 
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
-import com.teamproject.devTalks.dto.response.user.UpdateUserResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
@@ -18,5 +19,7 @@ public interface UserService {
 
     ResponseEntity<ResponseDto> updateUserPassword(String userEmail, UpdateUserPasswordRequestDto dto);
 
-    ResponseEntity<? super UpdateUserResponseDto> getUserUpdate(String userNumber);
+    ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userNumber);
+
+    ResponseEntity<? super GetUserInformationResponseDto> getUserInformation(Integer userNumber);
 }

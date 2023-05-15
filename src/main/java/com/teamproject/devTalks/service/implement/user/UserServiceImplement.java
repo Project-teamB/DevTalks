@@ -3,8 +3,9 @@ package com.teamproject.devTalks.service.implement.user;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
-import com.teamproject.devTalks.dto.response.user.UpdateUserResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
@@ -115,10 +116,12 @@ public class UserServiceImplement implements UserService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    @Override
-    public ResponseEntity<? super UpdateUserResponseDto> getUserUpdate(String userEmail) {
 
-        UpdateUserResponseDto body = null;
+
+    @Override
+    public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail) {
+
+        GetMyInfoResponseDto body = null;
         List<String> hashtagList = new ArrayList<>();
 
         try {
@@ -135,12 +138,54 @@ public class UserServiceImplement implements UserService {
                 hashtagList.add(hashtag);
             }
 
-            body = new UpdateUserResponseDto(hashtagList,userEntity);
+            List<RecommendationEntity> recommendation =
+                    recommendationRepository.findByReceiverUserNumber(userNumber);
+
+            int recommendationCount = recommendation.size();
+
+            body = new GetMyInfoResponseDto(hashtagList,userEntity,recommendationCount);
 
         }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
 
         }
 
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserInformationResponseDto> getUserInformation(Integer userNumber) {
+
+        if(userNumber == null) return CustomResponse.validationFailed();
+
+        GetUserInformationResponseDto body = null;
+        List<String> hashtagList = new ArrayList<>();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserNumber(userNumber);
+            if(userEntity == null) return CustomResponse.noExistUser();
+
+            List<UserHashTagEntity> userHashTagEntities =
+                    userHashTagRepository.findAllByUserNumber(userNumber);
+
+            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
+                String hashtag = userHashTagEntity.getHashtag();
+                hashtagList.add(hashtag);
+            }
+
+            List<RecommendationEntity> recommendation =
+                    recommendationRepository.findByReceiverUserNumber(userNumber);
+
+            int recommendationCount = recommendation.size();
+
+            body = new GetUserInformationResponseDto(hashtagList,userEntity,recommendationCount);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 

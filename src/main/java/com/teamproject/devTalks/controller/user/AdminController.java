@@ -3,7 +3,9 @@ package com.teamproject.devTalks.controller.user;
 import com.teamproject.devTalks.dto.request.admin.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
-import com.teamproject.devTalks.dto.response.user.UpdateAdminResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
+import com.teamproject.devTalks.dto.response.user.GetUserListForAdminResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("sign-up")
+    @PostMapping("signUp")
     public ResponseEntity<ResponseDto> adminSignUp(
 
             @Valid @RequestBody AdminSignUpRequestDto dto) {
@@ -30,7 +32,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("sign-in")
+    @PostMapping("signIn")
     public ResponseEntity<?super AdminSignInResponseDto> adminSignIn(
             @Valid @RequestBody AdminSignInRequestDto dto
 
@@ -40,12 +42,12 @@ public class AdminController {
 
     }
 
-    @GetMapping("update")
-    public ResponseEntity<? super UpdateAdminResponseDto> updateAdmin(
+    @GetMapping("me")
+    public ResponseEntity<? super GetAdminInfoResponseDto> GetAdminInfo(
             @AuthenticationPrincipal AdminPrinciple adminPrinciple
     ){
         String adminEmail = adminPrinciple.getAdminEmail();
-        ResponseEntity<? super UpdateAdminResponseDto> response =
+        ResponseEntity<? super GetAdminInfoResponseDto> response =
                 adminService.getAdminUpdate(adminEmail);
 
 
@@ -66,7 +68,7 @@ public class AdminController {
 
     }
 
-    @PatchMapping("update/password")
+    @PatchMapping("password")
     public ResponseEntity<ResponseDto> updateAdminPassword(
             @Valid @RequestBody UpdateAdminPasswordRequestDto dto,
             @AuthenticationPrincipal AdminPrinciple adminPrinciple
@@ -92,6 +94,28 @@ public class AdminController {
 
     }
 
+    @GetMapping("/user/{userNumber}")
+    public ResponseEntity<? super GetUserForAdminResponseDto> getUserDetail(
+            @PathVariable Integer userNumber,
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple
 
+    ){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<? super GetUserForAdminResponseDto>response =
+                adminService.getUserDetail(userNumber,adminEmail);
+        return response;
+
+    }
+
+    @GetMapping("/user/list")
+    public ResponseEntity<? super GetUserListForAdminResponseDto> getUserList(
+        @AuthenticationPrincipal AdminPrinciple adminPrinciple
+    ){
+
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<? super GetUserListForAdminResponseDto> response =
+                adminService.getUserList(adminEmail);
+        return response;
+    }
 
 }

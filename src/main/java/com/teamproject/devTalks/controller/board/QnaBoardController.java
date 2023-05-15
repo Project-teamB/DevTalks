@@ -42,13 +42,12 @@ public class QnaBoardController {
 
     // @Autowired
     // public QnaBoardController(QnaBoardService qnaBoardService) {
-    //     this.boardService = boardService;
+    // this.boardService = boardService;
     // }
 
     @GetMapping("/list/{sort}")
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(
-        @PathVariable("sort") String qnaSort
-    ) {
+            @PathVariable("sort") String qnaSort) {
         ResponseEntity<? super GetQnaBoardListResponseDto> response = boardService.getQnaBoardList(qnaSort);
         return response;
     }
@@ -56,7 +55,7 @@ public class QnaBoardController {
     @GetMapping("/{qnaBoardNumber}")
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
-            ResponseEntity<? super GetQnaBoardResponseDto> response = boardService.getQnaBoard(qnaBoardNumber);
+        ResponseEntity<? super GetQnaBoardResponseDto> response = boardService.getQnaBoard(qnaBoardNumber);
         return response;
     }
 
@@ -64,8 +63,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> postQnaBoard(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @Valid @RequestBody PostQnaBoardRequestDto requestBody) {
-                String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.postQnaBoard(userEmail, requestBody);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.postQnaBoard(userEmail, requestBody);
         return response;
     }
 
@@ -73,8 +72,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> patchQnaBoard(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @Valid @RequestBody PatchQnaBoardRequestDto requestBody) {
-            String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.patchQnaBoard(userEmail, requestBody);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.patchQnaBoard(userEmail, requestBody);
         return response;
     }
 
@@ -82,8 +81,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> deleteQnaBoard(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
-                String userEmail = userPrinciple.getUserEmail();
-                ResponseEntity<ResponseDto> response = boardService.deleteQnaBoard(userEmail, qnaBoardNumber);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteQnaBoard(userEmail, qnaBoardNumber);
         return response;
     }
 
@@ -91,8 +90,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> postQnaComment(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @Valid @RequestBody PostQnaCommentRequestDto requestBody) {
-                String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.postQnaComment(userEmail, requestBody);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.postQnaComment(userEmail, requestBody);
         return response;
     }
 
@@ -100,8 +99,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> patchQnaComment(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @Valid @RequestBody PatchQnaCommentRequestDto requestBody) {
-                String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.patchQnaComment(userEmail, requestBody);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.patchQnaComment(userEmail, requestBody);
         return response;
     }
 
@@ -109,8 +108,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> deleteQnaComment(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @PathVariable("qnaCommentNumber") int qnaCommentNumber) {
-                String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.deleteQnaComment(userEmail, qnaCommentNumber);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteQnaComment(userEmail, qnaCommentNumber);
         return response;
     }
 
@@ -118,8 +117,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> postQnaHeart(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @Valid @RequestBody PostQnaHeartRequestDto requestBody) {
-                String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.postQnaHeart(userEmail, requestBody);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.postQnaHeart(userEmail, requestBody);
         return response;
     }
 
@@ -127,8 +126,8 @@ public class QnaBoardController {
     public ResponseEntity<ResponseDto> deleteQnaHeart(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
-                String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = boardService.deleteQnaHeart(userEmail, qnaBoardNumber);
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteQnaHeart(userEmail, qnaBoardNumber);
         return response;
     }
 

@@ -18,52 +18,46 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Entity(name="qna")
-@Table(name="qna")
+@Entity(name = "qna")
+@Table(name = "qna")
 public class QnaBoardEntity {
-    
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int qnaBoardNumber;
     private String writerProfileImageUrl;
+    private String writerEmail;
     private String writerNickname;
-    private String writerDatetime;
+    private String writeDatetime;
     private String qnaTitle;
     private String qnaContent;
     private String qnaBoardImageUrl;
+    private int viewCount;
 
     public QnaBoardEntity(UserEntity userEntity, PostQnaBoardRequestDto dto) {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
+        this.writerEmail = userEntity.getUserEmail();
         this.writerNickname = userEntity.getUserNickname();
-        this.writerDatetime = dateFormat.format(now);
+        this.writeDatetime = dateFormat.format(now);
         this.qnaTitle = dto.getQnaTitle();
         this.qnaContent = dto.getQnaContent();
         this.qnaBoardImageUrl = dto.getQnaBoardImageUrl();
+        this.viewCount = 0;
     }
-    
+
     public QnaBoardEntity(UserEntity userEntity, PatchQnaBoardRequestDto dto) {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-            this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
-            this.writerNickname = userEntity.getUserNickname();
-            this.writerDatetime = dateFormat.format(now);
-            this.qnaTitle = dto.getQnaTitle();
-            this.qnaContent = dto.getQnaContent();
-            this.qnaBoardImageUrl = dto.getQnaBoardImageUrl();
+        this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
+        this.writerNickname = userEntity.getUserNickname();
+        this.writeDatetime = dateFormat.format(now);
+        this.qnaTitle = dto.getQnaTitle();
+        this.qnaContent = dto.getQnaContent();
+        this.qnaBoardImageUrl = dto.getQnaBoardImageUrl();
     }
-
-    
-
-
-
-
-
-
-
-
 
 }

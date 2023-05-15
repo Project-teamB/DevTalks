@@ -1,10 +1,9 @@
 package com.teamproject.devTalks.dto.response.board.qna;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
 import com.teamproject.devTalks.dto.response.ResponseDto;
-import com.teamproject.devTalks.entity.board.QnaBoardEntity;
 import com.teamproject.devTalks.entity.resultSet.QnaBoardListResultSet;
 
 import lombok.AllArgsConstructor;
@@ -13,12 +12,24 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+// AllArgsConstructor왜 들어가면안되지
 public class GetQnaBoardListResponseDto extends ResponseDto {
-    
-    private List<BoardSummary> qnaBoardList;
-	
 
+	private List<BoardSummary> qnaBoardList; // B
+
+	public GetQnaBoardListResponseDto(List<QnaBoardListResultSet> resultSets) { // A
+
+		this.qnaBoardList = new ArrayList<>(); // 빈 B리스트를 만든다
+
+		// A를 반복하며 돈다
+		for (QnaBoardListResultSet resultSet : resultSets) { // A에 있는 요소를 하나씩 꺼낸다
+
+			BoardSummary boardSummary = new BoardSummary(resultSet); // A로 B를 만든다
+			this.qnaBoardList.add(boardSummary); // 복사한 B를 B배열에 추가한다
+
+		}
+
+	}
 
 }
 
@@ -26,36 +37,30 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class BoardSummary {
-    private int quaBoardNumber;
-	private String qnaTitle; 
-	private String qnaContent; 
-	private String qnaBoardImageUrl; 
-	private String writeDatetime; 
-	private int viewCount; 
-    private String writerNickname;
+	private int quaBoardNumber;
+	private String qnaTitle;
+	private String qnaContent;
+	private String qnaBoardImageUrl;
+	private String writeDatetime;
+	private int viewCount;
+	private String writerNickname;
 	private String writerProfileImageUrl;
 	private int commentCount;
 	private int heartCount;
-	private List<String> hashtag;
 
-	public BoardSummary(QnaBoardListResultSet resultSets){
-		this.quaBoardNumber = resultSets.getQnaBoardNumber();
-		this.qnaTitle = resultSets.getQnaTitle(); 
-		this.qnaContent = resultSets.getQnaContent(); 
-		this.qnaBoardImageUrl = resultSets.getQnaBoardImageUrl(); 
-		this.writeDatetime = resultSets.getWriteDatetime();
-		this.viewCount = resultSets.getViewCount();
-		this.writerNickname = resultSets.getWriterNickname();
-		this.writerProfileImageUrl = resultSets.getWriterProfileImageUrl();
-		this.commentCount = resultSets.getCommentCount();
-		this.heartCount = resultSets.getHeartCount();
-		// this.hashtag = resultSets.getHashtag();
+	public BoardSummary(QnaBoardListResultSet resultSet) {
+
+		this.quaBoardNumber = resultSet.getQnaBoardNumber();
+		this.qnaTitle = resultSet.getQnaTitle();
+		this.qnaContent = resultSet.getQnaContent();
+		this.qnaBoardImageUrl = resultSet.getQnaBoardImageUrl();
+		this.writeDatetime = resultSet.getWriteDatetime();
+		this.viewCount = resultSet.getViewCount();
+		this.writerNickname = resultSet.getWriterNickname();
+		this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
+		this.commentCount = resultSet.getCommentCount();
+		this.heartCount = resultSet.getHeartCount();
+
 	}
+
 }
-
-
-
-
-
-
-

@@ -36,8 +36,8 @@ public class GetRecruitBoardListResponseDto extends ResponseDto {
 @AllArgsConstructor
 class RecruitBoardSummary {
     private int recruitBoardNumber;
-    private String recruitTitle;
-    private String recruitContent;
+    private String recruitBoardTitle;
+    private String recruitBoardContent;
     private String recruitBoardImageUrl;
     private String writeDatetime;
     private String updateDatetime;
@@ -46,20 +46,22 @@ class RecruitBoardSummary {
     private String writerProfileImageUrl;
     private int commentCount;
     private int heartCount;
-    private String hashTag;
+    private String hashtag;
+    private boolean recruitmentStatus;
 
     public RecruitBoardSummary(RecruitBoardListResultSet resultSet) {
         this.recruitBoardNumber = resultSet.getRecruitBoardNumber();
-        this.recruitTitle = resultSet.getRecruitTitle();
-        this.recruitContent = resultSet.getRecruitContent();
+        this.recruitBoardTitle = resultSet.getRecruitBoardTitle();
+        this.recruitBoardContent = resultSet.getRecruitBoardContent();
         this.recruitBoardImageUrl = resultSet.getRecruitBoardImageUrl();
-        this.writeDatetime = resultSet.GetWriteDatetime();
-        this.updateDatetime = resultSet.GetUpdateDatetime();
-        this.writerEmail = resultSet.GetWriterEmail();
-        this.writerNickname = resultSet.GetWriterNickname();
-        this.writerProfileImageUrl = resultSet.GetWriterProfileImageUrl();
-        this.commentCount = resultSet.GetCommentCount();
-        this.heartCount = resultSet.GetHeartCount();
-        this.hashTag = resultSet.GetHashTag();
+        this.writeDatetime = resultSet.getWriteDatetime();
+        this.updateDatetime = resultSet.getUpdateDatetime();
+        this.writerEmail = resultSet.getWriterEmail();
+        this.writerNickname = resultSet.getWriterNickname();
+        this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
+        this.commentCount = resultSet.getCommentCount();
+        this.heartCount = resultSet.getHeartCount();
+        this.hashtag = resultSet.getHashTag();
+        this.recruitmentStatus = resultSet.isRecruitmentStatus();
     }
 }

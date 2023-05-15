@@ -14,9 +14,4 @@ public class PatchRecruitCommentRequestDto {
     @NotBlank
     private String recruitCommentContent;
 
-    public PatchRecruitCommentRequestDto(PatchRecruitCommentRequestDto dto) {
-        this.recruitCommentNumber = dto.getRecruitCommentNumber();
-        this.recruitCommentContent = dto.getRecruitCommentContent();
-    }
-
 }

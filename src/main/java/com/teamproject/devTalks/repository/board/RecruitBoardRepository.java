@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.teamproject.devTalks.entity.board.RecruitBoardEntity;
 
 @Repository
-public interface RecruitBoardRepository extends JpaRepository<RecruitBoardEntity, Integer>{
+public interface RecruitBoardRepository extends JpaRepository<RecruitBoardEntity, Integer >{
+
     public RecruitBoardEntity findByRecruitBoardNumber(int recruitBoardNumber);
+    
 }

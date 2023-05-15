@@ -15,6 +15,10 @@ public class PatchTeacherBoardRequestDto {
     @NotBlank
     private String teacherContent;
     private String teacherBoardImageUrl;
+    private String career;
+    private String lectureUrl;
+    private String category;
+    private String teacherBoardHashtag;
 
     public PatchTeacherBoardRequestDto(PatchTeacherBoardRequestDto dto){
 
@@ -22,5 +26,9 @@ public class PatchTeacherBoardRequestDto {
         this.teacherTitle = dto.getTeacherTitle();
         this.teacherContent = dto.getTeacherContent();
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
+        this.career = dto.getCareer();
+        this.lectureUrl = dto.getLectureUrl();
+        this.category = dto.getCategory();
+        this.teacherBoardHashtag = dto.getTeacherBoardHashtag();
     }
 }

@@ -4,9 +4,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.teamproject.devTalks.entity.hashTag.TeacherBoardHashTagEntity;
-import com.teamproject.devTalks.entity.primaryKey.teacher.TeacherHeartPk;
+import com.teamproject.devTalks.entity.primaryKey.teacher.TeacherHashTagPk;
 
 @Repository
-public interface TeacherBoardHashTagRepository extends JpaRepository<TeacherBoardHashTagEntity, TeacherHeartPk> {
-    List<TeacherBoardHashTagEntity> findAllByHashtag(String hashtag);
+public interface TeacherBoardHashTagRepository extends JpaRepository<TeacherBoardHashTagEntity, TeacherHashTagPk> {
+    List<TeacherBoardHashTagEntity> findAllByTeacherBoardNumber(int teacherBoardNumber);
 }

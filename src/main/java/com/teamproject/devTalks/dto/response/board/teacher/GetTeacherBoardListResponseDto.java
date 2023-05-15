@@ -15,16 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetTeacherBoardListResponseDto extends ResponseDto{
     private List<TeacherBoardSummary> teacherBoardList;
-    public GetTeacherBoardListResponseDto(List<TeacherBoardListResultSet> resultSet) {
+    public GetTeacherBoardListResponseDto(List<TeacherBoardListResultSet> teacherBoardEntityList) {
         super("SU", "SUCCESS");
 
-        List<TeacherBoardSummary> recruitBoardList = new ArrayList<>();
+        List<TeacherBoardSummary> teacherBoardList = new ArrayList<>();
 
-        for (TeacherBoardListResultSet result: resultSet) {
-            TeacherBoardSummary recruitBoardSummary = new TeacherBoardSummary(result);
-            recruitBoardList.add(recruitBoardSummary);
+        for (TeacherBoardListResultSet result: teacherBoardEntityList) {
+            TeacherBoardSummary teacherBoardSummary = new TeacherBoardSummary(result);
+            teacherBoardList.add(teacherBoardSummary);
         }
-        this.teacherBoardList = recruitBoardList;
+        this.teacherBoardList = teacherBoardList;
     }
 }
 
@@ -38,24 +38,22 @@ class TeacherBoardSummary {
     private String teacherContent;
     private String teacherBoardImageUrl;
     private String writeDatetime;
-    private String updateDatetime;
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImageUrl;
     private int heartCount;
-    private String hashTag;
+    private String teacherBoardHashtag;
 
-    public TeacherBoardSummary(TeacherBoardListResultSet resultSet){
-        this.teacherBoardNumber = resultSet.getteacherBoardNumber();
-        this.teacherTitle = resultSet.getteacherTitle();
-        this.teacherContent = resultSet.getteacherContent();
-        this.teacherBoardImageUrl = resultSet.getteacherBoardImageUrl();
-        this.writeDatetime = resultSet.getwriteDatetime();
-        this.updateDatetime = resultSet.getupdateDatetime();
-        this.writerEmail = resultSet.getwriterEmail();
-        this.writerNickname = resultSet.getwriterNickname();
-        this.writerProfileImageUrl = resultSet.getwriterProfileImageUrl();
-        this.heartCount = resultSet.getheartCount();
-        this.hashTag = resultSet.gethashTag();
+    public TeacherBoardSummary(TeacherBoardListResultSet teacherBoardEntity){
+        this.teacherBoardNumber = teacherBoardEntity.getteacherBoardNumber();
+        this.teacherTitle = teacherBoardEntity.getteacherTitle();
+        this.teacherContent = teacherBoardEntity.getteacherContent();
+        this.teacherBoardImageUrl = teacherBoardEntity.getteacherBoardImageUrl();
+        this.writeDatetime = teacherBoardEntity.getwriteDatetime();
+        this.writerEmail = teacherBoardEntity.getwriterEmail();
+        this.writerNickname = teacherBoardEntity.getwriterNickname();
+        this.writerProfileImageUrl = teacherBoardEntity.getwriterProfileImageUrl();
+        this.heartCount = teacherBoardEntity.getheartCount();
+        this.teacherBoardHashtag = teacherBoardEntity.gethashTag();
     }
 }

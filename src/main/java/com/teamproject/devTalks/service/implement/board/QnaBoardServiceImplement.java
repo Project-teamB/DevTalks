@@ -13,6 +13,7 @@ import com.teamproject.devTalks.entity.board.QnaBoardEntity;
 import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
 import com.teamproject.devTalks.entity.hashTag.QnaBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
+import com.teamproject.devTalks.entity.resultSet.QnaBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.board.QnaBoardRepository;
 import com.teamproject.devTalks.repository.comment.QnaCommentRepository;
@@ -41,8 +42,20 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(String qnaSort) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getQnaBoardList'");
+
+        List<GetQnaBoardListResponseDto> body = null; 
+        try {
+
+            // List<QnaBoardListResultSet> resultSets = qnaBoardRepository.getList();
+            // body = new GetQnaBoardListResponseDto(resultSets);
+
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
     }
 
     @Override
@@ -162,8 +175,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
-             QnaBoardEntity qnaBoardEntityPathch = new QnaBoardEntity(userEntity, dto);
-             qnaBoardRepository.save(qnaBoardEntityPathch);
+            QnaBoardEntity qnaBoardEntityPathch = new QnaBoardEntity(userEntity, dto);
+            qnaBoardRepository.save(qnaBoardEntityPathch);
 
             // 데이터베이스 오류
         } catch (Exception exception) {
@@ -204,20 +217,61 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> deleteQnaBoard(String userEmail, int qnaBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteQnaBoard'");
+        
+        try {
+            // 존재하지 않는 유저(이메일)
+        boolean existUser = userRepository.existsByUserEmail(userEmail);
+        if(!existUser) return CustomResponse.noExistUser();
+            // 존재하지 않는 게시물(게시물 번호)
+        QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
+        if(qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
+        
+        qnaCommentRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+        qnaHeartRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+        qnaBoardHashTagRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+        qnaBoardRepository.delete(qnaBoardEntity);
+        
+    
+    } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
     }
 
     @Override
     public ResponseEntity<ResponseDto> deleteQnaComment(String userEmail, int qnaCommentNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteQnaComment'");
+        try {
+            // 존재하지 않는 유저(이메일)
+        boolean existUser = userRepository.existsByUserEmail(userEmail);
+        if(!existUser) return CustomResponse.noExistUser();
+        
+        qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
     }
 
     @Override
     public ResponseEntity<ResponseDto> deleteQnaHeart(String userEmail, int qnaBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteQnaHeart'");
+        try {
+            
+            // 존재하지 않는 유저(이메일)
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.noExistUser();
+            int userNumber = userEntity.getUserNumber();
+            qnaHeartRepository.deleteByUserNumberAndQnaBoardNumber(userNumber, qnaBoardNumber);
+
+
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
     }
 
 }

@@ -8,10 +8,12 @@ import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
+import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.repository.hashTag.UserHashTagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
+import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class UserServiceImplement implements UserService {
 
     private final UserRepository userRepository;
     private final UserHashTagRepository userHashTagRepository;
+    private final BlackListRepository blackListRepository;
     private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -305,8 +308,10 @@ public class UserServiceImplement implements UserService {
             recommendationRepository.deleteAll(sendRecommendations);
             recommendationRepository.deleteAll(receiveRecommendations);
 
-            userRepository.deleteByUserEmail(userEmail);
+            BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
+            blackListRepository.delete(blackListEntity);
 
+            userRepository.deleteByUserEmail(userEmail);
 
         }catch (Exception exception){
             exception.printStackTrace();

@@ -43,14 +43,12 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(String qnaSort) {
 
-        List<GetQnaBoardListResponseDto> body = null; 
+        GetQnaBoardListResponseDto body = null;
         try {
 
-            // List<QnaBoardListResultSet> resultSets = qnaBoardRepository.getList();
-            // body = new GetQnaBoardListResponseDto(resultSets);
+            List<QnaBoardListResultSet> resultSets = qnaBoardRepository.getList();
+            body = new GetQnaBoardListResponseDto(resultSets);
 
-
-            
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -58,10 +56,32 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         return CustomResponse.success();
     }
 
+    // 이거
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getQnaBoard'");
+
+        GetQnaBoardResponseDto body = null;
+        try {
+            // 존재하지 않는 게시물 반환
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
+            if (qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            int viewCount = qnaBoardEntity.getViewCount();
+            qnaBoardEntity.setViewCount(++viewCount);
+            qnaBoardRepository.save(qnaBoardEntity);
+
+            String qnaBoardWriterEmail = qnaBoardEntity.getWriterEmail();
+            UserEntity userEntity = userRepository.findByUserEmail(qnaBoardWriterEmail);
+
+            // 모르겠다
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+
     }
 
     @Override
@@ -92,8 +112,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             qnaBoardRepository.save(qnaBoardEntity);
 
             for (String hashTag : hashtagList) {
-                QnaBoardHashTagEntity qnaBoardHashTagEntity = 
-                                            new QnaBoardHashTagEntity(hashTag, qnaBoardEntity.getQnaBoardNumber());
+                QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag,
+                        qnaBoardEntity.getQnaBoardNumber());
 
                 // qnaBoardHashTagRepository.save(qnaBoardHashTagEntity);
 
@@ -202,7 +222,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (qnaCommentEntity == null)
                 return CustomResponse.notExistCommentNumber();
 
-
             QnaCommentEntity qnaCommentEntityPatch = new QnaCommentEntity(userEntity, qnaBoardEntity, dto);
             qnaCommentRepository.save(qnaCommentEntityPatch);
 
@@ -217,22 +236,23 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> deleteQnaBoard(String userEmail, int qnaBoardNumber) {
-        
+
         try {
             // 존재하지 않는 유저(이메일)
-        boolean existUser = userRepository.existsByUserEmail(userEmail);
-        if(!existUser) return CustomResponse.noExistUser();
+            boolean existUser = userRepository.existsByUserEmail(userEmail);
+            if (!existUser)
+                return CustomResponse.noExistUser();
             // 존재하지 않는 게시물(게시물 번호)
-        QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
-        if(qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
-        
-        qnaCommentRepository.deleteByQnaBoardNumber(qnaBoardNumber);
-        qnaHeartRepository.deleteByQnaBoardNumber(qnaBoardNumber);
-        qnaBoardHashTagRepository.deleteByQnaBoardNumber(qnaBoardNumber);
-        qnaBoardRepository.delete(qnaBoardEntity);
-        
-    
-    } catch (Exception exception) {
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
+            if (qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            qnaCommentRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaHeartRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaBoardHashTagRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaBoardRepository.delete(qnaBoardEntity);
+
+        } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
@@ -243,10 +263,11 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     public ResponseEntity<ResponseDto> deleteQnaComment(String userEmail, int qnaCommentNumber) {
         try {
             // 존재하지 않는 유저(이메일)
-        boolean existUser = userRepository.existsByUserEmail(userEmail);
-        if(!existUser) return CustomResponse.noExistUser();
-        
-        qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
+            boolean existUser = userRepository.existsByUserEmail(userEmail);
+            if (!existUser)
+                return CustomResponse.noExistUser();
+
+            qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -258,14 +279,13 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<ResponseDto> deleteQnaHeart(String userEmail, int qnaBoardNumber) {
         try {
-            
+
             // 존재하지 않는 유저(이메일)
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.noExistUser();
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
             int userNumber = userEntity.getUserNumber();
             qnaHeartRepository.deleteByUserNumberAndQnaBoardNumber(userNumber, qnaBoardNumber);
-
-
 
         } catch (Exception exception) {
             exception.printStackTrace();

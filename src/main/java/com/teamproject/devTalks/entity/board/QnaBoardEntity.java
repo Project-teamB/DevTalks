@@ -56,4 +56,14 @@ public class QnaBoardEntity {
             this.qnaBoardImageUrl = dto.getQnaBoardImageUrl();
     }
 
+    
+
+
+
+
+
+
+
+
+
 }

@@ -31,6 +31,8 @@ import com.teamproject.devTalks.service.board.QnaBoardService;
 
 import lombok.RequiredArgsConstructor;
 
+// 관리자권한으로 게시글 삭제, 댓글 삭제(댓글Controller)
+
 @RestController
 @RequestMapping("/board/qna")
 @RequiredArgsConstructor

@@ -22,7 +22,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("signUp")
+    @PostMapping("/sign-up")
     public ResponseEntity<ResponseDto> adminSignUp(
 
             @Valid @RequestBody AdminSignUpRequestDto dto) {
@@ -32,7 +32,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("signIn")
+    @PostMapping("sign-in")
     public ResponseEntity<?super AdminSignInResponseDto> adminSignIn(
             @Valid @RequestBody AdminSignInRequestDto dto
 

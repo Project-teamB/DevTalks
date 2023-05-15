@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class UpdateAdminRequestDto {
     private String password;
     @NotBlank
     private String adminNickname;
-    @NotBlank
+    @NotBlank @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String adminPhoneNumber;
     private String adminProfileImageUrl;
 

@@ -61,12 +61,12 @@ public class RecommendationServiceImplement implements RecommendationService {
             UserEntity receiveUserEntity = userRepository.findByUserNumber(receiverId);
             if(receiveUserEntity == null) return CustomResponse.noExistUser();
 
-
-
             RecommendationEntity recommendationEntity =
                     recommendationRepository.findBySenderUserNumberAndReceiverUserNumber(senderId,receiverId);
 
             if(recommendationEntity == null) return CustomResponse.noExistRecommendation();
+
+            recommendationRepository.delete(recommendationEntity);
 
         }catch (Exception exception){
             exception.printStackTrace();

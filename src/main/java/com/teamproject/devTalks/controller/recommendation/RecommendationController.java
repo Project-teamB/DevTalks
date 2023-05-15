@@ -32,7 +32,7 @@ public class RecommendationController {
 
     }
 
-    @DeleteMapping({"receiverId"})
+    @DeleteMapping({"/{receiverId}"})
     public ResponseEntity<ResponseDto> deleteRecommendation(
             @AuthenticationPrincipal UserPrinciple userPrinciple,
             @PathVariable int receiverId

@@ -22,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("signUp")
+    @PostMapping("sign-up")
     ResponseEntity<ResponseDto> userSignUp(
             @Valid @RequestBody UserSignUpRequestDto dto
     ){
@@ -30,7 +30,7 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("signIn")
+    @PostMapping("sign-in")
     ResponseEntity<? super SignInResponseDto> userSignIn(
             @Valid @RequestBody UserSignInRequestDto dto
             ){

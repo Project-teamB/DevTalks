@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.loader.custom.ResultRowProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,18 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         GetQnaBoardListResponseDto body = null;
         try {
 
-            List<QnaBoardListResultSet> resultSets = qnaBoardRepository.getList();
+            List<QnaBoardListResultSet> resultSets = null;
+            if (qnaSort.equals("time"))
+                resultSets = qnaBoardRepository.getListOrderByWriteDatetime();
+            else if (qnaSort.equals("view"))
+                resultSets = qnaBoardRepository.getListOrderByViewCount();
+            else if (qnaSort.equals("heart"))
+                resultSets = qnaBoardRepository.getListOrderByHeartCount();
+            else if (qnaSort.equals("comment"))
+                resultSets = qnaBoardRepository.getListOrderByCommentCount();
+            else
+                return CustomResponse.validationFailed();
+
             body = new GetQnaBoardListResponseDto(resultSets);
 
         } catch (Exception exception) {
@@ -56,7 +68,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-    
+
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber) {
 
@@ -146,7 +158,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 return CustomResponse.noExistUser();
 
             // 존재하지 않는 게시물(게시물번호)
-            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber());
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
@@ -171,7 +183,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (userEntity == null)
                 return CustomResponse.noExistUser();
             // 존재하지 않는 게시물(게시물번호)
-            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber());
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
@@ -196,7 +208,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 return CustomResponse.noExistUser();
             // 존재하지 않는 게시물(게시물번호)
             QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber());
-            //dto 에서 받아왔으니 qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber() 이렇게 dto에서 꺼내옴
+            // dto 에서 받아왔으니 qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber()
+            // 이렇게 dto에서 꺼내옴
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
@@ -219,11 +232,12 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (userEntity == null)
                 return CustomResponse.noExistUser();
             // 존재하지 않는 게시물(게시물번호)
-            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber());
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
+
             // 존재하지 않는 댓글(댓글번호)
-            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(0);
+            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber());
             if (qnaCommentEntity == null)
                 return CustomResponse.notExistCommentNumber();
 

@@ -19,7 +19,7 @@ public class PatchRecruitBoardRequestDto {
     @NotBlank
     private String recruitBoardContent;
     private String recruitBoardImageUrl;
-    private List<String> hashtag;
+    private List<String> boardHashTag;
     private boolean recruitmentStatus;
     
 }

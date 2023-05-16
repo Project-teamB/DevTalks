@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class PatchRecruitCommentRequestDto {
     
     @NotBlank
+    private int recruitBoardNumber;
+    @NotBlank
     private int recruitCommentNumber;
     @NotBlank
     private String recruitCommentContent;

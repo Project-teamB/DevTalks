@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.repository.heart;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +15,7 @@ import com.teamproject.devTalks.entity.primaryKey.qna.QnaHeartPk;
 public interface QnaHeartRepository extends JpaRepository<QnaHeartEntity, QnaHeartPk>{
     
 
-    public QnaHeartEntity findByQnaBoardNumber(int qnaBoardNumber);
+    public List<QnaHeartEntity> findByQnaBoardNumber(int qnaBoardNumber);
 
     @Transactional
     void deleteByQnaBoardNumber(int qnaBoardNumber);

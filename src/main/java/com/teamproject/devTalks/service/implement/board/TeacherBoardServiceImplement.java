@@ -56,22 +56,20 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-    @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
-        GetTeacherBoardListResponseDto body = null;
-        try {
+    // @Override
+    // public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
+    //     GetTeacherBoardListResponseDto body = null;
+    //     try {
 
-            List<TeacherBoardListResultSet> teacherBoardEntityList =
-                    teacherBoardRepository.findAllByOrderByWriteDatetimeDesc();
+    //         List<TeacherBoardListResultSet> resultSets = teacherBoardRepository.getList();
+    //         body = new GetTeacherBoardListResponseDto(resultSets);
 
-            body = new GetTeacherBoardListResponseDto(teacherBoardEntityList);
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
+    //     }catch (Exception exception){
+    //         exception.printStackTrace();
+    //         return CustomResponse.databaseError();
+    //     }
+    //     return CustomResponse.success();
+    // }
 
     @Override
     public ResponseEntity<ResponseDto> postTeacherBoard(String userEmail, PostTeacherBoardRequestDto dto) {
@@ -112,30 +110,30 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         return CustomResponse.success();
     }
 
-    @Override
-    public ResponseEntity<ResponseDto> deleteTeacherBoard(String userEmail, Integer teacherBoardNumber) {
-        try {
-            if (teacherBoardNumber == null) return CustomResponse.validationFailed();
+    // @Override
+    // public ResponseEntity<ResponseDto> deleteTeacherBoard(String userEmail, Integer teacherBoardNumber) {
+    //     try {
+    //         if (teacherBoardNumber == null) return CustomResponse.validationFailed();
 
-            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
-            if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
+    //         TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
+    //         if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
-            boolean existedUserEmail = userRepository.existsByUserEmail(userEmail);
-            if (!existedUserEmail) return CustomResponse.noExistUser();
+    //         boolean existedUserEmail = userRepository.existsByUserEmail(userEmail);
+    //         if (!existedUserEmail) return CustomResponse.noExistUser();
 
-            boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
-            if (!equalWriter) return CustomResponse.noPermission();
+    //         boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
+    //         if (!equalWriter) return CustomResponse.noPermission();
 
-            teacherBoardRepository.deleteByBoardNumber(teacherBoardNumber);
+    //         teacherBoardRepository.deleteByteacherBoardNumber(teacherBoardNumber);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
+    //     } catch (Exception exception) {
+    //         exception.printStackTrace();
+    //         return CustomResponse.databaseError();
+    //     }
 
-        return CustomResponse.success();
+    //     return CustomResponse.success();
 
-    }
+    // }
     
 
     @Override
@@ -159,30 +157,30 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         return CustomResponse.success();
     }
 
-    @Override
-    public ResponseEntity<ResponseDto> deleteTeacherHeart(String userEmail, Integer teacherBoardNumber) {
-        try {
-            if (teacherBoardNumber == null) return CustomResponse.validationFailed();
+    // @Override
+    // public ResponseEntity<ResponseDto> deleteTeacherHeart(String userEmail, Integer teacherBoardNumber) {
+    //     try {
+    //         if (teacherBoardNumber == null) return CustomResponse.validationFailed();
 
-            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
-            if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
+    //         TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
+    //         if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
-            boolean existedUserEmail = userRepository.existsByUserEmail(userEmail);
-            if (!existedUserEmail) return CustomResponse.noExistUser();
+    //         boolean existedUserEmail = userRepository.existsByUserEmail(userEmail);
+    //         if (!existedUserEmail) return CustomResponse.noExistUser();
 
-            boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
-            if (!equalWriter) return CustomResponse.noPermission();
+    //         boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
+    //         if (!equalWriter) return CustomResponse.noPermission();
 
-            teacherHeartRepository.deleteByBoardNumber(teacherBoardNumber);
+    //         teacherHeartRepository.deleteByBoardNumber(teacherBoardNumber);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
+    //     } catch (Exception exception) {
+    //         exception.printStackTrace();
+    //         return CustomResponse.databaseError();
+    //     }
 
-        return CustomResponse.success();
+    //     return CustomResponse.success();
 
-    }
+    // }
     @Override
     public ResponseEntity<ResponseDto> postTeacherHashTag(String userEmail, PostTeacherHeartRequestDto dto) {
         return null;
@@ -245,5 +243,21 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteTeacherHashTag'");
     }
-    
+    @Override
+    public ResponseEntity<ResponseDto> deleteTeacherBoard(String userEmail, Integer teacherBoardNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteTeacherBoard'");
+    }
+    @Override
+    public ResponseEntity<ResponseDto> deleteTeacherHeart(String userEmail, Integer teacherBoardNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteTeacherHeart'");
+    }
+
+    @Override
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTeacherBoardList'");
+    }
+
 }

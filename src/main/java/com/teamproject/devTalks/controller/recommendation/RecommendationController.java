@@ -1,6 +1,5 @@
 package com.teamproject.devTalks.controller.recommendation;
 
-import com.teamproject.devTalks.dto.request.recommendation.PostRecommendationRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.service.recommendation.RecommendationService;

@@ -11,7 +11,7 @@ import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardRespon
 
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import com.teamproject.devTalks.entity.hashTag.TeacherBoardHashTagEntity;
-import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
+import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.heart.TeacherHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;

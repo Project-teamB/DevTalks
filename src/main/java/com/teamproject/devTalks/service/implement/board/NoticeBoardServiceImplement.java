@@ -94,14 +94,11 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     public ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto) {
 
         int noticeBoardNumber = dto.getNoticeBoardNumber();
-        String noticeTitle = dto.getNoticeTitle();
-        String noticeContent = dto.getNoticeContent();
-        String noticeImageUrl = dto.getBoardImageUrl();
 
         try {
 
-            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
-            if(!existAdmin) return CustomResponse.authenticationFailed();
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFailed();
 
             NoticeBoardEntity noticeBoardEntity =
                     noticeBoardRepository.findByNoticeBoardNumber(noticeBoardNumber);
@@ -111,11 +108,8 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
             boolean equalWriter = noticeBoardEntity.getWriterEmail().equals(adminEmail);
             if(!equalWriter) return CustomResponse.noPermission();
 
-            noticeBoardEntity.setNoticeTitle(noticeTitle);
-            noticeBoardEntity.setNoticeContent(noticeContent);
-            noticeBoardEntity.setNoticeImageUrl(noticeImageUrl);
-
-            noticeBoardRepository.save(noticeBoardEntity);
+            NoticeBoardEntity updateNotice = new NoticeBoardEntity(noticeBoardEntity,dto);
+            noticeBoardRepository.save(updateNotice);
 
         }catch (Exception exception){
             exception.printStackTrace();

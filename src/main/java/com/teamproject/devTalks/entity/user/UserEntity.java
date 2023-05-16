@@ -1,5 +1,6 @@
 package com.teamproject.devTalks.entity.user;
 
+import com.teamproject.devTalks.dto.request.user.UpdateUserRequestDto;
 import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userNumber;
     private String userEmail;
-    private String UserPassword;
+    private String userPassword;
     private String userNickname;
     private String userName;
     private String userPhoneNumber;
@@ -38,7 +39,7 @@ public class UserEntity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         this.userEmail = dto.getUserEmail();
-        this.UserPassword = dto.getUserPassword();
+        this.userPassword = dto.getUserPassword();
         this.userNickname = dto.getUserNickname();
         this.userName = dto.getUserName();
         this.userPhoneNumber = dto.getUserPhoneNumber();
@@ -47,6 +48,21 @@ public class UserEntity {
         this.chatAcceptance = dto.isChatAcceptance();
         this.agreePersonalInformation = dto.isAgreePersonalInformation();
         this.createdAt = now.format(formatter);
+
+    }
+
+    public UserEntity(UserEntity userEntity, UpdateUserRequestDto dto) {
+
+        this.userNumber = userEntity.getUserNumber();
+        this.userEmail = userEntity.getUserEmail();
+        this.userPassword = userEntity.getUserPassword();
+        this.userNickname = dto.getUserNickname();
+        this.userName = userEntity.getUserName();
+        this.userPhoneNumber = dto.getUserPhoneNumber();
+        this.userIntroduction = dto.getUserIntroduction();
+        this.userProfileImageUrl = dto.getUserProfileImageUrl();
+        this.agreePersonalInformation = userEntity.isAgreePersonalInformation();
+        this.chatAcceptance = dto.isChatAcceptance();
 
     }
 }

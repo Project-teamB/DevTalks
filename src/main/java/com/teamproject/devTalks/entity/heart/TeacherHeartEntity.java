@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 @IdClass(TeacherHeartPk.class)
 public class TeacherHeartEntity {
     @Id
-    private int userNumber;
-    @Id
     private int teacherBoardNumber;
+    @Id
+    private int userNumber;
 
     public TeacherHeartEntity(UserEntity userEntity, TeacherBoardEntity teacherBoardEntity) {
         this.teacherBoardNumber = teacherBoardEntity.getTeacherBoardNumber();

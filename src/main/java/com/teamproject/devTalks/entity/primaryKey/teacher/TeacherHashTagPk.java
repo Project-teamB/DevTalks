@@ -5,8 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 
 public class TeacherHashTagPk implements Serializable{
-    @Column(name = "teacherHashtag")
-    private String hashtag;
+    @Column(name = "boardHashtag")
+    private String boardHashtag;
 
     @Column(name = "teacherBoardNumber")
     private int teacherBoardNumber;

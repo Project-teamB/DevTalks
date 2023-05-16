@@ -10,6 +10,7 @@ import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListRe
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
+import com.teamproject.devTalks.entity.hashTag.TeacherBoardHashTagEntity;
 import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.heart.TeacherHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
@@ -184,32 +185,27 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         return CustomResponse.success();
 
     }
-    @Override
-    public ResponseEntity<ResponseDto> postTeacherHashTag(String userEmail, UserSignUpRequestDto dto) {
-        return null;
+    
         
         // String userEmail = dto.getUserEmail();
         // String userNickname = dto.getUserNickname();
         // String userPhoneNumber = dto.getUserPhoneNumber();
 
         // List<String> hashtagList = dto.getUserHashtag();
-        // List<UserHashTagEntity> userHashtagList = new ArrayList<>();
+        // List<TeacherBoardHashTagEntity> teacherBoardHashtagList = new ArrayList<>();
 
 
 
         // try {
 
-        //     boolean isExistEmail = userRepository.existsByUserEmail(userEmail);
-        //     if(isExistEmail) return CustomResponse.existEmail();
+        //     UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+        //     if (userEntity == null) return CustomResponse.noExistUser();
 
-        //     boolean isExistNickname = userRepository.existsByUserNickname(userNickname);
-        //     if(isExistNickname) return CustomResponse.existNickname();
+        //     TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
+        //     if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
-        //     boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(userPhoneNumber);
-        //     if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
-
-        //     UserEntity userEntity = new UserEntity(dto);
-        //     userRepository.save(userEntity);
+        //     TeacherBoardHashTagEntity teacherHashTagEntity = new TeacherBoardHashTagEntity(userEntity, teacherBoardEntity);
+        //     teacherBoardHashTagRepository.save(teacherHashTagEntity);
 
         //     int userNumber = userEntity.getUserNumber();
 
@@ -233,16 +229,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         // }
 
         // return CustomResponse.success();
-    }
-    @Override
-    public ResponseEntity<ResponseDto> patchTeacherHashTag(String userEmail, UserSignUpRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'patchTeacherHashTag'");
-    }
-    @Override
-    public ResponseEntity<ResponseDto> deleteTeacherHashTag(String userEmail, Integer teacherBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTeacherHashTag'");
-    }
+    
 
 }

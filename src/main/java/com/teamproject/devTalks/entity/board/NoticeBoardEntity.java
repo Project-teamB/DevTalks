@@ -1,5 +1,6 @@
 package com.teamproject.devTalks.entity.board;
 
+import com.teamproject.devTalks.dto.request.board.notice.PatchNoticeBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import lombok.Getter;
@@ -42,5 +43,19 @@ public class NoticeBoardEntity {
         this.noticeContent = dto.getNoticeContent();
         this.noticeImageUrl = dto.getNoticeImageUrl();
         this.writeDatetime = now.format(formatter);
+    }
+
+    public NoticeBoardEntity(NoticeBoardEntity noticeBoardEntity, PatchNoticeBoardRequestDto dto) {
+        this.noticeBoardNumber = noticeBoardEntity.getNoticeBoardNumber();
+        this.writerEmail = noticeBoardEntity.getWriterEmail();
+        this.writerProfileImageUrl = noticeBoardEntity.getWriterProfileImageUrl();
+        this.viewCount = noticeBoardEntity.getViewCount();
+        this.noticeTitle = dto.getNoticeTitle();
+        this.noticeContent = dto.getNoticeContent();
+        this.noticeImageUrl = dto.getBoardImageUrl();
+        this.writeDatetime = noticeBoardEntity.getWriteDatetime();
+
+
+
     }
 }

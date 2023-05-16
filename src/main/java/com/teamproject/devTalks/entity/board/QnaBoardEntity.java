@@ -15,8 +15,10 @@ import com.teamproject.devTalks.entity.user.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "qna")
 @Table(name = "qna")
@@ -52,6 +54,8 @@ public class QnaBoardEntity {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+        this.qnaBoardNumber = dto.getQnaBoardNumber(); // 이거안적으면 추가가 됨, pk가 존재하면 업데이트 존재하지 않으면 insert(만들어짐)
+        this.writerEmail = userEntity.getUserEmail();
         this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.writerNickname = userEntity.getUserNickname();
         this.writeDatetime = dateFormat.format(now);

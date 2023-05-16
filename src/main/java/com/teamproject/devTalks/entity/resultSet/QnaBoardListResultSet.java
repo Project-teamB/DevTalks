@@ -24,5 +24,5 @@ public interface QnaBoardListResultSet {
 
     public int getHeartCount();
 
-    public String getHashtag();
+    public String getBoardHashtag();
 }

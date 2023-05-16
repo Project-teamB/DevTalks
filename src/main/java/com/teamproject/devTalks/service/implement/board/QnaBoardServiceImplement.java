@@ -195,7 +195,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (userEntity == null)
                 return CustomResponse.noExistUser();
             // 존재하지 않는 게시물(게시물번호)
-            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(0);
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber());
+            //dto 에서 받아왔으니 qnaBoardRepository.findByQnaBoardNumber(dto.getQnaBoardNumber() 이렇게 dto에서 꺼내옴
             if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 

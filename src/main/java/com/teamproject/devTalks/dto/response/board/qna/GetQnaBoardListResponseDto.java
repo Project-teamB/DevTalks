@@ -19,6 +19,8 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 
 	public GetQnaBoardListResponseDto(List<QnaBoardListResultSet> resultSets) { // A
 
+		super("SU", "Success");
+
 		this.qnaBoardList = new ArrayList<>(); // 빈 B리스트를 만든다
 
 		// A를 반복하며 돈다
@@ -58,8 +60,8 @@ class BoardSummary {
 		this.viewCount = resultSet.getViewCount();
 		this.writerNickname = resultSet.getWriterNickname();
 		this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
-		this.commentCount = resultSet.getCommentCount();
-		this.heartCount = resultSet.getHeartCount();
+		this.commentCount = resultSet.getQnaCommentCount();
+		this.heartCount = resultSet.getQnaHeartCount();
 
 	}
 

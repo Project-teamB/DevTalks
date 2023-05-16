@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetQnaBoardResponseDto extends ResponseDto{
-    
+public class GetQnaBoardResponseDto extends ResponseDto {
+
     private int qnaBoardNumber;
     private String qnaTitle;
     private String qnaContent;
@@ -30,70 +30,69 @@ public class GetQnaBoardResponseDto extends ResponseDto{
     private int qnaHeartCount;
 
     public GetQnaBoardResponseDto(
-        QnaBoardEntity qnaBoardEntity, UserEntity userEntity, List<QnaCommentEntity> qnaCommentEntities, int qnaHeartCount
-        ){
-            super("SU", "Success");
+            QnaBoardEntity qnaBoardEntity, UserEntity userEntity, List<QnaCommentEntity> qnaCommentEntities,
+            int qnaHeartCount) {
+        super("SU", "Success");
 
-
-            this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
-            this.qnaTitle = qnaBoardEntity.getQnaTitle();
-            this.qnaContent = qnaBoardEntity.getQnaContent();
-            this.qnaBoardImageUrl = qnaBoardEntity.getQnaBoardImageUrl();
-            this.writeDatetime = qnaBoardEntity.getWriteDatetime();
-            this.viewCount = qnaBoardEntity.getViewCount();
-            this.writerNickname = qnaBoardEntity.getWriterNickname();
-            this.writerProfileImageUrl = qnaBoardEntity.getWriterProfileImageUrl();
-            this.commentList = createQnaCommentList(qnaCommentEntities);
-            this.qnaHeartCount = qnaHeartCount;// 이거의 개수가 필요 
+        this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
+        this.qnaTitle = qnaBoardEntity.getQnaTitle();
+        this.qnaContent = qnaBoardEntity.getQnaContent();
+        this.qnaBoardImageUrl = qnaBoardEntity.getQnaBoardImageUrl();
+        this.writeDatetime = qnaBoardEntity.getWriteDatetime();
+        this.viewCount = qnaBoardEntity.getViewCount();
+        this.writerNickname = qnaBoardEntity.getWriterNickname();
+        this.writerProfileImageUrl = qnaBoardEntity.getWriterProfileImageUrl();
+        this.commentList = createQnaCommentList(qnaCommentEntities);
+        this.qnaHeartCount = qnaHeartCount;// 이거의 개수가 필요
     }
-    
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Comment {
 
-    private int qnaCommentNumber;
-    private int qnaBoardNumber;
-    private String commentWriterEmail;
-    private String commentContent;
-    private String writerNickname;
-    private String writerProfileImageUrl;
-    private String writeDatetime;
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class Comment {
 
-    public Comment(QnaCommentEntity qnaCommentEntity) {
+        private int qnaCommentNumber;
+        private int qnaBoardNumber;
+        private String commentWriterEmail;
+        private String commentContent;
+        private String writerNickname;
+        private String writerProfileImageUrl;
+        private String writeDatetime;
 
-        this.qnaCommentNumber = qnaCommentEntity.getQnaBoardNumber();
-        this.qnaBoardNumber = qnaCommentEntity.getQnaBoardNumber();
-        this.commentWriterEmail = qnaCommentEntity.getWriterEmail();;
-        this.commentContent = qnaCommentEntity.getCommentContent();
-        this.writerNickname = qnaCommentEntity.getWriterNickname();
-        this.writerProfileImageUrl = qnaCommentEntity.getWriterProfileImageUrl();
-        this.writeDatetime = qnaCommentEntity.getWriteDatetime();
+        public Comment(QnaCommentEntity qnaCommentEntity) {
+
+            this.qnaCommentNumber = qnaCommentEntity.getQnaBoardNumber();
+            this.qnaBoardNumber = qnaCommentEntity.getQnaBoardNumber();
+            this.commentWriterEmail = qnaCommentEntity.getWriterEmail();
+            ;
+            this.commentContent = qnaCommentEntity.getCommentContent();
+            this.writerNickname = qnaCommentEntity.getWriterNickname();
+            this.writerProfileImageUrl = qnaCommentEntity.getWriterProfileImageUrl();
+            this.writeDatetime = qnaCommentEntity.getWriteDatetime();
 
         }
 
     }
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     class Heart {
 
         private int userNumber;
         private int qnaBoardNumber;
 
-        public Heart(QnaHeartEntity qnaHeartEntity){
+        public Heart(QnaHeartEntity qnaHeartEntity) {
             this.userNumber = qnaHeartEntity.getUserNumber();
             this.qnaBoardNumber = qnaHeartEntity.getQnaBoardNumber();
         }
 
     }
 
-
-
-    private List<Comment> createQnaCommentList(List<QnaCommentEntity> qnaCommentEntities){
+    private List<Comment> createQnaCommentList(List<QnaCommentEntity> qnaCommentEntities) {
 
         List<Comment> qnaCommentList = new ArrayList<>();
-        for(QnaCommentEntity qnaComments:qnaCommentEntities){
+        for (QnaCommentEntity qnaComments : qnaCommentEntities) {
 
             Comment qnaComment = new Comment(qnaComments);
             qnaCommentList.add(qnaComment);
@@ -101,9 +100,4 @@ class Comment {
         return qnaCommentList;
     }
 
-
 }
-
-
-
-

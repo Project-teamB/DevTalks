@@ -20,9 +20,9 @@ public interface QnaBoardListResultSet {
 
     public String getWriterProfileImageUrl();
 
-    public int getCommentCount();
+    public int getQnaCommentCount();
 
-    public int getHeartCount();
+    public int getQnaHeartCount();
 
     public String getBoardHashtag();
 }

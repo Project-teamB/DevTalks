@@ -74,7 +74,11 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             String qnaBoardWriterEmail = qnaBoardEntity.getWriterEmail();
             UserEntity userEntity = userRepository.findByUserEmail(qnaBoardWriterEmail);
 
-            // 모르겠다
+            List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(qnaBoardNumber);
+            QnaHeartEntity qnaHeartEntities = qnaHeartRepository.findByQnaBoardNumber(qnaBoardNumber);
+
+            
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaHeartEntities);
 
         } catch (Exception exception) {
             exception.printStackTrace();

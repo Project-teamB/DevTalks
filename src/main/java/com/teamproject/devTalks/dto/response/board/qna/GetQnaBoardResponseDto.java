@@ -1,8 +1,13 @@
 package com.teamproject.devTalks.dto.response.board.qna;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.entity.board.QnaBoardEntity;
+import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
+import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
+import com.teamproject.devTalks.entity.user.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +29,24 @@ public class GetQnaBoardResponseDto extends ResponseDto{
     private List<Comment> commentList;
     private int heartCount;
 
-}
+    public GetQnaBoardResponseDto(
+        QnaBoardEntity qnaBoardEntity, UserEntity userEntity, List<QnaCommentEntity> qnaCommentEntities, QnaHeartEntity qnaHeartEntity
+        ){
+            super("SU", "Success");
 
+
+            this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
+            this.qnaTitle = qnaBoardEntity.getQnaTitle();
+            this.qnaContent = qnaBoardEntity.getQnaContent();
+            this.qnaBoardImageUrl = qnaBoardEntity.getQnaBoardImageUrl();
+            this.writeDatetime = qnaBoardEntity.getWriteDatetime();
+            this.viewCount = qnaBoardEntity.getViewCount();
+            this.writerNickname = qnaBoardEntity.getWriterNickname();
+            this.writerProfileImageUrl = qnaBoardEntity.getWriterProfileImageUrl();
+            this.commentList = createQnaCommentList(qnaCommentEntities);
+            this.heartCount = qnaHeartEntity.getQnaBoardNumber(); // 이거의 개수가 필요
+    }
+    
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,5 +59,35 @@ class Comment {
     private String writerNickname;
     private String writerProfileImageUrl;
     private String writeDatetime;
+
+    public Comment(QnaCommentEntity qnaCommentEntity) {
+
+        this.qnaCommentNumber = qnaCommentEntity.getQnaBoardNumber();
+        this.qnaBoardNumber = qnaCommentEntity.getQnaBoardNumber();
+        this.commentWriterEmail = qnaCommentEntity.getWriterEmail();;
+        this.commentContent = qnaCommentEntity.getCommentContent();
+        this.writerNickname = qnaCommentEntity.getWriterNickname();
+        this.writerProfileImageUrl = qnaCommentEntity.getWriterProfileImageUrl();
+        this.writeDatetime = qnaCommentEntity.getWriteDatetime();
+
+        }
+
+    }
+
+    private List<Comment> createQnaCommentList(List<QnaCommentEntity> qnaCommentEntities){
+
+        List<Comment> qnaCommentList = new ArrayList<>();
+        for(QnaCommentEntity qnaComments:qnaCommentEntities){
+
+            Comment qnaComment = new Comment(qnaComments);
+            qnaCommentList.add(qnaComment);
+        }
+        return qnaCommentList;
+    }
+
+
 }
+
+
+
 

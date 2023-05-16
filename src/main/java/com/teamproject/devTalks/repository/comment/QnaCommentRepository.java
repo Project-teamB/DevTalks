@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.repository.comment;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,10 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
 
 
+
+
 @Repository
 public interface QnaCommentRepository extends JpaRepository<QnaCommentEntity, Integer> {
 
     public QnaCommentEntity findByQnaCommentNumber(int qnaCommentNumber);
+
+    public List<QnaCommentEntity> findByQnaBoardNumber(int qnaBoardNumber);
 
     
     @Transactional // 삭제하려면 달아야함(게시물에 달린 댓글전체삭제) 

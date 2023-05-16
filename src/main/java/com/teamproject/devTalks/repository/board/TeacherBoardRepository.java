@@ -17,8 +17,8 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
     public TeacherBoardEntity findByWriterEmail(String email);
     
 
-    // @Transactional
-    // void deleteByteacherBoardNumber(int teacherBoardNumber);
+    @Transactional
+    void deleteByteacherBoardNumber(int teacherBoardNumber);
 
     // @Query
     // (value = "SELECT " +

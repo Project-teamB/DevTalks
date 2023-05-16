@@ -16,6 +16,6 @@ public class PostQnaBoardRequestDto {
     @NotBlank
     private String qnaContent;
     private String qnaBoardImageUrl;
-    private List<String> hashtag;
+    private List<String> boardHashtag;
 
 }

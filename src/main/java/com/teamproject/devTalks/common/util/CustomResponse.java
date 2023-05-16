@@ -3,7 +3,6 @@ package com.teamproject.devTalks.common.util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.fasterxml.jackson.databind.deser.impl.ErrorThrowingDeserializer;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 
 public class CustomResponse {

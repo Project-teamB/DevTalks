@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +54,9 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-
-    // 이거
+    
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber) {
 
@@ -75,23 +75,23 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             UserEntity userEntity = userRepository.findByUserEmail(qnaBoardWriterEmail);
 
             List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(qnaBoardNumber);
-            QnaHeartEntity qnaHeartEntities = qnaHeartRepository.findByQnaBoardNumber(qnaBoardNumber);
+            List<QnaHeartEntity> qnaHeartEntities = qnaHeartRepository.findByQnaBoardNumber(qnaBoardNumber);
+            int qnaHeartCount = qnaHeartEntities.size();
 
-            
-            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaHeartEntities);
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaHeartCount);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
 
     }
 
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(String userEmail, PostQnaBoardRequestDto dto) {
 
-        List<String> hashtagList = dto.getHashtag();
+        List<String> hashtagList = dto.getBoardHashtag();
         List<QnaBoardHashTagEntity> qnaHashtagList = new ArrayList<>();
 
         try {

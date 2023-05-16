@@ -27,10 +27,10 @@ public class GetQnaBoardResponseDto extends ResponseDto{
     private String writerNickname;
     private String writerProfileImageUrl;
     private List<Comment> commentList;
-    private int heartCount;
+    private int qnaHeartCount;
 
     public GetQnaBoardResponseDto(
-        QnaBoardEntity qnaBoardEntity, UserEntity userEntity, List<QnaCommentEntity> qnaCommentEntities, QnaHeartEntity qnaHeartEntity
+        QnaBoardEntity qnaBoardEntity, UserEntity userEntity, List<QnaCommentEntity> qnaCommentEntities, int qnaHeartCount
         ){
             super("SU", "Success");
 
@@ -44,7 +44,7 @@ public class GetQnaBoardResponseDto extends ResponseDto{
             this.writerNickname = qnaBoardEntity.getWriterNickname();
             this.writerProfileImageUrl = qnaBoardEntity.getWriterProfileImageUrl();
             this.commentList = createQnaCommentList(qnaCommentEntities);
-            this.heartCount = qnaHeartEntity.getQnaBoardNumber(); // 이거의 개수가 필요
+            this.qnaHeartCount = qnaHeartCount;// 이거의 개수가 필요 
     }
     
 @Data
@@ -73,6 +73,22 @@ class Comment {
         }
 
     }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+    class Heart {
+
+        private int userNumber;
+        private int qnaBoardNumber;
+
+        public Heart(QnaHeartEntity qnaHeartEntity){
+            this.userNumber = qnaHeartEntity.getUserNumber();
+            this.qnaBoardNumber = qnaHeartEntity.getQnaBoardNumber();
+        }
+
+    }
+
+
 
     private List<Comment> createQnaCommentList(List<QnaCommentEntity> qnaCommentEntities){
 

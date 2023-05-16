@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class QnaBoardHashTagEntity {
 
     @Id
-    private String board_Hashtag;
+    private String boardHashtag;
     @Id
     private int qnaBoardNumber;
 

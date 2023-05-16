@@ -15,6 +15,6 @@ public interface QnaBoardHashTagRepository extends JpaRepository<QnaBoardHashTag
     void deleteByQnaBoardNumber(int qnaBoardNumber);
 
     @Transactional
-    void deleteByHashtagAndQnaBoardNumber(String hashtag, int qnaBoardNumber);
+    void deleteByBoardHashtagAndQnaBoardNumber(String hashtag, int qnaBoardNumber);
 
 }

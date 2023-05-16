@@ -13,6 +13,6 @@ import com.teamproject.devTalks.entity.primaryKey.teacher.TeacherHeartPk;
 public interface TeacherHeartRepository extends JpaRepository<TeacherHeartEntity,TeacherHeartPk> {
     List<TeacherHeartEntity> findAllByTeacherBoardNumber(int teacherBoardNumber);
 
-    @Transactional
-    void deleteByBoardNumber(int teacherBoardNumber);
+    // @Transactional
+    // void deleteByBoardNumber(int teacherBoardNumber);
 }

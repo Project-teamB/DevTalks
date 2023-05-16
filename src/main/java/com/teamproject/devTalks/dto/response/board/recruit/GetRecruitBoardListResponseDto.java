@@ -46,7 +46,7 @@ class RecruitBoardSummary {
     private String writerProfileImageUrl;
     private int commentCount;
     private int heartCount;
-    private String hashtag;
+    private List<String> boardHashTag;
     private boolean recruitmentStatus;
 
     public RecruitBoardSummary(RecruitBoardListResultSet resultSet) {
@@ -61,7 +61,7 @@ class RecruitBoardSummary {
         this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
         this.commentCount = resultSet.getCommentCount();
         this.heartCount = resultSet.getHeartCount();
-        this.hashtag = resultSet.getHashTag();
+        this.boardHashTag = resultSet.getBoardHashTag();
         this.recruitmentStatus = resultSet.isRecruitmentStatus();
     }
 }

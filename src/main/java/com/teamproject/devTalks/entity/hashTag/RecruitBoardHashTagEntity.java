@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.entity.hashTag;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -21,5 +23,5 @@ public class RecruitBoardHashTagEntity {
     @Id
     private int recruitBoardNumber;
     @Id
-    private String hashtag;
+    private List<String> boardHashTag;
 }

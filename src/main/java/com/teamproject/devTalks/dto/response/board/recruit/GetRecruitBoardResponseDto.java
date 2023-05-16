@@ -31,7 +31,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
     private int viewCount;
     private List<RecruitComment> commentList;
     private List<RecruitHeart> heartList;
-    private String hashtag;
+    private List<String> boardHashTag;
     private boolean recruitmentStatus;
 
     public GetRecruitBoardResponseDto(
@@ -52,7 +52,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
         this.viewCount = recruitBoardEntity.getViewCount();
         this.commentList = RecruitComment.createList(recruitCommentEntities);
         this.heartList = RecruitHeart.createList(recruitHeartEntities);
-        this.hashtag = recruitBoardHashTagEntity.getHashtag();
+        this.boardHashTag = recruitBoardHashTagEntity.getBoardHashTag();
 
     }
 
@@ -71,7 +71,6 @@ class RecruitComment {
     private String writerNickname;
     private String writerProfileImageUrl;
     private String writeDatetime;
-    private String updateDatetime;
 
     RecruitComment(RecruitCommentEntity recruitCommentEntity) {
         this.recruitCommentNumber = recruitCommentEntity.getRecruitCommentNumber();
@@ -82,7 +81,6 @@ class RecruitComment {
         this.writerNickname = recruitCommentEntity.getWriterNickname();
         this.writerProfileImageUrl = recruitCommentEntity.getWriterProfileImageUrl();
         this.writeDatetime = recruitCommentEntity.getWriteDatetime();
-        this.updateDatetime = recruitCommentEntity.getUpdateDatetime();
     }
 
     static List<RecruitComment> createList(List<RecruitCommentEntity> recruitCommentEntities) {
@@ -120,4 +118,6 @@ class RecruitHeart {
     }
 
 }
+
+
 

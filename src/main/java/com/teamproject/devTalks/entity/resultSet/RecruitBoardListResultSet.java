@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.entity.resultSet;
 
+import java.util.List;
+
 public interface RecruitBoardListResultSet {
     public int getRecruitBoardNumber();
     public String getRecruitBoardTitle();
@@ -12,6 +14,6 @@ public interface RecruitBoardListResultSet {
     public String getWriterProfileImageUrl();
     public int getCommentCount();
     public int getHeartCount();
-    public String getHashTag();
+    public List<String> getBoardHashTag();
     public boolean isRecruitmentStatus();
 }

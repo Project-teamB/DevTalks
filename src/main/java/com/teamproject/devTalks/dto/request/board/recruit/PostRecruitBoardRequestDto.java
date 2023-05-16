@@ -11,13 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostRecruitBoardRequestDto {
     
-    
     @NotBlank
     private String recruitBoardTitle;
     @NotBlank
     private String recruitBoardContent;
     private String recruitBoardImageUrl;
-    private List<String> hashtag;
+    private List<String> boardHashTag;
     private boolean recruitmentStatus;
     
 }

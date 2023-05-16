@@ -11,7 +11,7 @@ import com.teamproject.devTalks.entity.primaryKey.recruit.RecruitHashtagPk;
 @Repository
 public interface RecruitBoardHashTagRepository extends JpaRepository<RecruitBoardHashTagEntity, RecruitHashtagPk> {
     
-    List<RecruitBoardHashTagEntity> findByRecruitBoardNumber(int recruitBoardNumber);
+    // List<RecruitBoardHashTagEntity> findByHashtag(List<String> hashtag);
     
 
 }

@@ -119,13 +119,13 @@ public class AdminServiceImplement implements AdminService {
 
             boolean isExistNickname = adminRepository.existsByAdminNickname(adminNickname);
             if(isExistNickname) return CustomResponse.existNickname();
-            adminEntity.setAdminNickname(adminNickname);
 
             boolean isExistPhoneNumber = adminRepository.existsByAdminPhoneNumber(adminPhoneNumber);
             if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
-            adminEntity.setAdminPhoneNumber(adminPhoneNumber);
 
-            adminRepository.save(adminEntity);
+            AdminEntity updateAdmin = new AdminEntity(adminEntity,dto);
+
+            adminRepository.save(updateAdmin);
 
         }catch (Exception exception){
             exception.printStackTrace();

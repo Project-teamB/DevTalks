@@ -196,14 +196,13 @@ public class UserServiceImplement implements UserService {
         String userNickname = dto.getUserNickname();
         String userPhoneNumber = dto.getUserPhoneNumber();
 
-
         List<String> hashtagList = dto.getUserHashtag();
         List<UserHashtagEntity> userHashtagList = new ArrayList<>();
 
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) CustomResponse.noExistUser();
+            if(userEntity == null) CustomResponse.authenticationFailed();
 
             String encodedCurrentPassword = userEntity.getUserPassword();
 

@@ -17,6 +17,7 @@ import com.teamproject.devTalks.dto.response.board.information.GetInformationBoa
 import com.teamproject.devTalks.entity.board.InformationBoardEntity;
 import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
 import com.teamproject.devTalks.entity.heart.InformationHeartEntity;
+import com.teamproject.devTalks.entity.resultSet.InformationBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.service.board.InformationBoardService;
 import com.teamproject.devTalks.common.util.CustomResponse;
@@ -68,45 +69,178 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
     @Override
     public ResponseEntity<ResponseDto> postInformationComment(String userEmail, PostInformationCommentRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'postInformationComment'");
-    }
+    
+        try {
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.authenticationFailed();
 
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(dto.getInformationBoardNumber());
+            if (informationBoardEntity == null)
+            return CustomResponse.notExistBoardNumber();
+
+            InformationCommentEntity informationCommentEntity = 
+            new InformationCommentEntity(userEntity, informationBoardEntity, dto);
+            informationCommentRepository.save(informationCommentEntity);    
+            
+            return CustomResponse.success();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+    }
+    
     @Override
     public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, PostInformationHeartRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'postInformationHeart'");
+
+        try {
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.authenticationFailed();
+
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(dto.getInformationBoardNumber());
+            if (informationBoardEntity == null)
+            return CustomResponse.notExistBoardNumber();
+
+            InformationHeartEntity informationHeartEntity = new InformationHeartEntity(userEntity, informationBoardEntity);
+            informationHeartRepository.save(informationHeartEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
+
 
     @Override
     public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'patchInformationBoard'");
+        int informationBoardNumber = dto.getInformationBoardNumber();
+        String informationBoardTitle = dto.getInformationBoardTitle();
+        String informationBoardContent = dto.getInformationBoardContent();
+        String informationBoardImageUrl = dto.getInformationBoardImageUrl();
+
+        try {
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
+            if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            boolean equalWriter = informationBoardEntity.getWriterEmail().equals(userEmail);
+            if (!equalWriter) return CustomResponse.noPermission();
+
+            informationBoardEntity.setInformationBoardTitle(informationBoardTitle);
+            informationBoardEntity.setInformationBoardContent(informationBoardContent);
+            informationBoardEntity.setInformationBoardImageUrl(informationBoardImageUrl);
+
+            informationBoardRepository.save(informationBoardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 
     @Override
     public ResponseEntity<ResponseDto> patchInformationComment(String userEmail,
             PatchInformationCommentRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'patchInformationComment'");
-    }
+
+            Integer informationCommentNumber = dto.getInformationCommentNumber();
+            String informationCommentContent = dto.getInformationCommentContent();
+    
+            try {
+                InformationCommentEntity informationCommentEntity = 
+                informationCommentRepository.findByInformationCommentNumber(informationCommentNumber);
+                if (informationCommentEntity == null) return CustomResponse.notExistBoardNumber();
+    
+                boolean equalWriter = informationCommentEntity.getWriterEmail().equals(userEmail);
+                if (!equalWriter) return CustomResponse.noPermission();
+    
+                informationCommentEntity.setInformationCommentContent(informationCommentContent); 
+                informationCommentRepository.save(informationCommentEntity);
+    
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                return CustomResponse.databaseError();
+            }
+    
+            return CustomResponse.success();
+            }
 
     @Override
     public ResponseEntity<ResponseDto> deleteInformationBoard(String userEmail, Integer informationBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteInformationBoard'");
+
+        try {
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if(userEntity == null) return CustomResponse.authenticationFailed();
+            
+            if (informationBoardNumber == null) return CustomResponse.validationFailed();
+
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
+            if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            boolean equalWriter = informationBoardEntity.getWriterEmail().equals(userEmail);
+            if (!equalWriter) return CustomResponse.noPermission();
+
+            informationCommentRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+
     }
 
     @Override
     public ResponseEntity<ResponseDto> deleteInformationComment(String userEmail, Integer informationCommentNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteInformationComment'");
+
+        try {
+            if (informationCommentNumber == null) return CustomResponse.validationFailed();
+
+            InformationCommentEntity informationCommentEntity = 
+            informationCommentRepository.findByInformationCommentNumber(informationCommentNumber);
+            if (informationCommentEntity == null) return CustomResponse.notExistCommentNumber();
+
+            boolean equalWriter = informationCommentEntity.getWriterEmail().equals(userEmail);
+            if (!equalWriter) return CustomResponse.noPermission();
+
+            informationCommentRepository.deleteByInformationCommentNumber(informationCommentNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+
     }
 
     @Override
     public ResponseEntity<ResponseDto> deleteInformationHeart(String userEmail, Integer informationBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteInformationHeart'");
+
+        try {
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
+            int userNumber = userEntity.getUserNumber();
+            informationHeartRepository.deleteByUserNumberAndInformationBoardNumber(userNumber, informationBoardNumber);
+
+    
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+    
+        return CustomResponse.success();
+    
     }
 
     @Override
@@ -130,7 +264,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
             List<InformationCommentEntity> informationCommentEntities = 
             informationCommentRepository.findByInformationBoardNumber(informationBoardNumber);
             List<InformationHeartEntity> informationHeartEntities = 
-            informationHeartRepository.findAllByInformationBoardNumber(informationBoardNumber);
+            informationHeartRepository.findByInformationBoardNumber(informationBoardNumber);
 
             body = new GetInformationBoardResponseDto(informationBoardEntity, userEntity, informationCommentEntities, informationHeartEntities);
 
@@ -144,11 +278,23 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
     @Override
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getInformationBoardList'");
+        
+        GetInformationBoardListResponseDto body;
+
+        try {
+
+            List<InformationBoardListResultSet> resultSet = informationBoardRepository.getInformationBoardList();
+            body = new GetInformationBoardListResponseDto(resultSet);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-
-
-    
-    
 }
+
+
+    
+    

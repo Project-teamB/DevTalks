@@ -25,8 +25,8 @@ public class InformationHeartEntity {
     @Id
     private int userNumber;
 
-    public InformationHeartEntity(UserEntity userEntity, InformationBoardEntity qnaBoardEntity) {
-        this.informationBoardNumber = qnaBoardEntity.getInformationBoardNumber();
+    public InformationHeartEntity(UserEntity userEntity, InformationBoardEntity informationBoardEntity) {
+        this.informationBoardNumber = informationBoardEntity.getInformationBoardNumber();
         this.userNumber = userEntity.getUserNumber();
     }
 }

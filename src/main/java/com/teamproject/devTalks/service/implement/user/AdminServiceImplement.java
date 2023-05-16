@@ -7,13 +7,13 @@ import com.teamproject.devTalks.dto.response.user.AdminSignInResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetAdminInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserForAdminResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserListForAdminResponseDto;
-import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
+import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.resultSet.UserListResultSet;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
-import com.teamproject.devTalks.repository.hashTag.UserHashTagRepository;
+import com.teamproject.devTalks.repository.hashTag.UserHashtagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
@@ -33,7 +33,7 @@ public class AdminServiceImplement implements AdminService {
 
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
-    private final UserHashTagRepository userHashTagRepository;
+    private final UserHashtagRepository userHashtagRepository;
     private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -224,11 +224,11 @@ public class AdminServiceImplement implements AdminService {
             UserEntity userEntity = userRepository.findByUserNumber(userNumber);
             if(userEntity == null) return CustomResponse.noExistUser();
 
-            List<UserHashTagEntity> userHashTagEntities =
-                    userHashTagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities =
+                    userHashtagRepository.findAllByUserNumber(userNumber);
 
-            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
-                String hashtag = userHashTagEntity.getUserHashtag();
+            for(UserHashtagEntity userHashtagEntity: userHashtagEntities){
+                String hashtag = userHashtagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 

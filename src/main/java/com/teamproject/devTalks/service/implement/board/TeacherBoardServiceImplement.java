@@ -56,20 +56,20 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-    // @Override
-    // public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
-    //     GetTeacherBoardListResponseDto body = null;
-    //     try {
+    @Override
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
+        GetTeacherBoardListResponseDto body = null;
+        try {
 
-    //         List<TeacherBoardListResultSet> resultSets = teacherBoardRepository.getList();
-    //         body = new GetTeacherBoardListResponseDto(resultSets);
+            List<TeacherBoardListResultSet> resultSets = teacherBoardRepository.getList();
+            body = new GetTeacherBoardListResponseDto(resultSets);
 
-    //     }catch (Exception exception){
-    //         exception.printStackTrace();
-    //         return CustomResponse.databaseError();
-    //     }
-    //     return CustomResponse.success();
-    // }
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
 
     @Override
     public ResponseEntity<ResponseDto> postTeacherBoard(String userEmail, PostTeacherBoardRequestDto dto) {
@@ -242,12 +242,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     public ResponseEntity<ResponseDto> deleteTeacherHashTag(String userEmail, Integer teacherBoardNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteTeacherHashTag'");
-    }
-
-    @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTeacherBoardList'");
     }
 
 }

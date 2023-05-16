@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Data
 public class UserHashTagPk implements Serializable {
 
-    @Column(name = "user_number")
+    @Column(name = "userNumber")
     private int userNumber;
-    @Column(name = "hashtag")
-    private String hashtag;
+    @Column(name = "userHashtag")
+    private String userHashtag;
 }

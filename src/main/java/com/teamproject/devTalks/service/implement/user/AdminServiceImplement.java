@@ -228,7 +228,7 @@ public class AdminServiceImplement implements AdminService {
                     userHashTagRepository.findAllByUserNumber(userNumber);
 
             for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
-                String hashtag = userHashTagEntity.getHashtag();
+                String hashtag = userHashTagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class QnaHashTagPk  implements Serializable {
 
     @Column(name = "qnaHashtag")
-    private String hashtag;
+    private String boardHashtag;
 
     @Column(name = "qnaBoardNumber")
     private int qnaBoardNumber;

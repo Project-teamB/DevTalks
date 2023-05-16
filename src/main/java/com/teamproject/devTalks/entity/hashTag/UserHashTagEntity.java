@@ -19,6 +19,6 @@ public class UserHashTagEntity {
     @Id
     private int userNumber;
     @Id
-    private String hashtag;
+    private String userHashtag;
 
 }

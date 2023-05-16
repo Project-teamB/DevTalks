@@ -73,7 +73,7 @@ public class UserServiceImplement implements UserService {
                 UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
 
                 userHashTagEntity.setUserNumber(userNumber);
-                userHashTagEntity.setHashtag(hashTag);
+                userHashTagEntity.setUserHashtag(hashTag);
 
                 userHashtagList.add(userHashTagEntity);
 
@@ -137,7 +137,7 @@ public class UserServiceImplement implements UserService {
                     userHashTagRepository.findAllByUserNumber(userNumber);
 
             for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
-                String hashtag = userHashTagEntity.getHashtag();
+                String hashtag = userHashTagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 
@@ -174,7 +174,7 @@ public class UserServiceImplement implements UserService {
                     userHashTagRepository.findAllByUserNumber(userNumber);
 
             for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
-                String hashtag = userHashTagEntity.getHashtag();
+                String hashtag = userHashTagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 
@@ -240,7 +240,7 @@ public class UserServiceImplement implements UserService {
 
                 UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
                 userHashTagEntity.setUserNumber(userNumber);
-                userHashTagEntity.setHashtag(hashtag);
+                userHashTagEntity.setUserHashtag(hashtag);
 
                 userHashtagList.add(userHashTagEntity);
 

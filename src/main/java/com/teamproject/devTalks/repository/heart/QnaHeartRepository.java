@@ -7,9 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
 import com.teamproject.devTalks.entity.primaryKey.qna.QnaHeartPk;
 
+
+
 @Repository
 public interface QnaHeartRepository extends JpaRepository<QnaHeartEntity, QnaHeartPk>{
     
+
+    public QnaHeartEntity findByQnaBoardNumber(int qnaBoardNumber);
+
     @Transactional
     void deleteByQnaBoardNumber(int qnaBoardNumber);
 

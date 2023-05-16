@@ -30,13 +30,14 @@ public class GetInformationBoardResponseDto extends ResponseDto {
     private int viewCount;
     private String writeDatetime;
     private String updateDatetime;
-    private List<InformationComment> informationCommentList;
-    private List<InformationHeart> informationHeartList;
+    private List<Comment> commentList;
+    private int heartCount;
 
     public GetInformationBoardResponseDto(
         InformationBoardEntity informationBoardEntity, UserEntity userEntity,
-        List<InformationCommentEntity> informationCommentEntities, List<InformationHeartEntity> informationHeartEntities    
-) {
+        List<InformationCommentEntity> informationCommentEntities, List<InformationHeartEntity> informationHeartEntities
+        ) {   
+
         super("SU", "Success");
 
         this.informationBoardNumber = informationBoardEntity.getInformationBoardNumber();
@@ -49,32 +50,35 @@ public class GetInformationBoardResponseDto extends ResponseDto {
         this.contentSource = informationBoardEntity.getContentSource();
         this.viewCount = informationBoardEntity.getViewCount();
         this.writeDatetime = informationBoardEntity.getWriteDatetime();
-        this.updateDatetime = informationBoardEntity.getUpdateDatetime();
-        this.informationCommentList = createInformationCommentList(informationCommentEntities);
-        this.informationHeartList = createInformationHeartList(informationHeartEntities);
+        this.commentList = createCommentList(informationCommentEntities);
+        this.heartCount = getHeartCount(informationHeartEntities);
    
+    }
+
+    public int getHeartCount(List<InformationHeartEntity> informationHeartEntities) {
+        return informationHeartEntities.size();
     }
 
     @Getter
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class InformationComment {
+    public static class Comment {
         private int informationCommentNumber;
         private String informationCommentContent;
-        private String informationCommentWriterNickname;
-        private String informationCommentWriterEmail;
-        private String informationCommentWriterProfileImageUrl;
-        private String informationCommentWriteDatetime;
+        private String writerNickname;
+        private String writerEmail;
+        private String writerProfileImageUrl;
+        private String writeDatetime;
         private int informationBoardNumber;
     
-        public InformationComment(InformationCommentEntity informationCommentEntity) {
+        public Comment(InformationCommentEntity informationCommentEntity) {
             this.informationCommentNumber = informationCommentEntity.getInformationCommentNumber();
             this.informationCommentContent = informationCommentEntity.getInformationCommentContent();
-            this.informationCommentWriterNickname = informationCommentEntity.getWriterNickname();
-            this.informationCommentWriterEmail = informationCommentEntity.getWriterEmail();
-            this.informationCommentWriterProfileImageUrl = informationCommentEntity.getWriterProfileImageUrl();
-            this.informationCommentWriteDatetime = informationCommentEntity.getWriteDatetime();
+            this.writerNickname = informationCommentEntity.getWriterNickname();
+            this.writerEmail = informationCommentEntity.getWriterEmail();
+            this.writerProfileImageUrl = informationCommentEntity.getWriterProfileImageUrl();
+            this.writeDatetime = informationCommentEntity.getWriteDatetime();
             this.informationBoardNumber = informationCommentEntity.getInformationBoardNumber();
         }
     }
@@ -93,21 +97,13 @@ public class GetInformationBoardResponseDto extends ResponseDto {
         }
     }
     
-    private List<InformationComment> createInformationCommentList(List<InformationCommentEntity> informationCommentEntities) {
-        List<InformationComment> informationCommentList = new ArrayList<>();
+    private List<Comment> createCommentList(List<InformationCommentEntity> informationCommentEntities) {
+        List<Comment> commentList = new ArrayList<>();
         for (InformationCommentEntity informationCommentEntity : informationCommentEntities) {
-            InformationComment informationComment = new InformationComment(informationCommentEntity);
-            informationCommentList.add(informationComment);
+            Comment comment = new Comment(informationCommentEntity);
+            commentList.add(comment);
         }
-        return informationCommentList;
+        return commentList;
     }
     
-    private List<InformationHeart> createInformationHeartList(List<InformationHeartEntity> informationHeartEntities) {
-        List<InformationHeart> informationHeartList = new ArrayList<>();
-        for (InformationHeartEntity informationHeartEntity : informationHeartEntities) {
-            InformationHeart informationHeart = new InformationHeart(informationHeartEntity);
-            informationHeartList.add(informationHeart);
-        }
-        return informationHeartList;
-    }
 }    

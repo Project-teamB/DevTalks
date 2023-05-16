@@ -4,9 +4,7 @@ import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.PostBlackListRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetBlackListResponseDto;
-import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
-import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
@@ -40,11 +38,11 @@ public class BlackListServiceImplement implements BlackListService {
            boolean isExistUser = userRepository.existsByUserNumber(userNumber);
            if(!isExistUser) return CustomResponse.noExistUser();
 
-            boolean isExistBlackUser = blackListRepository.existsByUserNumber(userNumber);
-            if(isExistBlackUser) return CustomResponse.alreadyBlacklisted();
+           boolean isExistBlackUser = blackListRepository.existsByUserNumber(userNumber);
+           if(isExistBlackUser) return CustomResponse.alreadyBlacklisted();
 
-            BlackListEntity blackListEntity = new BlackListEntity(userNumber,reason);
-            blackListRepository.save(blackListEntity);
+           BlackListEntity blackListEntity = new BlackListEntity(userNumber,reason);
+           blackListRepository.save(blackListEntity);
 
         }catch (Exception exception){
             exception.printStackTrace();

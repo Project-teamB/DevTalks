@@ -66,8 +66,8 @@ public class TeacherBoardController {
 
     @DeleteMapping("/{teacherBoardNumber}")
     public ResponseEntity<ResponseDto> deleteTeacherBoard(
-        @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber) {
+        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
+        @AuthenticationPrincipal UserPrinciple userPrinciple) {
             String userEmail = userPrinciple.getUserEmail();
             ResponseEntity<ResponseDto> response =
                 teacherBoardService.deleteTeacherBoard(userEmail, teacherBoardNumber);
@@ -76,50 +76,22 @@ public class TeacherBoardController {
 
     @PostMapping("/heart")
     public ResponseEntity<ResponseDto> postTeacherHeart(
-        @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @Valid @RequestBody PostTeacherHeartRequestDto requestBody) {                
+        @Valid @RequestBody PostTeacherHeartRequestDto requestBody,
+        @AuthenticationPrincipal UserPrinciple userPrinciple) {                
             String userEmail = userPrinciple.getUserEmail();
             ResponseEntity<ResponseDto> response = 
                 teacherBoardService.postTeacherHeart(userEmail, requestBody);
         return response;
         }
         
-    // @DeleteMapping("/heart/{teacherBoardNumber}")
-    // public ResponseEntity<ResponseDto> deleteTeacherHeart(
-    //     @PathVariable("teacherBoardNumber") int teacherBoardNumber,
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response = 
-    //             teacherBoardService.deleteTeacherHeart(userEmail, teacherBoardNumber);
-    //     return response;
-    //     }
-    // @PostMapping("hashtag")
-    // public ResponseEntity<ResponseDto> PostTeacherHashtag(
-    //     @Valid @RequestBody PostTeacherBoardRequestDto requestBody,
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response = 
-    //             teacherBoardService.postTeacherHashTag(userEmail, requestBody);
-    //         return response;
-    //     }
-
-    // @PatchMapping("hashtag")
-    // public ResponseEntity<ResponseDto> patchTeacherHashtag(
-    //     @Valid @RequestBody PatchTeacherBoardRequestDto requestBody,
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response = 
-    //             teacherBoardService.patchTeacherHashTag(userEmail, requestBody);
-    //         return response;
-    //     }
-
-    // @DeleteMapping("hashtag/{teacherBoardNumber}")
-    // public ResponseEntity<ResponseDto> deleteTeacherHashtag(
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple,
-    //     @PathVariable("teacherBoardNumber") Integer teacherBoardNumber) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response =
-    //             teacherBoardService.deleteTeacherHashTag(userEmail, teacherBoardNumber);
-    //         return response;
-    //     }
+    @DeleteMapping("/heart/{teacherBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteTeacherHeart(
+        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
+        @AuthenticationPrincipal UserPrinciple userPrinciple) {
+            String userEmail = userPrinciple.getUserEmail();
+            ResponseEntity<ResponseDto> response = 
+                teacherBoardService.deleteTeacherHeart(userEmail, teacherBoardNumber);
+        return response;
+        }
+    
 }

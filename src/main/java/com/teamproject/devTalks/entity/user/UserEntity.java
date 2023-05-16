@@ -32,7 +32,6 @@ public class UserEntity {
     private boolean agreePersonalInformation;
     private boolean chatAcceptance;
     private String createdAt;
-    private String updatedAt;
 
     public UserEntity(UserSignUpRequestDto dto) {
 

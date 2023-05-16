@@ -29,7 +29,6 @@ public class NoticeBoardEntity {
     private String noticeContent;
     private String noticeImageUrl;
     private String writeDatetime;
-    private String updateDatetime;
 
     public NoticeBoardEntity(PostNoticeBoardRequestDto dto, AdminEntity adminEntity) {
 

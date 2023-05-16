@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.dto.request.board.qna;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatchQnaBoardRequestDto {
     
-    @NotBlank
-    private int qnaboardNumber;
+    @NotNull
+    private int qnaBoardNumber;
     @NotBlank
     private String qnaTitle;
     @NotBlank

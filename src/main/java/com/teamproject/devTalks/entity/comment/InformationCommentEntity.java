@@ -49,5 +49,6 @@ public class InformationCommentEntity {
         this.writeDatetime = dateFormat.format(now);
         this.userNumber = userEntity.getUserNumber();
         this.informationBoardNumber = informationBoardEntity.getInformationBoardNumber();
+
     }
 }

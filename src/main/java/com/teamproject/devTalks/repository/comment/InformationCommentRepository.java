@@ -11,7 +11,13 @@ public interface InformationCommentRepository extends JpaRepository<InformationC
 
     List<InformationCommentEntity> findByInformationBoardNumber(int informationBoardNumber);
 
+    public InformationCommentEntity findByInformationCommentNumber(int informationCommentNumber);
+
     @Transactional
     void deleteByInformationBoardNumber(int informationBoardNumber);
+
+    @Transactional
+    void deleteByInformationCommentNumber(int informationCommentNumber);
+
 
 }

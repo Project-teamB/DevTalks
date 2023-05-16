@@ -4,15 +4,18 @@ import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.heart.teacher.PostTeacherHeartRequestDto;
+import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
+import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
 import com.teamproject.devTalks.entity.heart.TeacherHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -182,8 +185,9 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
 
     }
     @Override
-    public ResponseEntity<ResponseDto> postTeacherHashTag(String userEmail, PostTeacherHeartRequestDto dto) {
+    public ResponseEntity<ResponseDto> postTeacherHashTag(String userEmail, UserSignUpRequestDto dto) {
         return null;
+        
         // String userEmail = dto.getUserEmail();
         // String userNickname = dto.getUserNickname();
         // String userPhoneNumber = dto.getUserPhoneNumber();
@@ -192,9 +196,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         // List<UserHashTagEntity> userHashtagList = new ArrayList<>();
 
 
-
-        // String encodedUserPassword = passwordEncoder.encode(dto.getUserPassword());
-        // dto.setUserPassword(encodedUserPassword);
 
         // try {
 
@@ -223,7 +224,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
 
         //     }
 
-        //     userHashTagRepository.saveAll(userHashtagList);
+        //     teacherBoardHashTagRepository.saveAll(userHashtagList);
 
 
         // } catch (Exception exception){
@@ -234,7 +235,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         // return CustomResponse.success();
     }
     @Override
-    public ResponseEntity<ResponseDto> patchTeacherHashTag(String userEmail, PatchTeacherBoardRequestDto dto) {
+    public ResponseEntity<ResponseDto> patchTeacherHashTag(String userEmail, UserSignUpRequestDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'patchTeacherHashTag'");
     }

@@ -39,6 +39,7 @@ public class TeacherBoardEntity {
     private String career;
     private String lectureUrl;
     private int viewCount;
+    private String category;
 
     public TeacherBoardEntity(String userEmail, PostTeacherBoardRequestDto dto) {
         LocalDateTime now = LocalDateTime.now();
@@ -52,6 +53,7 @@ public class TeacherBoardEntity {
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
         this.lectureUrl = dto.getLectureUrl();
+        
     }
 
     public TeacherBoardEntity(UserEntity userEntity, PatchTeacherBoardRequestDto dto) {

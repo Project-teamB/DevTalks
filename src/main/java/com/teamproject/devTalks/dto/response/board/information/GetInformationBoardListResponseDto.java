@@ -16,48 +16,44 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetInformationBoardListResponseDto extends ResponseDto {
 
-    private List<InformationBoardSummary> informationBoardList;
+    private List<BoardSummary> boardList;
 
     public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSet) {
         super("SU", "Success");
 
-        List<InformationBoardSummary> informationBoardList = new ArrayList<>();
+        List<BoardSummary> boardList = new ArrayList<>();
 
         for (InformationBoardListResultSet result: resultSet) {
-            InformationBoardSummary boardSummary = new InformationBoardSummary(result);
-            informationBoardList.add(boardSummary);
+            BoardSummary boardSummary = new BoardSummary(result);
+            boardList.add(boardSummary);
         }
 
-        this.informationBoardList = informationBoardList;
+        this.boardList = boardList;
     }
 
     @Getter
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    class InformationBoardSummary {
+    class BoardSummary {
         private int informationBoardNumber;
         private String informationBoardTitle;
-        private String informationBoardContent;
         private String writeDatetime;
         private int viewCount;
         private String writerNickname;
         private String writerProfileImageUrl;
         private int commentCount;
         private int heartCount;
-        private String informationBoardHashtag;
 
-        public InformationBoardSummary(InformationBoardListResultSet resultSet) {
+        public BoardSummary(InformationBoardListResultSet resultSet) {
             this.informationBoardNumber = resultSet.getInformationBoardNumber();
             this.informationBoardTitle = resultSet.getInformationBoardTitle();
-            this.informationBoardContent = resultSet.getInformationBoardContent();
             this.writeDatetime = resultSet.getWriteDatetime();
             this.viewCount = resultSet.getViewCount();
             this.writerNickname = resultSet.getWriterNickname();
             this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
             this.commentCount = resultSet.getCommentCount();
             this.heartCount = resultSet.getHeartCount();
-            this.informationBoardHashtag = resultSet.getInformationBoardHashtag();
         }
     }
 }

@@ -31,29 +31,28 @@ public class GetNoticeBoardListResponseDto extends ResponseDto {
 
     }
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    class NoticeSummary{
+}
 
-        private int noticeBoardNumber;
-        private String noticeTitle;
-        private String noticeContent;
-        private String writeDatetime;
-        private int viewCount;
-        private String writerNickname;
-        private String writerEmail;
-        private String noticeImageUrl;
+@Getter
+@Setter
+@NoArgsConstructor
+class NoticeSummary{
 
-        public NoticeSummary(NoticeBoardEntity noticeBoardEntity) {
-            this.noticeBoardNumber = noticeBoardEntity.getNoticeBoardNumber();
-            this.noticeTitle = noticeBoardEntity.getNoticeTitle();
-            this.noticeContent = noticeBoardEntity.getNoticeContent();
-            this.writeDatetime = noticeBoardEntity.getWriteDatetime();
-            this.viewCount = noticeBoardEntity.getViewCount();
-            this.writerNickname = noticeBoardEntity.getWriterNickname();
-            this.writerEmail = noticeBoardEntity.getWriterEmail();
-            this.noticeImageUrl = noticeBoardEntity.getNoticeImageUrl();
-        }
+    private int noticeBoardNumber;
+    private String noticeTitle;
+    private String writeDatetime;
+    private int viewCount;
+    private String writerNickname;
+    private String writerEmail;
+    private String noticeImageUrl;
+
+    public NoticeSummary(NoticeBoardEntity noticeBoardEntity) {
+        this.noticeBoardNumber = noticeBoardEntity.getNoticeBoardNumber();
+        this.noticeTitle = noticeBoardEntity.getNoticeTitle();
+        this.writeDatetime = noticeBoardEntity.getWriteDatetime();
+        this.viewCount = noticeBoardEntity.getViewCount();
+        this.writerNickname = noticeBoardEntity.getWriterNickname();
+        this.writerEmail = noticeBoardEntity.getWriterEmail();
+        this.noticeImageUrl = noticeBoardEntity.getNoticeImageUrl();
     }
 }

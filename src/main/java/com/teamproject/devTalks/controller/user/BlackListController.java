@@ -3,7 +3,6 @@ package com.teamproject.devTalks.controller.user;
 import com.teamproject.devTalks.dto.request.user.PostBlackListRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetBlackListResponseDto;
-import com.teamproject.devTalks.dto.response.user.GetBlackListUserResponseDto;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.user.BlackListService;
 import lombok.RequiredArgsConstructor;
@@ -28,18 +27,6 @@ public class BlackListController {
         String adminEmail = adminPrinciple.getAdminEmail();
         ResponseEntity<ResponseDto> response
                 = blackListService.postBlackList(adminEmail,dto);
-
-        return response;
-
-    }
-
-    @GetMapping("/{userNumber}")
-    public ResponseEntity<? super GetBlackListUserResponseDto> getBlackListUser(
-            @PathVariable Integer userNumber,
-            @AuthenticationPrincipal AdminPrinciple adminPrinciple
-    ){
-        String adminEmail = adminPrinciple.getAdminEmail();
-        ResponseEntity<? super GetBlackListUserResponseDto> response = blackListService.getBlackListUser(userNumber, adminEmail);
 
         return response;
 

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,7 +28,6 @@ public class NoticeBoardEntity {
     private String noticeContent;
     private String noticeImageUrl;
     private String writeDatetime;
-    private String updateDatetime;
 
     public NoticeBoardEntity(PostNoticeBoardRequestDto dto, AdminEntity adminEntity) {
 

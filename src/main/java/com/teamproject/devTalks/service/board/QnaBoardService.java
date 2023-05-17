@@ -19,17 +19,17 @@ public interface QnaBoardService {
 
     public ResponseEntity<ResponseDto> postQnaBoard(String userEmail, PostQnaBoardRequestDto dto);
 
-    public ResponseEntity<ResponseDto> postQnaComment(String userEmail, PostQnaCommentRequestDto dto);
-
-    public ResponseEntity<ResponseDto> postQnaHeart(String userEmail, PostQnaHeartRequestDto dto);
-
     public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto dto);
-
-    public ResponseEntity<ResponseDto> patchQnaComment(String userEmail, PatchQnaCommentRequestDto dto);
 
     public ResponseEntity<ResponseDto> deleteQnaBoard(String userEmail, int qnaBoardNumber);
 
+    public ResponseEntity<ResponseDto> postQnaComment(String userEmail, PostQnaCommentRequestDto dto);
+
+    public ResponseEntity<ResponseDto> patchQnaComment(String userEmail, PatchQnaCommentRequestDto dto);
+
     public ResponseEntity<ResponseDto> deleteQnaComment(String userEmail, int qnaCommentNumber);
+
+    public ResponseEntity<ResponseDto> postQnaHeart(String userEmail, PostQnaHeartRequestDto dto);
 
     public ResponseEntity<ResponseDto> deleteQnaHeart(String userEmail, int qnaBoardNumber);
 

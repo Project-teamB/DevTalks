@@ -88,11 +88,13 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             UserEntity userEntity = userRepository.findByUserEmail(qnaBoardWriterEmail);
 
             List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(qnaBoardNumber);
-            List<QnaBoardHashTagEntity> qnaBoardHashTagEntities = qnaBoardHashTagRepository.findByQnaBoardNumber(qnaBoardNumber);
+            List<QnaBoardHashTagEntity> qnaBoardHashTagEntities = qnaBoardHashTagRepository
+                    .findByQnaBoardNumber(qnaBoardNumber);
             List<QnaHeartEntity> qnaHeartEntities = qnaHeartRepository.findByQnaBoardNumber(qnaBoardNumber);
             int qnaHeartCount = qnaHeartEntities.size();
 
-            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaBoardHashTagEntities, qnaHeartCount);
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaBoardHashTagEntities,
+                    qnaHeartCount);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -127,7 +129,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             // writerNickname, writerDatetime, qnaTitle, qnaContent, qnaBoardImageUrl);
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(userEntity, dto);
-            qnaBoardRepository.save(qnaBoardEntity);
+            qnaBoardRepository.save(qnaBoardEntity); // 어디다쓰노..저장왜하는데 꺼도 저장되어있으라고?
 
             for (String hashTag : hashtagList) {
                 QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag,
@@ -307,7 +309,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 return CustomResponse.noExistUser();
             int userNumber = userEntity.getUserNumber();
             qnaHeartRepository.deleteByUserNumberAndQnaBoardNumber(userNumber, qnaBoardNumber);
-                                // 뭘로 삭제할거냐? UserNumber란 QnaBoardNumber를 이용해 지울꺼다
+            // 뭘로 삭제할거냐? UserNumber란 QnaBoardNumber를 이용해 지울꺼다
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -317,19 +319,18 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> deleteAdminQnaBoard(String adminEmail, int qnaBoardNumber) {
-        
 
         try {
-            //존재하지 않는 관리자(이메일)
+            // 존재하지 않는 관리자(이메일)
             boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
             if (!existAdmin)
                 return CustomResponse.authenticationFailed(); // 인증실패(관리자 없음)
             // 존재하지 않는 게시물 번호
             QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
-            if(qnaBoardEntity == null)
+            if (qnaBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
-                qnaCommentRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaCommentRepository.deleteByQnaBoardNumber(qnaBoardNumber);
             qnaHeartRepository.deleteByQnaBoardNumber(qnaBoardNumber);
             qnaBoardHashTagRepository.deleteByQnaBoardNumber(qnaBoardNumber);
             qnaBoardRepository.delete(qnaBoardEntity);
@@ -338,14 +339,14 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();    
+        return CustomResponse.success();
     }
 
     // 관리자 권한으로 댓글삭제
     @Override
     public ResponseEntity<ResponseDto> deleteAdminQnaComment(String adminEmail, int qnaCommentNumber) {
         try {
-            
+
             // 권한없음
             boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
             if (!existAdmin)
@@ -359,6 +360,5 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         }
         return CustomResponse.success();
     }
-    
 
 }

@@ -28,7 +28,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.write_datetime AS writeDatetime, " +
         "count(C.comment_number) AS informationCommentCount, " +
         "count(H.user_number) AS informationHeartCount " +
-        "FROM information I, information_comment C, information_heart H, information_hashtag T " +
+        "FROM information I, information_comment C, information_heart H, board_hashtag T " +
         "WHERE I.information_board_number = C.information_board_number " +
         "AND I.information_board_number = H.information_board_number " +
         "group by informationBoardNumber " +

@@ -4,14 +4,12 @@ import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.heart.teacher.PostTeacherHeartRequestDto;
-import com.teamproject.devTalks.dto.request.user.UserSignUpRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import com.teamproject.devTalks.entity.hashTag.TeacherBoardHashTagEntity;
-import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.heart.TeacherHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
@@ -39,20 +37,26 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     private final TeacherHeartRepository teacherHeartRepository;
 
     @Override
-    public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(Integer boardNumber){
+    public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(Integer teacherBoardNumber){
         GetTeacherBoardResponseDto body = null;
 
         try{
-            if(boardNumber == null) return CustomResponse.validationFailed();
+            if(teacherBoardNumber == null) return CustomResponse.validationFailed();
 
-            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(boardNumber);
+            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
             if(teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
             int viewCount = teacherBoardEntity.getViewCount();
             teacherBoardEntity.setViewCount(++viewCount);
             teacherBoardRepository.save(teacherBoardEntity);
 
-            body = new GetTeacherBoardResponseDto(teacherBoardEntity);
+            String teacherBoardWriterEmail = teacherBoardEntity.getWriterEmail();
+            UserEntity userEntity = userRepository.findByUserEmail(teacherBoardWriterEmail);
+
+            List<TeacherHeartEntity> teacherHeartEntities = teacherHeartRepository.findByTeacherBoardNumber(teacherBoardNumber);
+            int teacherHeartCount = teacherHeartEntities.size();
+
+            body = new GetTeacherBoardResponseDto(teacherBoardEntity, userEntity, teacherHeartCount);
 
         } catch(Exception exception){
             exception.printStackTrace();
@@ -60,13 +64,23 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
     @Override
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
-        GetTeacherBoardListResponseDto body = null;
+
         try {
 
-            List<TeacherBoardListResultSet> resultSets = teacherBoardRepository.getList();
-            body = new GetTeacherBoardListResponseDto(resultSets);
+            List<TeacherBoardListResultSet> resultSets = null;
+            if (teacherSort.equals("time"))
+                resultSets = teacherBoardRepository.getListOrderByWriteDatetime();
+            else if (teacherSort.equals("heart"))
+                resultSets = teacherBoardRepository.getListOrderByHeartCount();
+            else if (teacherSort.equals("view"))
+                resultSets = teacherBoardRepository.getListOrderByViewCount();
+            else
+                return CustomResponse.validationFailed();
+
+            new GetTeacherBoardListResponseDto(resultSets);
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -78,12 +92,24 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     @Override
     public ResponseEntity<ResponseDto> postTeacherBoard(String userEmail, PostTeacherBoardRequestDto dto) {
 
+        List<String> hashtagList = dto.getBoardHashtag();
+        List<TeacherBoardHashTagEntity> teacherBoardHashtagList = new ArrayList<>();
+
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.authenticationFailed();
         
             TeacherBoardEntity teacherBoardEntity = new TeacherBoardEntity(userEmail, dto);
             teacherBoardRepository.save(teacherBoardEntity);
+
+            for (String hashTag : hashtagList) {
+                TeacherBoardHashTagEntity teacherBoardHashTagEntity = 
+                    new TeacherBoardHashTagEntity(teacherBoardEntity.getTeacherBoardNumber(), hashTag);
+
+                teacherBoardHashtagList.add(teacherBoardHashTagEntity);
+            }
+
+            teacherBoardHashTagRepository.saveAll(teacherBoardHashtagList);
     
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -97,6 +123,9 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     @Override
     public ResponseEntity<ResponseDto> patchTeacherBoard(String userEmail, PatchTeacherBoardRequestDto dto) {
         
+        List<String> hashtagList = dto.getBoardHashtag();
+        List<TeacherBoardHashTagEntity> teacherBoardHashtagList = new ArrayList<>();
+
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null) return CustomResponse.noExistUser();
@@ -106,6 +135,21 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
 
             TeacherBoardEntity teacherBoardEntityPathch = new TeacherBoardEntity(userEntity, dto);
             teacherBoardRepository.save(teacherBoardEntityPathch);
+
+            int teacherBoardNumber = teacherBoardEntity.getTeacherBoardNumber();
+            List<TeacherBoardHashTagEntity> currentTeacherBoardHashTagEntities =
+                teacherBoardHashTagRepository.findAllByTeacherBoardNumber(teacherBoardNumber);
+
+            teacherBoardHashTagRepository.deleteAll(currentTeacherBoardHashTagEntities);
+
+            for (String hashTag : hashtagList) {
+                TeacherBoardHashTagEntity teacherBoardHashTagEntity = 
+                    new TeacherBoardHashTagEntity(teacherBoardEntity.getTeacherBoardNumber(), hashTag);
+
+                teacherBoardHashtagList.add(teacherBoardHashTagEntity);
+            }
+
+            teacherBoardHashTagRepository.saveAll(teacherBoardHashtagList);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -128,7 +172,9 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
-            teacherBoardRepository.deleteByteacherBoardNumber(teacherBoardNumber);
+            teacherHeartRepository.deleteByteacherBoardNumber(teacherBoardNumber);
+            teacherBoardHashTagRepository.deleteByteacherBoardNumber(teacherBoardNumber);
+            teacherBoardRepository.delete(teacherBoardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -139,7 +185,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
 
     }
     
-
     @Override
     public ResponseEntity<ResponseDto> postTeacherHeart(String userEmail, PostTeacherHeartRequestDto dto) {
         try {
@@ -169,13 +214,14 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
             if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
-            boolean existedUserEmail = userRepository.existsByUserEmail(userEmail);
-            if (!existedUserEmail) return CustomResponse.noExistUser();
-
             boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
-            teacherHeartRepository.deleteByteacherBoardNumber(teacherBoardNumber);
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null) return CustomResponse.noExistUser();
+
+            int userNumber = userEntity.getUserNumber();
+            teacherHeartRepository.deleteByUserNumberAndTeacherBoardNumber(userNumber, teacherBoardNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -186,49 +232,4 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
 
     }
     
-        
-        // String userEmail = dto.getUserEmail();
-        // String userNickname = dto.getUserNickname();
-        // String userPhoneNumber = dto.getUserPhoneNumber();
-
-        // List<String> hashtagList = dto.getUserHashtag();
-        // List<TeacherBoardHashTagEntity> teacherBoardHashtagList = new ArrayList<>();
-
-
-
-        // try {
-
-        //     UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-        //     if (userEntity == null) return CustomResponse.noExistUser();
-
-        //     TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
-        //     if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
-
-        //     TeacherBoardHashTagEntity teacherHashTagEntity = new TeacherBoardHashTagEntity(userEntity, teacherBoardEntity);
-        //     teacherBoardHashTagRepository.save(teacherHashTagEntity);
-
-        //     int userNumber = userEntity.getUserNumber();
-
-        //     for(String hashTag : hashtagList) {
-
-        //         UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
-
-        //         userHashTagEntity.setUserNumber(userNumber);
-        //         userHashTagEntity.setHashtag(hashTag);
-
-        //         userHashtagList.add(userHashTagEntity);
-
-        //     }
-
-        //     teacherBoardHashTagRepository.saveAll(userHashtagList);
-
-
-        // } catch (Exception exception){
-        //     exception.printStackTrace();
-        //     CustomResponse.databaseError();
-        // }
-
-        // return CustomResponse.success();
-    
-
 }

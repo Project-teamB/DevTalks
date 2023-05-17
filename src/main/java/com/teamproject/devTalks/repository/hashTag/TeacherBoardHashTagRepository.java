@@ -15,4 +15,7 @@ public interface TeacherBoardHashTagRepository extends JpaRepository<TeacherBoar
 
     @Transactional
     void deleteByteacherBoardNumber(int teacherBoardNumber);
+
+    @Transactional
+    void deleteByBoardHashtagAndTeacherBoardNumber(String hashtag, int teacherBoardNumber);
 }

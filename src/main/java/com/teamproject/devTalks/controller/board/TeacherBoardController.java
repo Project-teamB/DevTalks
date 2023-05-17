@@ -93,5 +93,4 @@ public class TeacherBoardController {
             teacherBoardService.deleteTeacherHeart(userEmail, teacherBoardNumber);
         return response;
     }
-    
 }

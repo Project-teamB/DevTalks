@@ -17,7 +17,7 @@ public class PatchInformationBoardRequestDto {
     private String informationBoardImageUrl;
     @NotBlank
     private String contentSource;
-    private String hashtag;
+    private String boardHashtag;
 
     public PatchInformationBoardRequestDto(PatchInformationBoardRequestDto dto) {
         this.informationBoardNumber = dto.getInformationBoardNumber();
@@ -25,6 +25,6 @@ public class PatchInformationBoardRequestDto {
         this.informationBoardContent = dto.getInformationBoardContent();
         this.informationBoardImageUrl = dto.getInformationBoardImageUrl();
         this.contentSource = dto.getContentSource();
-        this.hashtag = dto.getHashtag();
+        this.boardHashtag = dto.getBoardHashtag();
     }
 }

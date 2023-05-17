@@ -36,7 +36,6 @@ public class InformationBoardEntity {
     private String contentSource;
     private int viewCount;
     private String writeDatetime;
-    private String updateDatetime;
 
     public InformationBoardEntity(String userEmail, PostInformationBoardRequestDto dto) {
         Date now = new Date();

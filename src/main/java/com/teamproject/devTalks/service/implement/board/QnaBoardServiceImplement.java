@@ -14,11 +14,13 @@ import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
 import com.teamproject.devTalks.entity.hashTag.QnaBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.QnaBoardListResultSet;
+import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.board.QnaBoardRepository;
 import com.teamproject.devTalks.repository.comment.QnaCommentRepository;
 import com.teamproject.devTalks.repository.hashTag.QnaBoardHashTagRepository;
 import com.teamproject.devTalks.repository.heart.QnaHeartRepository;
+import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.board.QnaBoardService;
 
@@ -27,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.loader.custom.ResultRowProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     private final QnaCommentRepository qnaCommentRepository;
     private final QnaBoardHashTagRepository qnaBoardHashTagRepository;
     private final QnaHeartRepository qnaHeartRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(String qnaSort) {
@@ -278,7 +280,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         return CustomResponse.success();
     }
 
-    @Override
+    @Override // 존재하지 않는 댓글번호같은건 필요없음 삭제를 하면 있든 없든 없애면 되니까
     public ResponseEntity<ResponseDto> deleteQnaComment(String userEmail, int qnaCommentNumber) {
         try {
             // 존재하지 않는 유저(이메일)
@@ -305,12 +307,58 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 return CustomResponse.noExistUser();
             int userNumber = userEntity.getUserNumber();
             qnaHeartRepository.deleteByUserNumberAndQnaBoardNumber(userNumber, qnaBoardNumber);
-
+                                // 뭘로 삭제할거냐? UserNumber란 QnaBoardNumber를 이용해 지울꺼다
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
         return CustomResponse.success();
     }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminQnaBoard(String adminEmail, int qnaBoardNumber) {
+        
+
+        try {
+            //존재하지 않는 관리자(이메일)
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if (!existAdmin)
+                return CustomResponse.authenticationFailed(); // 인증실패(관리자 없음)
+            // 존재하지 않는 게시물 번호
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
+            if(qnaBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+                qnaCommentRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaHeartRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaBoardHashTagRepository.deleteByQnaBoardNumber(qnaBoardNumber);
+            qnaBoardRepository.delete(qnaBoardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();    
+    }
+
+    // 관리자 권한으로 댓글삭제
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminQnaComment(String adminEmail, int qnaCommentNumber) {
+        try {
+            
+            // 권한없음
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if (!existAdmin)
+                return CustomResponse.authenticationFailed();
+
+            qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
+            // 댓글 번호를 찾아서 지우는 것
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+    
 
 }

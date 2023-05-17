@@ -48,6 +48,7 @@ public class NoticeBoardEntity {
     public NoticeBoardEntity(NoticeBoardEntity noticeBoardEntity, PatchNoticeBoardRequestDto dto) {
         this.noticeBoardNumber = noticeBoardEntity.getNoticeBoardNumber();
         this.writerEmail = noticeBoardEntity.getWriterEmail();
+        this.writerNickname = noticeBoardEntity.getWriterNickname();
         this.writerProfileImageUrl = noticeBoardEntity.getWriterProfileImageUrl();
         this.viewCount = noticeBoardEntity.getViewCount();
         this.noticeTitle = dto.getNoticeTitle();

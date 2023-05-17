@@ -19,6 +19,7 @@ public class PatchNoticeBoardRequestDto {
     private String noticeTitle;
     @NotBlank
     private String noticeContent;
+    @NotBlank
     private String boardImageUrl;
 
     

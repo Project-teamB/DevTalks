@@ -16,8 +16,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
 
     @Query(value = "SELECT " +
             "Q.qna_board_number AS qnaBoardNumber, " +
-            "Q.qna_title AS qnaTitle, " +
-            "Q.qna_content AS qnaContent, " +
+            "Q.qna_title AS qnaTitle, "  +
             "Q.qna_board_image_url AS qnaBoardImageUrl, " +
             "Q.write_datetime AS writeDatetime, " +
             "Q.view_count AS viewCount, " +

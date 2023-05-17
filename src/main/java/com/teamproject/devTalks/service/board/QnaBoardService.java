@@ -33,4 +33,8 @@ public interface QnaBoardService {
 
     public ResponseEntity<ResponseDto> deleteQnaHeart(String userEmail, int qnaBoardNumber);
 
+    public ResponseEntity<ResponseDto> deleteAdminQnaBoard(String adminEmail, int qnaBoardNumber);
+
+    public ResponseEntity<ResponseDto> deleteAdminQnaComment(String adminEmail, int qnaCommentNumber);
+
 }

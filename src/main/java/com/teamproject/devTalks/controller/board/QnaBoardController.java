@@ -26,6 +26,7 @@ import com.teamproject.devTalks.dto.request.heart.qna.PostQnaHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardResponseDto;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.service.board.QnaBoardService;
 
@@ -128,6 +129,27 @@ public class QnaBoardController {
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = boardService.deleteQnaHeart(userEmail, qnaBoardNumber);
+        return response;
+    }
+
+
+    // 관리자가 게시물을 삭제
+    @DeleteMapping("/admin/{qnaBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteAdminQnaBoard(
+    @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+    @PathVariable("qnaBoardNumber") int qnaBoardNumber){
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaBoard(adminEmail, qnaBoardNumber);
+        return response;
+    }
+
+     // 관리자가 댓글을 삭제
+    @DeleteMapping("/admin/comment/{qnaCommentNumber}")
+    public ResponseEntity<ResponseDto> deleteAdminQnaComment(
+        @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+        @PathVariable("qnaCommentNumber") int qnaCommentNumber ){
+    String adminEmail = adminPrinciple.getAdminEmail();
+    ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaComment(adminEmail, qnaCommentNumber);  
         return response;
     }
 

@@ -1,14 +1,10 @@
 package com.teamproject.devTalks.controller.board;
 
-import java.nio.file.attribute.UserPrincipal;
 
 import javax.validation.Valid;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,8 +27,6 @@ import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.service.board.QnaBoardService;
 
 import lombok.RequiredArgsConstructor;
-
-// 관리자권한으로 게시글 삭제, 댓글 삭제(댓글Controller)
 
 @RestController
 @RequestMapping("/board/qna")

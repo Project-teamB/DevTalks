@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-// AllArgsConstructor왜 들어가면안되지
+// @AllArgsConstructor는 여기선 사용할수 없음
 public class GetQnaBoardListResponseDto extends ResponseDto {
 
 	private List<BoardSummary> qnaBoardList; // B
@@ -41,7 +41,6 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 class BoardSummary {
 	private int quaBoardNumber;
 	private String qnaTitle;
-	private String qnaContent;
 	private String qnaBoardImageUrl;
 	private String writeDatetime;
 	private int viewCount;
@@ -54,7 +53,6 @@ class BoardSummary {
 
 		this.quaBoardNumber = resultSet.getQnaBoardNumber();
 		this.qnaTitle = resultSet.getQnaTitle();
-		this.qnaContent = resultSet.getQnaContent();
 		this.qnaBoardImageUrl = resultSet.getQnaBoardImageUrl();
 		this.writeDatetime = resultSet.getWriteDatetime();
 		this.viewCount = resultSet.getViewCount();

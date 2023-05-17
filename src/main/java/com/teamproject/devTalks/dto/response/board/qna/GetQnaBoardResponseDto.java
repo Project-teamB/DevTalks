@@ -6,7 +6,7 @@ import java.util.List;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.board.QnaBoardEntity;
 import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
-import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
+import com.teamproject.devTalks.entity.hashTag.QnaBoardHashTagEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -27,11 +27,13 @@ public class GetQnaBoardResponseDto extends ResponseDto {
     private String writerNickname;
     private String writerProfileImageUrl;
     private List<Comment> commentList;
+    private List<Hashtag> hashtagList;
     private int qnaHeartCount;
+    
 
     public GetQnaBoardResponseDto(
             QnaBoardEntity qnaBoardEntity, UserEntity userEntity, List<QnaCommentEntity> qnaCommentEntities,
-            int qnaHeartCount) {
+            List<QnaBoardHashTagEntity> qnaHashtagEntities, int qnaHeartCount) {
         super("SU", "Success");
 
         this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
@@ -43,7 +45,8 @@ public class GetQnaBoardResponseDto extends ResponseDto {
         this.writerNickname = qnaBoardEntity.getWriterNickname();
         this.writerProfileImageUrl = qnaBoardEntity.getWriterProfileImageUrl();
         this.commentList = createQnaCommentList(qnaCommentEntities);
-        this.qnaHeartCount = qnaHeartCount;// 이거의 개수가 필요
+        this.hashtagList = createQnaBoardHashtagList(qnaHashtagEntities);
+        this.qnaHeartCount = qnaHeartCount;
     }
 
     @Data
@@ -64,7 +67,6 @@ public class GetQnaBoardResponseDto extends ResponseDto {
             this.qnaCommentNumber = qnaCommentEntity.getQnaBoardNumber();
             this.qnaBoardNumber = qnaCommentEntity.getQnaBoardNumber();
             this.commentWriterEmail = qnaCommentEntity.getWriterEmail();
-            ;
             this.commentContent = qnaCommentEntity.getCommentContent();
             this.writerNickname = qnaCommentEntity.getWriterNickname();
             this.writerProfileImageUrl = qnaCommentEntity.getWriterProfileImageUrl();
@@ -74,20 +76,6 @@ public class GetQnaBoardResponseDto extends ResponseDto {
 
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    class Heart {
-
-        private int userNumber;
-        private int qnaBoardNumber;
-
-        public Heart(QnaHeartEntity qnaHeartEntity) {
-            this.userNumber = qnaHeartEntity.getUserNumber();
-            this.qnaBoardNumber = qnaHeartEntity.getQnaBoardNumber();
-        }
-
-    }
 
     private List<Comment> createQnaCommentList(List<QnaCommentEntity> qnaCommentEntities) {
 
@@ -98,6 +86,32 @@ public class GetQnaBoardResponseDto extends ResponseDto {
             qnaCommentList.add(qnaComment);
         }
         return qnaCommentList;
+    }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class Hashtag {
+
+        
+        private String boardHashtag;
+
+        public Hashtag(QnaBoardHashTagEntity qnaBoardHashTagEntity){
+            
+            this.boardHashtag = qnaBoardHashTagEntity.getBoardHashtag();
+        }
+
+    }
+
+    private List<Hashtag> createQnaBoardHashtagList(List<QnaBoardHashTagEntity> qnaBoardHashTagEntities) {
+        
+        List<Hashtag> qnaBoardHashtagList = new ArrayList<>();
+        for (QnaBoardHashTagEntity qnaHashtags : qnaBoardHashTagEntities){
+            Hashtag qnaHashtag = new Hashtag(qnaHashtags);
+            qnaBoardHashtagList.add(qnaHashtag);
+        }
+
+        return qnaBoardHashtagList;
+
     }
 
 }

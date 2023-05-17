@@ -14,7 +14,6 @@ import com.teamproject.devTalks.entity.comment.QnaCommentEntity;
 import com.teamproject.devTalks.entity.hashTag.QnaBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.QnaHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.QnaBoardListResultSet;
-import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.board.QnaBoardRepository;
 import com.teamproject.devTalks.repository.comment.QnaCommentRepository;
@@ -89,10 +88,11 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             UserEntity userEntity = userRepository.findByUserEmail(qnaBoardWriterEmail);
 
             List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(qnaBoardNumber);
+            List<QnaBoardHashTagEntity> qnaBoardHashTagEntities = qnaBoardHashTagRepository.findByQnaBoardNumber(qnaBoardNumber);
             List<QnaHeartEntity> qnaHeartEntities = qnaHeartRepository.findByQnaBoardNumber(qnaBoardNumber);
             int qnaHeartCount = qnaHeartEntities.size();
 
-            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaHeartCount);
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaBoardHashTagEntities, qnaHeartCount);
 
         } catch (Exception exception) {
             exception.printStackTrace();

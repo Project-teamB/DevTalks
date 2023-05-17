@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.dto.request.board.teacher;
 
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -19,7 +21,7 @@ public class PostTeacherBoardRequestDto {
     private String career;
     private String lectureUrl;
     private String category;
-    private String teacherBoardHashtag;
+    private List<String> boardHashtag;
 
     public PostTeacherBoardRequestDto(PostTeacherBoardRequestDto dto){
         this.writerEmail = dto.getWriterEmail();
@@ -29,6 +31,5 @@ public class PostTeacherBoardRequestDto {
         this.career = dto.getCareer();
         this.lectureUrl = dto.getLectureUrl();
         this.category = dto.getCategory();
-        this.teacherBoardHashtag = dto.getTeacherBoardHashtag();
     }
 }

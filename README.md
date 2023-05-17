@@ -12,7 +12,7 @@
 ## 프로젝트 주요 
  >[1. ERD그래프](https://github.com/Project-teamB/DevTalks/blob/main/documents/ERD.md)   
  [2. API설계](https://github.com/Project-teamB/DevTalks/tree/main/documents/API) //각 API를 각 링크로 게시할지, 이대로 할지   
- [3. 개발자원 명세서](https://github.com/Project-teamB/DevTalks/blob/main/documents/statement/DevelopmentResource.md)
+ [3. 개발자원 명세서](https://github.com/Project-teamB/DevTalks/blob/main/documents/statement/DevelopmentResource.md)   
  [4. 요구사항 명세서](https://github.com/Project-teamB/DevTalks/blob/main/documents/statement/Requirements.md)   
  [5. 인프라스트럭처 다이어그램](https://github.com/Project-teamB/DevTalks/blob/main/documents/statement/InfrastructureDiagram.md)   
  [6. DB 다이어그램](https://github.com/Project-teamB/DevTalks/blob/main/documents/statement/DatabaseDiagram.md)   

@@ -4,11 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import com.teamproject.devTalks.entity.primaryKey.teacher.TeacherHeartPk;
 import com.teamproject.devTalks.entity.user.UserEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

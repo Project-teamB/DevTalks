@@ -1,13 +1,10 @@
 package com.teamproject.devTalks.repository.board;
 
 import java.util.List;
-
 import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 
@@ -15,7 +12,6 @@ import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity,Integer> {
         public TeacherBoardEntity findByTeacherBoardNumber(int boardNumber);
         public TeacherBoardEntity findByWriterEmail(String email);
-
 
         @Transactional
         void deleteByteacherBoardNumber(int teacherBoardNumber);

@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.controller.board;
 
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
@@ -93,4 +94,14 @@ public class TeacherBoardController {
             teacherBoardService.deleteTeacherHeart(userEmail, teacherBoardNumber);
         return response;
     }
+
+    @DeleteMapping("/admin/{teacherBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteAdminTeacherBoard(
+        @PathVariable("teacherBoardNumber") int teacherBoardNumber,
+        @AuthenticationPrincipal AdminPrinciple adminPrinciple) {
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = teacherBoardService.deleteTeacherBoard(adminEmail, teacherBoardNumber);
+        return response;
+    }
+
 }

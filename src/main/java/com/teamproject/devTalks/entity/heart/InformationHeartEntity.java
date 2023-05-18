@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="InformationHeart")
+@Entity(name="Information_heart")
 @Table(name="InformationHeart")
 @IdClass(InformationHeartPk.class)
 public class InformationHeartEntity {
@@ -26,21 +26,9 @@ public class InformationHeartEntity {
     @Id
     private int userNumber;
 
-    private boolean heartStatus;
-
-    @ManyToOne
-    private InformationBoardEntity informationBoardEntity;
-    
-    @ManyToOne
-    private UserEntity userEntity;
-
     public InformationHeartEntity(UserEntity userEntity, InformationBoardEntity informationBoardEntity) {
         this.informationBoardNumber = informationBoardEntity.getInformationBoardNumber();
         this.userNumber = userEntity.getUserNumber();
-        this.informationBoardEntity = informationBoardEntity;
-        this.userEntity = userEntity;
-        this.heartStatus = true; 
     }
-
 
 }

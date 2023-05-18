@@ -89,10 +89,23 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
             List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(qnaBoardNumber);
             List<QnaBoardHashTagEntity> qnaBoardHashTagEntities = qnaBoardHashTagRepository.findByQnaBoardNumber(qnaBoardNumber);
+        
+            List<String> hashStrings = new ArrayList<>();
+            for(QnaBoardHashTagEntity hashtagList: qnaBoardHashTagEntities) {
+                String hashTags = hashtagList.getBoardHashtag();
+                hashStrings.add(hashTags);
+            }
+
             List<QnaHeartEntity> qnaHeartEntities = qnaHeartRepository.findByQnaBoardNumber(qnaBoardNumber);
             int qnaHeartCount = qnaHeartEntities.size();
 
-            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, qnaBoardHashTagEntities, qnaHeartCount);
+            List<Integer> heartIntegers = new ArrayList<>();
+            for(QnaHeartEntity heartList:qnaHeartEntities){
+                int hearts = heartList.getUserNumber();
+                heartIntegers.add(hearts);
+            }
+            
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, hashStrings, qnaHeartCount, heartIntegers);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -127,7 +140,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             // writerNickname, writerDatetime, qnaTitle, qnaContent, qnaBoardImageUrl);
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(userEntity, dto);
-            qnaBoardRepository.save(qnaBoardEntity);
+            qnaBoardRepository.save(qnaBoardEntity); // DB에저장하기 위해서 Repository에 save메서드를 통해서 insert
 
             for (String hashTag : hashtagList) {
                 QnaBoardHashTagEntity qnaBoardHashTagEntity = new QnaBoardHashTagEntity(hashTag,

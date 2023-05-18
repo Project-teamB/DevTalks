@@ -11,7 +11,7 @@ import com.teamproject.devTalks.entity.primaryKey.information.InformationHashtag
 @Repository
 public interface InformationBoardHashTagRepository extends JpaRepository<InformationBoardHashTagEntity, InformationHashtagPk> {
 
-    List<InformationBoardHashTagEntity> findAllByHashtag(String hashtag);
+    List<InformationBoardHashTagEntity> findAllByBoardHashtag(String boardHashtag);
 
 
 }

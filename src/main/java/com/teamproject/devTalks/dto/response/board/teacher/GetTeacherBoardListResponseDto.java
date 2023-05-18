@@ -24,7 +24,6 @@ public class GetTeacherBoardListResponseDto extends ResponseDto{
             TeacherBoardSummary teacherBoardSummary = new TeacherBoardSummary(result);
             teacherBoardList.add(teacherBoardSummary);
         }
-        this.teacherBoardList = teacherBoardList;
     }
 }
 

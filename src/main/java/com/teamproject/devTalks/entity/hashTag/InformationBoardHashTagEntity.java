@@ -21,7 +21,7 @@ public class InformationBoardHashTagEntity {
     @Id
     private int informationBoardNumber;
     @Id
-    private String hashtag;
+    private String boardHashtag;
 
 
 }

@@ -1,6 +1,5 @@
 package com.teamproject.devTalks.controller.board;
 
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -40,6 +39,7 @@ public class QnaBoardController {
     // this.boardService = boardService;
     // }
 
+    // 나중에 좋아요한 사람들의 리스트를 반환해줘라
     @GetMapping("/list/{sort}")
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(
             @PathVariable("sort") String qnaSort) {
@@ -47,6 +47,7 @@ public class QnaBoardController {
         return response;
     }
 
+    // 나중에 좋아요한 사람들의 리스트를 반환해줘라
     @GetMapping("/{qnaBoardNumber}")
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
@@ -126,24 +127,23 @@ public class QnaBoardController {
         return response;
     }
 
-
     // 관리자가 게시물을 삭제
     @DeleteMapping("/admin/{qnaBoardNumber}")
     public ResponseEntity<ResponseDto> deleteAdminQnaBoard(
-    @AuthenticationPrincipal AdminPrinciple adminPrinciple,
-    @PathVariable("qnaBoardNumber") int qnaBoardNumber){
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+            @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
         String adminEmail = adminPrinciple.getAdminEmail();
         ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaBoard(adminEmail, qnaBoardNumber);
         return response;
     }
 
-     // 관리자가 댓글을 삭제
+    // 관리자가 댓글을 삭제
     @DeleteMapping("/admin/comment/{qnaCommentNumber}")
     public ResponseEntity<ResponseDto> deleteAdminQnaComment(
-        @AuthenticationPrincipal AdminPrinciple adminPrinciple,
-        @PathVariable("qnaCommentNumber") int qnaCommentNumber ){
-    String adminEmail = adminPrinciple.getAdminEmail();
-    ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaComment(adminEmail, qnaCommentNumber);  
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+            @PathVariable("qnaCommentNumber") int qnaCommentNumber) {
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaComment(adminEmail, qnaCommentNumber);
         return response;
     }
 

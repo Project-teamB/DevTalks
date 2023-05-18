@@ -18,6 +18,7 @@ public class UpdateAdminRequestDto {
     private String adminNickname;
     @NotBlank @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String adminPhoneNumber;
+    @NotBlank
     private String adminProfileImageUrl;
 
 }

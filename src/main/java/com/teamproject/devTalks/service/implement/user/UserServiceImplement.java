@@ -272,6 +272,7 @@ public class UserServiceImplement implements UserService {
 
         try {
 
+
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.noExistUser();
 
@@ -285,7 +286,7 @@ public class UserServiceImplement implements UserService {
             List<UserHashtagEntity> userHashtagEntities =
                     userHashtagRepository.findAllByUserNumber(userNumber);
 
-            userHashtagRepository.deleteAll(userHashtagEntities);
+            if(userHashtagEntities != null) userHashtagRepository.deleteAll(userHashtagEntities);
 
 
             List<RecommendationEntity> sendRecommendations =
@@ -294,13 +295,14 @@ public class UserServiceImplement implements UserService {
             List<RecommendationEntity> receiveRecommendations=
                     recommendationRepository.findByReceiverUserNumber(userNumber);
 
-            recommendationRepository.deleteAll(sendRecommendations);
-            recommendationRepository.deleteAll(receiveRecommendations);
+            if(sendRecommendations != null) recommendationRepository.deleteAll(sendRecommendations);
+            if(receiveRecommendations != null)recommendationRepository.deleteAll(receiveRecommendations);
 
             BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
-            blackListRepository.delete(blackListEntity);
+            if(blackListEntity != null)blackListRepository.delete(blackListEntity);
 
             userRepository.deleteByUserEmail(userEmail);
+
 
         }catch (Exception exception){
             exception.printStackTrace();

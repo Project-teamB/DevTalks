@@ -6,8 +6,10 @@ import lombok.Data;
 
 @Data
 public class TeacherHeartPk implements Serializable{
-    @Column(name = "userNumber")
-    private int userNumber;
     @Column(name = "teacherBoardNumber")
     private int teacherBoardNumber;
+    
+    @Column(name = "userNumber")
+    private int userNumber;
+    
 }

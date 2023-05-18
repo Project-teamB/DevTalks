@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class TeacherHashTagPk implements Serializable{
-    @Column(name = "boardHashtag")
-    private String boardHashtag;
-
     @Column(name = "teacherBoardNumber")
     private int teacherBoardNumber;
+    
+    @Column(name = "boardHashtag")
+    private String boardHashtag;
 }

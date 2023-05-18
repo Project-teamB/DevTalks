@@ -2,10 +2,8 @@ package com.teamproject.devTalks.dto.response.board.teacher;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,11 +33,13 @@ class TeacherBoardSummary {
     private int teacherBoardNumber;
     private String teacherTitle;
     private String teacherContent;
-    private String teacherBoardImageUrl;
     private String writeDatetime;
+    private int viewCount;
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImageUrl;
+
+    private String teacherBoardImageUrl;
     private int heartCount;
     private String teacherBoardHashtag;
 
@@ -47,11 +47,13 @@ class TeacherBoardSummary {
         this.teacherBoardNumber = teacherBoardEntity.getteacherBoardNumber();
         this.teacherTitle = teacherBoardEntity.getteacherTitle();
         this.teacherContent = teacherBoardEntity.getteacherContent();
-        this.teacherBoardImageUrl = teacherBoardEntity.getteacherBoardImageUrl();
         this.writeDatetime = teacherBoardEntity.getwriteDatetime();
+        this.viewCount = teacherBoardEntity.getviewCount();
         this.writerEmail = teacherBoardEntity.getwriterEmail();
         this.writerNickname = teacherBoardEntity.getwriterNickname();
         this.writerProfileImageUrl = teacherBoardEntity.getwriterProfileImageUrl();
+
+        this.teacherBoardImageUrl = teacherBoardEntity.getteacherBoardImageUrl();
         this.heartCount = teacherBoardEntity.getheartCount();
         this.teacherBoardHashtag = teacherBoardEntity.gethashTag();
     }

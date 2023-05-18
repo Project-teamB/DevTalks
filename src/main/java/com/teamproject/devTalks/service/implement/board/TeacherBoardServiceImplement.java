@@ -7,25 +7,22 @@ import com.teamproject.devTalks.dto.request.heart.teacher.PostTeacherHeartReques
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
-
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import com.teamproject.devTalks.entity.hashTag.TeacherBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.TeacherHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.teamproject.devTalks.repository.board.TeacherBoardRepository;
 import com.teamproject.devTalks.repository.hashTag.TeacherBoardHashTagRepository;
 import com.teamproject.devTalks.repository.heart.TeacherHeartRepository;
+import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.board.TeacherBoardService;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,6 +32,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     private final TeacherBoardRepository teacherBoardRepository;
     private final TeacherBoardHashTagRepository teacherBoardHashTagRepository;
     private final TeacherHeartRepository teacherHeartRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(Integer teacherBoardNumber){
@@ -54,9 +52,9 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             UserEntity userEntity = userRepository.findByUserEmail(teacherBoardWriterEmail);
 
             List<TeacherHeartEntity> teacherHeartEntities = teacherHeartRepository.findByTeacherBoardNumber(teacherBoardNumber);
-            int teacherHeartCount = teacherHeartEntities.size();
+            List<String> heartList = teacherHeartRepository.findByTeacherBoardNumberToUserNumber(teacherBoardNumber);
 
-            body = new GetTeacherBoardResponseDto(teacherBoardEntity, userEntity, teacherHeartCount);
+            body = new GetTeacherBoardResponseDto(teacherBoardEntity, userEntity, viewCount, teacherHeartEntities, heartList);
 
         } catch(Exception exception){
             exception.printStackTrace();
@@ -69,7 +67,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
 
         try {
-
             List<TeacherBoardListResultSet> resultSets = null;
             if (teacherSort.equals("time"))
                 resultSets = teacherBoardRepository.getListOrderByWriteDatetime();
@@ -105,19 +102,15 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             for (String hashTag : hashtagList) {
                 TeacherBoardHashTagEntity teacherBoardHashTagEntity = 
                     new TeacherBoardHashTagEntity(teacherBoardEntity.getTeacherBoardNumber(), hashTag);
-
                 teacherBoardHashtagList.add(teacherBoardHashTagEntity);
             }
-
             teacherBoardHashTagRepository.saveAll(teacherBoardHashtagList);
     
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
         return CustomResponse.success();
-
     }
 
     @Override
@@ -145,10 +138,8 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             for (String hashTag : hashtagList) {
                 TeacherBoardHashTagEntity teacherBoardHashTagEntity = 
                     new TeacherBoardHashTagEntity(teacherBoardEntity.getTeacherBoardNumber(), hashTag);
-
                 teacherBoardHashtagList.add(teacherBoardHashTagEntity);
             }
-
             teacherBoardHashTagRepository.saveAll(teacherBoardHashtagList);
 
         } catch (Exception exception) {
@@ -160,6 +151,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
 
     @Override
     public ResponseEntity<ResponseDto> deleteTeacherBoard(String userEmail, Integer teacherBoardNumber) {
+        
         try {
             if (teacherBoardNumber == null) return CustomResponse.validationFailed();
 
@@ -172,23 +164,21 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
-            teacherHeartRepository.deleteByteacherBoardNumber(teacherBoardNumber);
-            teacherBoardHashTagRepository.deleteByteacherBoardNumber(teacherBoardNumber);
+            teacherHeartRepository.deleteByTeacherBoardNumber(teacherBoardNumber);
+            teacherBoardHashTagRepository.deleteByTeacherBoardNumber(teacherBoardNumber);
             teacherBoardRepository.delete(teacherBoardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
         return CustomResponse.success();
-
     }
     
     @Override
     public ResponseEntity<ResponseDto> postTeacherHeart(String userEmail, PostTeacherHeartRequestDto dto) {
+        
         try {
-
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null) return CustomResponse.noExistUser();
 
@@ -202,12 +192,12 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
         return CustomResponse.success();
     }
 
     @Override
     public ResponseEntity<ResponseDto> deleteTeacherHeart(String userEmail, Integer teacherBoardNumber) {
+        
         try {
             if (teacherBoardNumber == null) return CustomResponse.validationFailed();
 
@@ -227,9 +217,26 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
         return CustomResponse.success();
-
     }
-    
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminTeacherBoard(String adminEmail, int teacherBoardNumber) {
+        try {
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if (!existAdmin) return CustomResponse.authenticationFailed(); 
+
+            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
+            if (teacherBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            teacherHeartRepository.deleteByTeacherBoardNumber(teacherBoardNumber);
+            teacherBoardHashTagRepository.deleteByTeacherBoardNumber(teacherBoardNumber);
+            teacherBoardRepository.delete(teacherBoardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
 }

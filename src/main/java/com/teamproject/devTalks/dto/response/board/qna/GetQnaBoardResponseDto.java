@@ -50,7 +50,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
         this.hashtagList = hashStrings;
         this.qnaHeartCount = qnaHeartCount;
         this.heartUserNumberList = heartIntegers;
-       
+        
     }
 
     @Data

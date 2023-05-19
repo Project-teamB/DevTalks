@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class GetQnaBoardResponseDto extends ResponseDto {
 
     private int qnaBoardNumber;
+    private String writerEmail;
     private String qnaTitle;
     private String qnaContent;
     private String qnaBoardImageUrl;
@@ -39,6 +40,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
         super("SU", "Success");
 
         this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
+        this.writerEmail = qnaBoardEntity.getWriterEmail();
         this.qnaTitle = qnaBoardEntity.getQnaTitle();
         this.qnaContent = qnaBoardEntity.getQnaContent();
         this.qnaBoardImageUrl = qnaBoardEntity.getQnaBoardImageUrl();

@@ -22,15 +22,13 @@ import lombok.NoArgsConstructor;
 @IdClass(QnaHeartPk.class)
 public class QnaHeartEntity {
 
-    @NotBlank
-    private String userEmail;
     @Id
     private int userNumber;
     @Id
     private int qnaBoardNumber;
 
     public QnaHeartEntity(UserEntity userEntity, QnaBoardEntity qnaBoardEntity) {
-        this.userEmail = userEntity.getUserEmail();
+      
         this.userNumber = userEntity.getUserNumber();
         this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
     }

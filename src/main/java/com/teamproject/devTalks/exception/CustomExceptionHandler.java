@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.response.ResponseDto;
@@ -30,5 +31,13 @@ public class CustomExceptionHandler {
             ExpiredJwtException exception){
         return CustomResponse.expiredJwt();
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ResponseDto> methodArgumentTypeMismatchException(
+        MethodArgumentTypeMismatchException exception
+    ) {
+        return CustomResponse.validationFailed();
+    }
+
 
 }

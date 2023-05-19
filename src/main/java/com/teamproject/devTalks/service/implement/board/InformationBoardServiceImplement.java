@@ -51,14 +51,64 @@ public class InformationBoardServiceImplement implements InformationBoardService
     @Override
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
         
-        GetInformationBoardListResponseDto body;
+        GetInformationBoardListResponseDto body = null;        
+        List<InformationBoardListResultSet> resultSet = null;
 
         try {
-
-            List<InformationBoardListResultSet> resultSet = informationBoardRepository.getInformationBoardList();
+            // 최신순으로 조회
+            if (informationSort.equals("latest")) {
+                resultSet = informationBoardRepository.getListOrderByWriteDatetime();
+            }
+            // 좋아요순으로 조회
+            else if (informationSort.equals("heartCount")) {
+                resultSet = informationBoardRepository.getListOrderByHeartCount();
+            }
+            // 댓글순으로 조회
+            else if (informationSort.equals("commentCount")) {
+                resultSet = informationBoardRepository.getListOrderByCommentCount();
+            }
+            // 조회순으로 조회
+            else if (informationSort.equals("viewCount")) {
+                resultSet = informationBoardRepository.getListOrderByViewCount();
+            }
             body = new GetInformationBoardListResponseDto(resultSet);
             
         } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber) {
+                                                                            // Integer는 참조형으로 null을 값으로 가질 수 있음
+        GetInformationBoardResponseDto body = null;
+
+        try {
+            if (informationBoardNumber == null) return CustomResponse.validationFailed();
+
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
+            if(informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            int viewCount = informationBoardEntity.getViewCount();
+            informationBoardEntity.setViewCount(++viewCount);
+            informationBoardRepository.save(informationBoardEntity);
+
+            String writerEmail = informationBoardEntity.getWriterEmail();
+            UserEntity userEntity = userRepository.findByUserEmail(writerEmail);
+
+            List<InformationCommentEntity> informationCommentEntities = 
+            informationCommentRepository.findByInformationBoardNumber(informationBoardNumber);
+            List<InformationHeartEntity> informationHeartEntities = 
+            informationHeartRepository.findByInformationBoardNumber(informationBoardNumber);
+            List<String> heartList = informationHeartRepository.findByInformationBoardNumberToUserNumber(informationBoardNumber);
+
+            body = new GetInformationBoardResponseDto(informationBoardEntity, userEntity, informationCommentEntities, informationHeartEntities, heartList);
+
+        } catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
@@ -259,40 +309,6 @@ public class InformationBoardServiceImplement implements InformationBoardService
     
         return CustomResponse.success();
     
-    }
-
-    @Override
-    public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber) {
-
-        GetInformationBoardResponseDto body = null;
-
-        try {
-            if (informationBoardNumber == null) return CustomResponse.validationFailed();
-
-            InformationBoardEntity informationBoardEntity = 
-            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
-            if(informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
-
-            int viewCount = informationBoardEntity.getViewCount();
-            informationBoardEntity.setViewCount(++viewCount);
-            informationBoardRepository.save(informationBoardEntity);
-
-            String writerEmail = informationBoardEntity.getWriterEmail();
-            UserEntity userEntity = userRepository.findByUserEmail(writerEmail);
-            List<InformationCommentEntity> informationCommentEntities = 
-            informationCommentRepository.findByInformationBoardNumber(informationBoardNumber);
-            List<InformationHeartEntity> informationHeartEntities = 
-            informationHeartRepository.findByInformationBoardNumber(informationBoardNumber);
-            List<String> heartList = informationHeartRepository.findByInformationBoardNumberToUserNumber(informationBoardNumber);
-
-            body = new GetInformationBoardResponseDto(informationBoardEntity, userEntity, informationCommentEntities, informationHeartEntities, heartList);
-
-        } catch (Exception exception){
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 }

@@ -85,10 +85,9 @@ public class InformationBoardServiceImplement implements InformationBoardService
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber) {
                                                                             // Integer는 참조형으로 null을 값으로 가질 수 있음
         GetInformationBoardResponseDto body = null;
+        if (informationBoardNumber == null) return CustomResponse.validationFailed();
 
         try {
-            if (informationBoardNumber == null) return CustomResponse.validationFailed();
-
             InformationBoardEntity informationBoardEntity = 
             informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
             if(informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
@@ -134,6 +133,35 @@ public class InformationBoardServiceImplement implements InformationBoardService
         return CustomResponse.success();
 
     }
+    
+    @Override
+    public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto) {
+        int informationBoardNumber = dto.getInformationBoardNumber();
+        String informationBoardTitle = dto.getInformationBoardTitle();
+        String informationBoardContent = dto.getInformationBoardContent();
+        String informationBoardImageUrl = dto.getInformationBoardImageUrl();
+
+        try {
+            InformationBoardEntity informationBoardEntity = 
+            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
+            if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            boolean equalWriter = informationBoardEntity.getWriterEmail().equals(userEmail);
+            if (!equalWriter) return CustomResponse.noPermission();
+
+            informationBoardEntity.setInformationBoardTitle(informationBoardTitle);
+            informationBoardEntity.setInformationBoardContent(informationBoardContent);
+            informationBoardEntity.setInformationBoardImageUrl(informationBoardImageUrl);
+
+            informationBoardRepository.save(informationBoardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
 
     @Override
     public ResponseEntity<ResponseDto> postInformationComment(String userEmail, PostInformationCommentRequestDto dto) {
@@ -168,8 +196,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
             InformationBoardEntity informationBoardEntity = 
             informationBoardRepository.findByInformationBoardNumber(dto.getInformationBoardNumber());
-            if (informationBoardEntity == null)
-            return CustomResponse.notExistBoardNumber();
+            if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
             InformationHeartEntity informationHeartEntity = new InformationHeartEntity(userEntity, informationBoardEntity);
             informationHeartRepository.save(informationHeartEntity);
@@ -183,34 +210,6 @@ public class InformationBoardServiceImplement implements InformationBoardService
     }
 
 
-    @Override
-    public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto) {
-        int informationBoardNumber = dto.getInformationBoardNumber();
-        String informationBoardTitle = dto.getInformationBoardTitle();
-        String informationBoardContent = dto.getInformationBoardContent();
-        String informationBoardImageUrl = dto.getInformationBoardImageUrl();
-
-        try {
-            InformationBoardEntity informationBoardEntity = 
-            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
-            if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
-
-            boolean equalWriter = informationBoardEntity.getWriterEmail().equals(userEmail);
-            if (!equalWriter) return CustomResponse.noPermission();
-
-            informationBoardEntity.setInformationBoardTitle(informationBoardTitle);
-            informationBoardEntity.setInformationBoardContent(informationBoardContent);
-            informationBoardEntity.setInformationBoardImageUrl(informationBoardImageUrl);
-
-            informationBoardRepository.save(informationBoardEntity);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-
-        return CustomResponse.success();
-    }
 
     @Override
     public ResponseEntity<ResponseDto> patchInformationComment(String userEmail,
@@ -222,7 +221,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
             try {
                 InformationCommentEntity informationCommentEntity = 
                 informationCommentRepository.findByInformationCommentNumber(informationCommentNumber);
-                if (informationCommentEntity == null) return CustomResponse.notExistBoardNumber();
+                if (informationCommentEntity == null) return CustomResponse.notExistCommentNumber();
     
                 boolean equalWriter = informationCommentEntity.getWriterEmail().equals(userEmail);
                 if (!equalWriter) return CustomResponse.noPermission();
@@ -296,8 +295,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if (userEntity == null)
-                return CustomResponse.noExistUser();
+            if (userEntity == null) return CustomResponse.noExistUser();
             int userNumber = userEntity.getUserNumber();
             informationHeartRepository.deleteByUserNumberAndInformationBoardNumber(userNumber, informationBoardNumber);
 

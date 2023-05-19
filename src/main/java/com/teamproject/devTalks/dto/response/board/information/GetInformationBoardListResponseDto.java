@@ -41,6 +41,7 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
         private String writeDatetime;
         private int viewCount;
         private String writerNickname;
+        private String writerEmail;
         private String writerProfileImageUrl;
         private int commentCount;
         private int heartCount;
@@ -51,6 +52,7 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
             this.writeDatetime = resultSet.getWriteDatetime();
             this.viewCount = resultSet.getViewCount();
             this.writerNickname = resultSet.getWriterNickname();
+            this.writerEmail = resultSet.getWriterEmail();
             this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
             this.commentCount = resultSet.getCommentCount();
             this.heartCount = resultSet.getHeartCount();

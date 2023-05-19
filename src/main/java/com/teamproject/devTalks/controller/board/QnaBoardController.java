@@ -39,7 +39,6 @@ public class QnaBoardController {
     // this.boardService = boardService;
     // }
 
-    // 나중에 좋아요한 사람들의 리스트를 반환해줘라
     @GetMapping("/list/{sort}")
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(
             @PathVariable("sort") String qnaSort) {
@@ -47,7 +46,6 @@ public class QnaBoardController {
         return response;
     }
 
-    // 나중에 좋아요한 사람들의 리스트를 반환해줘라
     @GetMapping("/{qnaBoardNumber}")
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {

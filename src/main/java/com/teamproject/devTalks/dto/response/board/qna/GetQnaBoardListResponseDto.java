@@ -44,6 +44,7 @@ class BoardSummary {
 	private String qnaBoardImageUrl;
 	private String writeDatetime;
 	private int viewCount;
+	private String writerEmail;
 	private String writerNickname;
 	private String writerProfileImageUrl;
 	private int commentCount;
@@ -56,6 +57,7 @@ class BoardSummary {
 		this.qnaBoardImageUrl = resultSet.getQnaBoardImageUrl();
 		this.writeDatetime = resultSet.getWriteDatetime();
 		this.viewCount = resultSet.getViewCount();
+		this.writerEmail = resultSet.getWriterEmail();
 		this.writerNickname = resultSet.getWriterNickname();
 		this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
 		this.commentCount = resultSet.getQnaCommentCount();

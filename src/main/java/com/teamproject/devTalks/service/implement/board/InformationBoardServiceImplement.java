@@ -49,6 +49,24 @@ public class InformationBoardServiceImplement implements InformationBoardService
 }
 
     @Override
+    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
+        
+        GetInformationBoardListResponseDto body;
+
+        try {
+
+            List<InformationBoardListResultSet> resultSet = informationBoardRepository.getInformationBoardList();
+            body = new GetInformationBoardListResponseDto(resultSet);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+    
+    @Override
     public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto) {
 
         try {
@@ -277,23 +295,6 @@ public class InformationBoardServiceImplement implements InformationBoardService
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    @Override
-    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
-        
-        GetInformationBoardListResponseDto body;
-
-        try {
-
-            List<InformationBoardListResultSet> resultSet = informationBoardRepository.getInformationBoardList();
-            body = new GetInformationBoardListResponseDto(resultSet);
-            
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
 }
 
 

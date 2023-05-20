@@ -11,7 +11,7 @@ public class InformationHashtagPk implements Serializable {
 
     @Column(name="information_board_number")
     private int informationBoardNumber;
-    @Column(name="hashtag")
+    @Column(name="board_hashtag")
     private String boardHashtag;
 
 

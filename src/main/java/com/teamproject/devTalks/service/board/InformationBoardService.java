@@ -22,11 +22,14 @@ public interface InformationBoardService {
 
     public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto);
     public ResponseEntity<ResponseDto> patchInformationComment(String userEmail, PatchInformationCommentRequestDto dto);
-    public ResponseEntity<ResponseDto> deleteInformationBoard(String userEmail, Integer informationBoardNumber);
-    
+
+    public ResponseEntity<ResponseDto> deleteInformationBoard(String userEmail, Integer informationBoardNumber);    
     public ResponseEntity<ResponseDto> deleteInformationComment(String userEmail, Integer informationCommentNumber);
     public ResponseEntity<ResponseDto> deleteInformationHeart(String userEmail, Integer informationBoardNumber);
 
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber);
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort);
+
+    public ResponseEntity<ResponseDto> deleteAdminInformationBoard(String adminEmail, int informationBoardNumber);
+    public ResponseEntity<ResponseDto> deleteAdminInformationComment(String adminEmail, int informationCommentNumber);
 }

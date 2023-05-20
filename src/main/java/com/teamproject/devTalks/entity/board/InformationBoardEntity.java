@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Information")
-@Table(name = "Information")
+@Entity(name = "information")
+@Table(name = "information")
 public class InformationBoardEntity {
     
     @Id

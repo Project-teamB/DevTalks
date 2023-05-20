@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="InformationHashtag")
-@Table(name="InformationHashtag")
+@Entity(name="information_hashtag")
+@Table(name="information_hashtag")
 @IdClass(InformationHashtagPk.class)
 public class InformationBoardHashTagEntity {
     @Id
-    private int informationBoardNumber;
-    @Id
     private String boardHashtag;
+    @Id
+    private int informationBoardNumber;
 
 
 }

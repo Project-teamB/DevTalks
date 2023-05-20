@@ -49,9 +49,9 @@ public class WebSecurityConfig {
         httpSecurity.cors().and()
                 .csrf().disable()
                 .httpBasic().disable()
-
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
+                
                 .antMatchers("/user/sign-up", "/user/sign-in","/user/{userNumber}").permitAll()
                 .antMatchers("/admin/sign-up", "/admin/sign-in").permitAll()
                 .antMatchers("/recommendation/**").hasRole("USER")

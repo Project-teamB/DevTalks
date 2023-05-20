@@ -22,12 +22,14 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
         super("SU", "Success");
 
         List<BoardSummary> boardList = new ArrayList<>();
-
-        for (InformationBoardListResultSet result: resultSet) {
-            BoardSummary boardSummary = new BoardSummary(result);
-            boardList.add(boardSummary);
+    
+        if (resultSet != null) {
+            for (InformationBoardListResultSet result : resultSet) {
+                BoardSummary boardSummary = new BoardSummary(result);
+                boardList.add(boardSummary);
+            }
         }
-
+    
         this.boardList = boardList;
     }
 
@@ -37,23 +39,23 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
     @AllArgsConstructor
     class BoardSummary {
         private int informationBoardNumber;
+        private String writerProfileImageUrl;
+        private String writerNickname;
+        private String writerEmail;
         private String informationBoardTitle;
         private String writeDatetime;
         private int viewCount;
-        private String writerNickname;
-        private String writerEmail;
-        private String writerProfileImageUrl;
         private int commentCount;
         private int heartCount;
 
         public BoardSummary(InformationBoardListResultSet resultSet) {
             this.informationBoardNumber = resultSet.getInformationBoardNumber();
-            this.informationBoardTitle = resultSet.getInformationBoardTitle();
-            this.writeDatetime = resultSet.getWriteDatetime();
-            this.viewCount = resultSet.getViewCount();
+            this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
             this.writerNickname = resultSet.getWriterNickname();
             this.writerEmail = resultSet.getWriterEmail();
-            this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
+            this.informationBoardTitle = resultSet.getInformationBoardTitle();
+            this.viewCount = resultSet.getViewCount();
+            this.writeDatetime = resultSet.getWriteDatetime();            
             this.commentCount = resultSet.getCommentCount();
             this.heartCount = resultSet.getHeartCount();
         }

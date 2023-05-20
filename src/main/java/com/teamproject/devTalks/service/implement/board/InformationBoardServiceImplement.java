@@ -1,7 +1,9 @@
 package com.teamproject.devTalks.service.implement.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +12,22 @@ import org.springframework.stereotype.Service;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.repository.board.InformationBoardRepository;
 import com.teamproject.devTalks.repository.comment.InformationCommentRepository;
+import com.teamproject.devTalks.repository.hashTag.InformationBoardHashTagRepository;
 import com.teamproject.devTalks.repository.heart.InformationHeartRepository;
+import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;
 import com.teamproject.devTalks.entity.board.InformationBoardEntity;
 import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
+import com.teamproject.devTalks.entity.hashTag.InformationBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.InformationHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.InformationBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.service.board.InformationBoardService;
+
+import lombok.RequiredArgsConstructor;
+
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
@@ -28,25 +36,15 @@ import com.teamproject.devTalks.dto.request.comment.information.PostInformationC
 import com.teamproject.devTalks.dto.request.heart.information.PostInformationHeartRequestDto;
 
 @Service
+@RequiredArgsConstructor
 public class InformationBoardServiceImplement implements InformationBoardService {
     
     private UserRepository userRepository;
     private InformationBoardRepository informationBoardRepository;
     private InformationCommentRepository informationCommentRepository;
     private InformationHeartRepository informationHeartRepository;
-
-    @Autowired
-    public InformationBoardServiceImplement(    
-        UserRepository userRepository,
-        InformationBoardRepository informationBoardRepository,
-        InformationCommentRepository informationCommentRepository,
-        InformationHeartRepository informationHeartRepository
-    ){
-        this.userRepository = userRepository;
-        this.informationBoardRepository = informationBoardRepository;
-        this.informationCommentRepository = informationCommentRepository;
-        this.informationHeartRepository = informationHeartRepository;
-}
+    private InformationBoardHashTagRepository informationBoardHashTagRepository;
+    private AdminRepository adminRepository;
 
     @Override
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
@@ -56,21 +54,18 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
         try {
             // 최신순으로 조회
-            if (informationSort.equals("latest")) {
-                resultSet = informationBoardRepository.getListOrderByWriteDatetime();
-            }
+            if (informationSort.equals("latest")){
+            resultSet = informationBoardRepository.getListOrderByWriteDatetime();}
             // 좋아요순으로 조회
-            else if (informationSort.equals("heartCount")) {
-                resultSet = informationBoardRepository.getListOrderByHeartCount();
-            }
+            else if (informationSort.equals("heartcount")){
+            resultSet = informationBoardRepository.getListOrderByHeartCount();}
             // 댓글순으로 조회
-            else if (informationSort.equals("commentCount")) {
-                resultSet = informationBoardRepository.getListOrderByCommentCount();
-            }
+            else if (informationSort.equals("commentcount")){
+            resultSet = informationBoardRepository.getListOrderByCommentCount();}
             // 조회순으로 조회
-            else if (informationSort.equals("viewCount")) {
-                resultSet = informationBoardRepository.getListOrderByViewCount();
-            }
+            else if (informationSort.equals("viewcount")){
+            resultSet = informationBoardRepository.getListOrderByViewCount();}
+
             body = new GetInformationBoardListResponseDto(resultSet);
             
         } catch (Exception exception) {
@@ -104,8 +99,14 @@ public class InformationBoardServiceImplement implements InformationBoardService
             List<InformationHeartEntity> informationHeartEntities = 
             informationHeartRepository.findByInformationBoardNumber(informationBoardNumber);
             List<String> heartList = informationHeartRepository.findByInformationBoardNumberToUserNumber(informationBoardNumber);
-
-            body = new GetInformationBoardResponseDto(informationBoardEntity, userEntity, informationCommentEntities, informationHeartEntities, heartList);
+            List<InformationBoardHashTagEntity> informationBoardHashTagEntities = 
+            informationBoardHashTagRepository.findByInformationBoardNumber(informationBoardNumber);        
+            List<String> hashtagStrings = new ArrayList<>();
+            for(InformationBoardHashTagEntity hashtagList: informationBoardHashTagEntities) {
+                String hashtags = hashtagList.getBoardHashtag();
+                hashtagStrings.add(hashtags);
+            }
+            body = new GetInformationBoardResponseDto(informationBoardEntity, userEntity, informationCommentEntities, informationHeartEntities, heartList, hashtagStrings);
 
         } catch (Exception exception){
             exception.printStackTrace();
@@ -117,6 +118,8 @@ public class InformationBoardServiceImplement implements InformationBoardService
     
     @Override
     public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto) {
+        List<String> hashtagList = dto.getBoardHashtag();
+        List<InformationBoardHashTagEntity> informationHashtagList = new ArrayList<>();
 
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
@@ -124,6 +127,14 @@ public class InformationBoardServiceImplement implements InformationBoardService
         
             InformationBoardEntity informationBoardEntity = new InformationBoardEntity(userEmail, dto);
             informationBoardRepository.save(informationBoardEntity);
+
+            for (String boardHashtag : hashtagList) {
+                InformationBoardHashTagEntity informationBoardHashTagEntity = 
+                new InformationBoardHashTagEntity(boardHashtag, informationBoardEntity.getInformationBoardNumber());
+                informationHashtagList.add(informationBoardHashTagEntity); 
+                }
+
+            informationBoardHashTagRepository.saveAll(informationHashtagList);
     
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -309,6 +320,37 @@ public class InformationBoardServiceImplement implements InformationBoardService
     
     }
 
+        @Override
+        public ResponseEntity<ResponseDto> deleteAdminInformationComment(String adminEmail, int informationCommentNumber) {
+            try {
+                boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+                if (!existAdmin) return CustomResponse.authenticationFailed();
+    
+                informationCommentRepository.deleteByInformationCommentNumber(informationCommentNumber);
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                return CustomResponse.databaseError();
+            }
+            return CustomResponse.success();
+        }
+
+        @Override
+        public ResponseEntity<ResponseDto> deleteAdminInformationBoard(String adminEmail, int informationBoardNumber) {
+            try {
+                boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+                if (!existAdmin) return CustomResponse.authenticationFailed();
+
+                informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+                informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);
+                informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+                
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                return CustomResponse.databaseError();
+            }
+            return CustomResponse.success();
+        }
 }
 
 

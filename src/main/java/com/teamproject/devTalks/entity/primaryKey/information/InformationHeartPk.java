@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 public class InformationHeartPk implements Serializable {
-    @Column
+    @Column(name="information_board_number")
     private int informationBoardNumber;
-    @Column
+    @Column(name="user_number")
     private int userNumber;
 }

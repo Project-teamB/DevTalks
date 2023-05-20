@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="Information_heart")
-@Table(name="InformationHeart")
+@Entity(name="information_heart")
+@Table(name="information_heart")
 @IdClass(InformationHeartPk.class)
 public class InformationHeartEntity {
     @Id

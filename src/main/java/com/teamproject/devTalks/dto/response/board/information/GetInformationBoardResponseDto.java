@@ -33,11 +33,12 @@ public class GetInformationBoardResponseDto extends ResponseDto {
     private List<Comment> commentList;
     private int heartCount;
     private List<String> heartList;
+    private List<String> hashtagList;
 
     public GetInformationBoardResponseDto(
         InformationBoardEntity informationBoardEntity, UserEntity userEntity,
         List<InformationCommentEntity> informationCommentEntities, List<InformationHeartEntity> informationHeartEntities,
-        List<String> heartList
+        List<String> heartList, List<String> hashtagList
         ) {   
 
         super("SU", "Success");

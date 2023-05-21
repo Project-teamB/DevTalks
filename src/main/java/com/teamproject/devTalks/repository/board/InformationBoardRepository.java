@@ -26,9 +26,9 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
-        "count(C.comment_number) AS informationCommentCount, " +
+        "count(C.information_comment_number) AS informationCommentCount, " +
         "count(H.user_number) AS informationHeartCount " +
-        "FROM information I, information_comment C, information_heart H, board_hashtag T " +
+        "FROM information I, information_comment C, information_heart H, information_hashtag T " +
         "WHERE I.information_board_number = C.information_board_number " +
         "AND I.information_board_number = H.information_board_number " +
         "group by informationBoardNumber " +
@@ -48,7 +48,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
-        "count(C.comment_number) AS informationCommentCount, " +
+        "count(C.information_comment_number) AS informationCommentCount, " +
         "count(H.user_number) AS informationHeartCount " +
         "FROM information I " +
         "LEFT JOIN information_comment C " +
@@ -56,8 +56,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "LEFT JOIN information_heart H " +
         "ON I.information_board_number = H.information_board_number " +
         "GROUP BY I.information_board_number " +
-        "ORDER BY I.write_datetime DESC",
-        nativeQuery = true)
+        "ORDER BY I.write_datetime DESC", nativeQuery = true)
     List<InformationBoardListResultSet> getListOrderByWriteDatetime();
 
     // 좋아요순 게시물 목록 조회
@@ -72,7 +71,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
             "I.content_source AS contentSource, " +
             "I.view_count AS viewCount, " +
             "I.write_datetime AS writeDatetime, " +
-            "count(C.comment_number) AS informationCommentCount, " +
+            "count(C.information_comment_number) AS informationCommentCount, " +
             "count(H.user_number) AS informationHeartCount " +
             "FROM information I " +
             "LEFT JOIN information_comment C " +
@@ -95,7 +94,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
             "I.content_source AS contentSource, " +
             "I.view_count AS viewCount, " +
             "I.write_datetime AS writeDatetime, " +
-            "count(C.comment_number) AS informationCommentCount, " +
+            "count(C.information_comment_number) AS informationCommentCount, " +
             "count(H.user_number) AS informationHeartCount " +
             "FROM information I " +
             "LEFT JOIN information_comment C " +
@@ -118,7 +117,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
-        "count(C.comment_number) AS informationCommentCount, " +
+        "count(C.information_comment_number) AS informationCommentCount, " +
         "count(H.user_number) AS informationHeartCount " +
         "FROM information I " +
         "LEFT JOIN information_comment C " +

@@ -39,34 +39,37 @@ import com.teamproject.devTalks.dto.request.heart.information.PostInformationHea
 @RequiredArgsConstructor
 public class InformationBoardServiceImplement implements InformationBoardService {
     
-    private UserRepository userRepository;
-    private InformationBoardRepository informationBoardRepository;
-    private InformationCommentRepository informationCommentRepository;
-    private InformationHeartRepository informationHeartRepository;
-    private InformationBoardHashTagRepository informationBoardHashTagRepository;
-    private AdminRepository adminRepository;
+    private final UserRepository userRepository;
+    private final InformationBoardRepository informationBoardRepository;
+    private final InformationCommentRepository informationCommentRepository;
+    private final InformationHeartRepository informationHeartRepository;
+    private final InformationBoardHashTagRepository informationBoardHashTagRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort) {
         
-        GetInformationBoardListResponseDto body = null;        
-        List<InformationBoardListResultSet> resultSet = null;
-
-        try {
+        GetInformationBoardListResponseDto body = null;
+        if (!informationSort.equals("latest") && !informationSort.equals("heartcount") && 
+        !informationSort.equals("commentcount") && !informationSort.equals("viewcount")) {
+            return CustomResponse.validationFailed();
+        }
+        try {        
+        List<InformationBoardListResultSet> resultSets = null;
             // 최신순으로 조회
             if (informationSort.equals("latest")){
-            resultSet = informationBoardRepository.getListOrderByWriteDatetime();}
+            resultSets = informationBoardRepository.getListOrderByWriteDatetime();}
             // 좋아요순으로 조회
             else if (informationSort.equals("heartcount")){
-            resultSet = informationBoardRepository.getListOrderByHeartCount();}
+            resultSets = informationBoardRepository.getListOrderByHeartCount();}
             // 댓글순으로 조회
             else if (informationSort.equals("commentcount")){
-            resultSet = informationBoardRepository.getListOrderByCommentCount();}
+            resultSets = informationBoardRepository.getListOrderByCommentCount();}
             // 조회순으로 조회
             else if (informationSort.equals("viewcount")){
-            resultSet = informationBoardRepository.getListOrderByViewCount();}
+            resultSets = informationBoardRepository.getListOrderByViewCount();}
 
-            body = new GetInformationBoardListResponseDto(resultSet);
+            body = new GetInformationBoardListResponseDto(resultSets);
             
         } catch (Exception exception) {
             exception.printStackTrace();

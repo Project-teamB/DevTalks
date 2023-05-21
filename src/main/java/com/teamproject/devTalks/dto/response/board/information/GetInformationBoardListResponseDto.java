@@ -18,20 +18,19 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
 
     private List<BoardSummary> boardList;
 
-    public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSet) {
+    public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSets) {
         super("SU", "Success");
 
-        List<BoardSummary> boardList = new ArrayList<>();
-    
-        if (resultSet != null) {
-            for (InformationBoardListResultSet result : resultSet) {
-                BoardSummary boardSummary = new BoardSummary(result);
+        this.boardList = new ArrayList<>();
+
+        if (resultSets != null) {
+            for (InformationBoardListResultSet resultSet : resultSets) {
+                BoardSummary boardSummary = new BoardSummary(resultSet);
                 boardList.add(boardSummary);
             }
         }
-    
-        this.boardList = boardList;
-    }
+
+        }
 
     @Getter
     @Setter

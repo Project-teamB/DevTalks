@@ -1,14 +1,9 @@
 package com.teamproject.devTalks.controller.board;
 
-import java.nio.file.attribute.UserPrincipal;
-
 import javax.validation.Valid;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,12 +21,11 @@ import com.teamproject.devTalks.dto.request.heart.qna.PostQnaHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardResponseDto;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.service.board.QnaBoardService;
 
 import lombok.RequiredArgsConstructor;
-
-// 관리자권한으로 게시글 삭제, 댓글 삭제(댓글Controller)
 
 @RestController
 @RequestMapping("/board/qna")
@@ -128,6 +122,26 @@ public class QnaBoardController {
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = boardService.deleteQnaHeart(userEmail, qnaBoardNumber);
+        return response;
+    }
+
+    // 관리자가 게시물을 삭제
+    @DeleteMapping("/admin/{qnaBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteAdminQnaBoard(
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+            @PathVariable("qnaBoardNumber") int qnaBoardNumber) {
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaBoard(adminEmail, qnaBoardNumber);
+        return response;
+    }
+
+    // 관리자가 댓글을 삭제
+    @DeleteMapping("/admin/comment/{qnaCommentNumber}")
+    public ResponseEntity<ResponseDto> deleteAdminQnaComment(
+            @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+            @PathVariable("qnaCommentNumber") int qnaCommentNumber) {
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = boardService.deleteAdminQnaComment(adminEmail, qnaCommentNumber);
         return response;
     }
 

@@ -6,12 +6,12 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
-import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
+import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
-import com.teamproject.devTalks.repository.hashTag.UserHashTagRepository;
+import com.teamproject.devTalks.repository.hashTag.UserHashtagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
@@ -30,7 +30,7 @@ import java.util.List;
 public class UserServiceImplement implements UserService {
 
     private final UserRepository userRepository;
-    private final UserHashTagRepository userHashTagRepository;
+    private final UserHashtagRepository userHashtagRepository;
     private final BlackListRepository blackListRepository;
     private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -45,7 +45,7 @@ public class UserServiceImplement implements UserService {
         String userPhoneNumber = dto.getUserPhoneNumber();
 
         List<String> hashtagList = dto.getUserHashtag();
-        List<UserHashTagEntity> userHashtagList = new ArrayList<>();
+        List<UserHashtagEntity> userHashtagList = new ArrayList<>();
 
 
 
@@ -68,18 +68,15 @@ public class UserServiceImplement implements UserService {
 
             int userNumber = userEntity.getUserNumber();
 
-            for(String hashTag : hashtagList) {
+            for(String hashtag : hashtagList) {
 
-                UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
-
-                userHashTagEntity.setUserNumber(userNumber);
-                userHashTagEntity.setUserHashtag(hashTag);
+                UserHashtagEntity userHashTagEntity = new UserHashtagEntity(userNumber,hashtag);
 
                 userHashtagList.add(userHashTagEntity);
 
             }
 
-            userHashTagRepository.saveAll(userHashtagList);
+            userHashtagRepository.saveAll(userHashtagList);
 
 
         } catch (Exception exception){
@@ -133,10 +130,10 @@ public class UserServiceImplement implements UserService {
             if(userEntity == null) return CustomResponse.noExistUser();
 
             int userNumber = userEntity.getUserNumber();
-            List<UserHashTagEntity> userHashTagEntities =
-                    userHashTagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities =
+                    userHashtagRepository.findAllByUserNumber(userNumber);
 
-            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
+            for(UserHashtagEntity userHashTagEntity: userHashtagEntities){
                 String hashtag = userHashTagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
@@ -170,11 +167,11 @@ public class UserServiceImplement implements UserService {
             UserEntity userEntity = userRepository.findByUserNumber(userNumber);
             if(userEntity == null) return CustomResponse.noExistUser();
 
-            List<UserHashTagEntity> userHashTagEntities =
-                    userHashTagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities =
+                    userHashtagRepository.findAllByUserNumber(userNumber);
 
-            for(UserHashTagEntity userHashTagEntity: userHashTagEntities){
-                String hashtag = userHashTagEntity.getUserHashtag();
+            for(UserHashtagEntity userHashtagEntity: userHashtagEntities){
+                String hashtag = userHashtagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 
@@ -198,55 +195,47 @@ public class UserServiceImplement implements UserService {
         String password = dto.getPassword();
         String userNickname = dto.getUserNickname();
         String userPhoneNumber = dto.getUserPhoneNumber();
-        String userIntroduction = dto.getUserIntroduction();
-        String userProfileImageUrl = dto.getUserProfileImageUrl();
-        boolean  chatAcceptance = dto.isChatAcceptance();
 
-        List<String> hashTagList = dto.getUserHashtag();
-        List<UserHashTagEntity> userHashtagList = new ArrayList<>();
+        List<String> hashtagList = dto.getUserHashtag();
+        List<UserHashtagEntity> userHashtagList = new ArrayList<>();
 
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) CustomResponse.noExistUser();
+            if(userEntity == null) CustomResponse.authenticationFailed();
 
             String encodedCurrentPassword = userEntity.getUserPassword();
 
             boolean isEqualPassword = passwordEncoder.matches(password,encodedCurrentPassword);
             if(!isEqualPassword) return CustomResponse.passwordMismatch();
 
-            boolean isExistUserNickname = userRepository.existsByUserNickname(userNickname);
+            boolean isExistUserNickname =
+                    userRepository.existsByUserNicknameAndUserEmailNot(userNickname,userEmail);
             if(isExistUserNickname) return CustomResponse.existNickname();
 
-            boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(userPhoneNumber);
+            boolean isExistPhoneNumber =
+                    userRepository.existsByUserPhoneNumberAndUserEmailNot(userPhoneNumber,userEmail);
             if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
 
-            userEntity.setUserNickname(userNickname);
-            userEntity.setUserPhoneNumber(userPhoneNumber);
-            userEntity.setUserIntroduction(userIntroduction);
-            userEntity.setUserProfileImageUrl(userProfileImageUrl);
-            userEntity.setChatAcceptance(chatAcceptance);
+            UserEntity updateUser = new UserEntity(userEntity, dto);
 
-            userRepository.save(userEntity);
+            userRepository.save(updateUser);
 
             int userNumber = userEntity.getUserNumber();
 
-            List<UserHashTagEntity> currentUserHashTagEntities =
-                    userHashTagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> currentUserHashTagEntities =
+                    userHashtagRepository.findAllByUserNumber(userNumber);
 
-            userHashTagRepository.deleteAll(currentUserHashTagEntities);
+            userHashtagRepository.deleteAll(currentUserHashTagEntities);
 
-            for(String hashtag:hashTagList){
+            for(String hashtag:hashtagList){
 
-                UserHashTagEntity userHashTagEntity = new UserHashTagEntity();
-                userHashTagEntity.setUserNumber(userNumber);
-                userHashTagEntity.setUserHashtag(hashtag);
-
-                userHashtagList.add(userHashTagEntity);
+                UserHashtagEntity userHashtagEntity = new UserHashtagEntity(userNumber,hashtag);
+                userHashtagList.add(userHashtagEntity);
 
             }
 
-            userHashTagRepository.saveAll(userHashtagList);
+            userHashtagRepository.saveAll(userHashtagList);
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -283,6 +272,7 @@ public class UserServiceImplement implements UserService {
 
         try {
 
+
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.noExistUser();
 
@@ -293,10 +283,10 @@ public class UserServiceImplement implements UserService {
 
             int userNumber = userEntity.getUserNumber();
 
-            List<UserHashTagEntity> userHashTagEntities =
-                    userHashTagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities =
+                    userHashtagRepository.findAllByUserNumber(userNumber);
 
-            userHashTagRepository.deleteAll(userHashTagEntities);
+            if(userHashtagEntities != null) userHashtagRepository.deleteAll(userHashtagEntities);
 
 
             List<RecommendationEntity> sendRecommendations =
@@ -305,13 +295,14 @@ public class UserServiceImplement implements UserService {
             List<RecommendationEntity> receiveRecommendations=
                     recommendationRepository.findByReceiverUserNumber(userNumber);
 
-            recommendationRepository.deleteAll(sendRecommendations);
-            recommendationRepository.deleteAll(receiveRecommendations);
+            if(sendRecommendations != null) recommendationRepository.deleteAll(sendRecommendations);
+            if(receiveRecommendations != null)recommendationRepository.deleteAll(receiveRecommendations);
 
             BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
-            blackListRepository.delete(blackListEntity);
+            if(blackListEntity != null)blackListRepository.delete(blackListEntity);
 
             userRepository.deleteByUserEmail(userEmail);
+
 
         }catch (Exception exception){
             exception.printStackTrace();

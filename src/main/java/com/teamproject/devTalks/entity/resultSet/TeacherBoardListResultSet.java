@@ -6,7 +6,7 @@ public interface TeacherBoardListResultSet {
     public String getteacherContent();
     public String getteacherBoardImageUrl();
     public String getwriteDatetime();
-    public String getupdateDatetime();
+    public int getviewCount();
     public String getwriterEmail();
     public String getwriterNickname();
     public String getwriterProfileImageUrl();

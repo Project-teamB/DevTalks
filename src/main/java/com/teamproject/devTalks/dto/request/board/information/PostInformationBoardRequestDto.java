@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.dto.request.board.information;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
@@ -15,13 +17,14 @@ public class PostInformationBoardRequestDto {
     private String informationBoardImageUrl;
     @NotBlank
     private String contentSource;
-    private String hashtag;
+    private List<String> boardHashtag;
 
     public PostInformationBoardRequestDto(PostInformationBoardRequestDto dto) {
-        this.informationBoardTitle = dto.getInformationBoardTitle();
-        this.informationBoardContent = dto.getInformationBoardContent();
-        this.informationBoardImageUrl = dto.getInformationBoardImageUrl();
-        this.contentSource = dto.getContentSource();
-        this.hashtag = dto.getHashtag();
+        this.informationBoardTitle = dto.informationBoardTitle;
+        this.informationBoardContent = dto.informationBoardContent;
+        this.informationBoardImageUrl = dto.informationBoardImageUrl;
+        this.contentSource = dto.contentSource;
+        this.boardHashtag = dto.boardHashtag;
     }
+    
 }

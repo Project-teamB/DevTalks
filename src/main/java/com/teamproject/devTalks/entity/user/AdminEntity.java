@@ -4,6 +4,7 @@ package com.teamproject.devTalks.entity.user;
 import javax.persistence.*;
 
 import com.teamproject.devTalks.dto.request.admin.AdminSignUpRequestDto;
+import com.teamproject.devTalks.dto.request.admin.UpdateAdminRequestDto;
 import lombok.*;
 
 @Entity(name = "admin")
@@ -31,6 +32,18 @@ public class AdminEntity {
         this.adminPhoneNumber = dto.getAdminPhoneNumber();
         this.adminName = dto.getAdminName();
         this.agreePersonalInformation = dto.isAgreePersonalInformation();
+
+    }
+
+    public AdminEntity(AdminEntity adminEntity, UpdateAdminRequestDto dto) {
+        this.adminNumber = adminEntity.getAdminNumber();
+        this.adminEmail = adminEntity.getAdminEmail();
+        this.adminPassword = adminEntity.getAdminPassword();
+        this.adminNickname = dto.getAdminNickname();
+        this.adminPhoneNumber = dto.getAdminPhoneNumber();
+        this.adminName = adminEntity.getAdminName();
+        this.adminProfileImageUrl = dto.getAdminProfileImageUrl();
+        this.agreePersonalInformation = adminEntity.isAgreePersonalInformation();
 
     }
 }

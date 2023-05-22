@@ -12,12 +12,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="TeacherHashtag")
-@Table(name="TeacherHashtag")
+@Entity(name="teacherHashtag")
+@Table(name="teacherHashtag")
 @IdClass(TeacherHashTagPk.class)
 public class TeacherBoardHashTagEntity {
     @Id
     private int teacherBoardNumber;
     @Id
-    private String hashtag;
+    private String boardHashtag;
+    
 }

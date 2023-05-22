@@ -17,6 +17,5 @@ public class PatchQnaBoardRequestDto {
     @NotBlank
     private String qnaContent;
     private String qnaBoardImageUrl;
-
-
+    // 해시태그는?
 }

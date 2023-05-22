@@ -12,12 +12,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-// AllArgsConstructor왜 들어가면안되지
+// @AllArgsConstructor는 여기선 사용할수 없음
 public class GetQnaBoardListResponseDto extends ResponseDto {
 
 	private List<BoardSummary> qnaBoardList; // B
 
 	public GetQnaBoardListResponseDto(List<QnaBoardListResultSet> resultSets) { // A
+
+		super("SU", "Success");
 
 		this.qnaBoardList = new ArrayList<>(); // 빈 B리스트를 만든다
 
@@ -39,10 +41,10 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 class BoardSummary {
 	private int quaBoardNumber;
 	private String qnaTitle;
-	private String qnaContent;
 	private String qnaBoardImageUrl;
 	private String writeDatetime;
 	private int viewCount;
+	private String writerEmail;
 	private String writerNickname;
 	private String writerProfileImageUrl;
 	private int commentCount;
@@ -52,14 +54,14 @@ class BoardSummary {
 
 		this.quaBoardNumber = resultSet.getQnaBoardNumber();
 		this.qnaTitle = resultSet.getQnaTitle();
-		this.qnaContent = resultSet.getQnaContent();
 		this.qnaBoardImageUrl = resultSet.getQnaBoardImageUrl();
 		this.writeDatetime = resultSet.getWriteDatetime();
 		this.viewCount = resultSet.getViewCount();
+		this.writerEmail = resultSet.getWriterEmail();
 		this.writerNickname = resultSet.getWriterNickname();
 		this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
-		this.commentCount = resultSet.getCommentCount();
-		this.heartCount = resultSet.getHeartCount();
+		this.commentCount = resultSet.getQnaCommentCount();
+		this.heartCount = resultSet.getQnaHeartCount();
 
 	}
 

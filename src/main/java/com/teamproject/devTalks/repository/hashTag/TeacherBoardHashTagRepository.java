@@ -12,7 +12,10 @@ import com.teamproject.devTalks.entity.primaryKey.teacher.TeacherHashTagPk;
 @Repository
 public interface TeacherBoardHashTagRepository extends JpaRepository<TeacherBoardHashTagEntity, TeacherHashTagPk> {
     List<TeacherBoardHashTagEntity> findAllByTeacherBoardNumber(int teacherBoardNumber);
+    
+    @Transactional
+    void deleteByTeacherBoardNumber(int teacherBoardNumber);
 
     @Transactional
-    void deleteByteacherBoardNumber(int teacherBoardNumber);
+    void deleteByBoardHashtagAndTeacherBoardNumber(String hashtag, int teacherBoardNumber);
 }

@@ -19,6 +19,7 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.service.board.InformationBoardService;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.dto.request.comment.information.PatchInformationCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.information.PostInformationCommentRequestDto;
@@ -35,10 +36,9 @@ public class InformationBoardController {
 
     @GetMapping("/list/{sort}")
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(
-        @PathVariable("sort") String informationSort
-    ) {
-        ResponseEntity<? super GetInformationBoardListResponseDto> response =
-        informationBoardService.getInformationBoardList(informationSort);
+        @PathVariable("sort") String informationSort) {
+            ResponseEntity<? super GetInformationBoardListResponseDto> response = 
+            informationBoardService.getInformationBoardList(informationSort);
         return response;
         }
 
@@ -138,4 +138,24 @@ public class InformationBoardController {
         informationBoardService.deleteInformationHeart(userEmail, informationBoardNumber);
         return response;
     }
+
+        @DeleteMapping("/admin/{informationBoardNumber}")
+        public ResponseEntity<ResponseDto> deleteAdminInformationBoard(
+                @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+                @PathVariable("informationBoardNumber") int informationBoardNumber) {
+            String adminEmail = adminPrinciple.getAdminEmail();
+            ResponseEntity<ResponseDto> response = 
+            informationBoardService.deleteAdminInformationBoard(adminEmail, informationBoardNumber);
+            return response;
+        }
+    
+        @DeleteMapping("/admin/comment/{informationCommentNumber}")
+        public ResponseEntity<ResponseDto> deleteAdminInformationComment(
+                @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+                @PathVariable("informationCommentNumber") int informationCommentNumber) {
+            String adminEmail = adminPrinciple.getAdminEmail();
+            ResponseEntity<ResponseDto> response = 
+            informationBoardService.deleteAdminInformationComment(adminEmail, informationCommentNumber);
+            return response;
+        }
 }

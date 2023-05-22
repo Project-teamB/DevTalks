@@ -1,6 +1,6 @@
 package com.teamproject.devTalks.repository.hashTag;
 
-import com.teamproject.devTalks.entity.hashTag.UserHashTagEntity;
+import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.primaryKey.user.UserHashTagPk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserHashTagRepository extends JpaRepository<UserHashTagEntity, UserHashTagPk> {
+public interface UserHashtagRepository extends JpaRepository<UserHashtagEntity, UserHashTagPk> {
 
-    List<UserHashTagEntity> findAllByUserNumber(int userNumber);
+    List<UserHashtagEntity> findAllByUserNumber(int userNumber);
 }

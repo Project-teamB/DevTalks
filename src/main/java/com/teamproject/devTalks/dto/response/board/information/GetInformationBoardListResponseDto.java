@@ -18,18 +18,19 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
 
     private List<BoardSummary> boardList;
 
-    public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSet) {
+    public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSets) {
         super("SU", "Success");
 
-        List<BoardSummary> boardList = new ArrayList<>();
+        this.boardList = new ArrayList<>();
 
-        for (InformationBoardListResultSet result: resultSet) {
-            BoardSummary boardSummary = new BoardSummary(result);
-            boardList.add(boardSummary);
+        if (resultSets != null) {
+            for (InformationBoardListResultSet resultSet : resultSets) {
+                BoardSummary boardSummary = new BoardSummary(resultSet);
+                boardList.add(boardSummary);
+            }
         }
 
-        this.boardList = boardList;
-    }
+        }
 
     @Getter
     @Setter
@@ -37,21 +38,23 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
     @AllArgsConstructor
     class BoardSummary {
         private int informationBoardNumber;
+        private String writerProfileImageUrl;
+        private String writerNickname;
+        private String writerEmail;
         private String informationBoardTitle;
         private String writeDatetime;
         private int viewCount;
-        private String writerNickname;
-        private String writerProfileImageUrl;
         private int commentCount;
         private int heartCount;
 
         public BoardSummary(InformationBoardListResultSet resultSet) {
             this.informationBoardNumber = resultSet.getInformationBoardNumber();
-            this.informationBoardTitle = resultSet.getInformationBoardTitle();
-            this.writeDatetime = resultSet.getWriteDatetime();
-            this.viewCount = resultSet.getViewCount();
-            this.writerNickname = resultSet.getWriterNickname();
             this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
+            this.writerNickname = resultSet.getWriterNickname();
+            this.writerEmail = resultSet.getWriterEmail();
+            this.informationBoardTitle = resultSet.getInformationBoardTitle();
+            this.viewCount = resultSet.getViewCount();
+            this.writeDatetime = resultSet.getWriteDatetime();            
             this.commentCount = resultSet.getCommentCount();
             this.heartCount = resultSet.getHeartCount();
         }

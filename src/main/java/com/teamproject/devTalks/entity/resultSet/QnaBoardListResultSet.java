@@ -14,15 +14,14 @@ public interface QnaBoardListResultSet {
 
     public int getViewCount();
 
-    public String getBoardWrtierEmail();
+    public String getWriterEmail();
 
     public String getWriterNickname();
 
     public String getWriterProfileImageUrl();
 
-    public int getCommentCount();
+    public int getQnaCommentCount();
 
-    public int getHeartCount();
+    public int getQnaHeartCount();
 
-    public String getBoardHashtag();
 }

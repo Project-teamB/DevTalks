@@ -1,14 +1,12 @@
 package com.teamproject.devTalks.dto.request.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserSignUpRequestDto {
     @NotBlank @Email

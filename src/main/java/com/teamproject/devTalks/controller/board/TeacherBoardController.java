@@ -1,6 +1,7 @@
 package com.teamproject.devTalks.controller.board;
 
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
+import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.security.UserPrinciple;
 import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
@@ -22,7 +23,7 @@ import com.teamproject.devTalks.service.board.TeacherBoardService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/teacher")
+@RequestMapping("/board/teacher")
 @RequiredArgsConstructor
 public class TeacherBoardController {
     
@@ -31,95 +32,76 @@ public class TeacherBoardController {
     @GetMapping("{teacherBoardNumber}")
     public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(
         @Valid @PathVariable("teacherBoardNumber") Integer teacherboardNumber){
-            ResponseEntity<? super GetTeacherBoardResponseDto> response =
-                teacherBoardService.getTeacherBoard(teacherboardNumber);
-            return response;
-        }
+        ResponseEntity<? super GetTeacherBoardResponseDto> response =
+            teacherBoardService.getTeacherBoard(teacherboardNumber);
+        return response;
+    }
 
     @GetMapping("/list/{sort}")
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(
         @Valid @PathVariable("sort") String teacherSort) {
-            ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-                teacherBoardService.getTeacherBoardList(teacherSort);
-            return response;
-        }
+        ResponseEntity<? super GetTeacherBoardListResponseDto> response =
+            teacherBoardService.getTeacherBoardList(teacherSort);
+        return response;
+    }
 
     @PostMapping("")
     public ResponseEntity<ResponseDto> PostTeacherBoard(
         @Valid @RequestBody PostTeacherBoardRequestDto requestBody,
         @AuthenticationPrincipal UserPrinciple userPrinciple) {
-            String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = 
-                teacherBoardService.postTeacherBoard(userEmail, requestBody);
-            return response;
-        }
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+            teacherBoardService.postTeacherBoard(userEmail, requestBody);
+        return response;
+    }
 
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchTeacherBoard(
         @Valid @RequestBody PatchTeacherBoardRequestDto requestBody,
         @AuthenticationPrincipal UserPrinciple userPrinciple) {
-            String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = 
-                teacherBoardService.patchTeacherBoard(userEmail, requestBody);
-            return response;
-        }
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+            teacherBoardService.patchTeacherBoard(userEmail, requestBody);
+        return response;
+    }
 
     @DeleteMapping("/{teacherBoardNumber}")
     public ResponseEntity<ResponseDto> deleteTeacherBoard(
-        @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber) {
-            String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response =
-                teacherBoardService.deleteTeacherBoard(userEmail, teacherBoardNumber);
-            return response;
-        }
+        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
+        @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response =
+            teacherBoardService.deleteTeacherBoard(userEmail, teacherBoardNumber);
+        return response;
+    }
 
     @PostMapping("/heart")
     public ResponseEntity<ResponseDto> postTeacherHeart(
-        @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @Valid @RequestBody PostTeacherHeartRequestDto requestBody) {                
-            String userEmail = userPrinciple.getUserEmail();
-            ResponseEntity<ResponseDto> response = 
-                teacherBoardService.postTeacherHeart(userEmail, requestBody);
+        @Valid @RequestBody PostTeacherHeartRequestDto requestBody,
+        @AuthenticationPrincipal UserPrinciple userPrinciple) {                
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+            teacherBoardService.postTeacherHeart(userEmail, requestBody);
         return response;
-        }
+    }
         
-    // @DeleteMapping("/heart/{teacherBoardNumber}")
-    // public ResponseEntity<ResponseDto> deleteTeacherHeart(
-    //     @PathVariable("teacherBoardNumber") int teacherBoardNumber,
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response = 
-    //             teacherBoardService.deleteTeacherHeart(userEmail, teacherBoardNumber);
-    //     return response;
-    //     }
-    // @PostMapping("hashtag")
-    // public ResponseEntity<ResponseDto> PostTeacherHashtag(
-    //     @Valid @RequestBody PostTeacherBoardRequestDto requestBody,
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response = 
-    //             teacherBoardService.postTeacherHashTag(userEmail, requestBody);
-    //         return response;
-    //     }
+    @DeleteMapping("/heart/{teacherBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteTeacherHeart(
+        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
+        @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        String userEmail = userPrinciple.getUserEmail();
+        ResponseEntity<ResponseDto> response = 
+            teacherBoardService.deleteTeacherHeart(userEmail, teacherBoardNumber);
+        return response;
+    }
 
-    // @PatchMapping("hashtag")
-    // public ResponseEntity<ResponseDto> patchTeacherHashtag(
-    //     @Valid @RequestBody PatchTeacherBoardRequestDto requestBody,
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response = 
-    //             teacherBoardService.patchTeacherHashTag(userEmail, requestBody);
-    //         return response;
-    //     }
+    @DeleteMapping("/admin/{teacherBoardNumber}")
+    public ResponseEntity<ResponseDto> deleteAdminTeacherBoard(
+        @PathVariable("teacherBoardNumber") int teacherBoardNumber,
+        @AuthenticationPrincipal AdminPrinciple adminPrinciple) {
+        String adminEmail = adminPrinciple.getAdminEmail();
+        ResponseEntity<ResponseDto> response = teacherBoardService.deleteTeacherBoard(adminEmail, teacherBoardNumber);
+        return response;
+    }
 
-    // @DeleteMapping("hashtag/{teacherBoardNumber}")
-    // public ResponseEntity<ResponseDto> deleteTeacherHashtag(
-    //     @AuthenticationPrincipal UserPrinciple userPrinciple,
-    //     @PathVariable("teacherBoardNumber") Integer teacherBoardNumber) {
-    //         String userEmail = userPrinciple.getUserEmail();
-    //         ResponseEntity<ResponseDto> response =
-    //             teacherBoardService.deleteTeacherHashTag(userEmail, teacherBoardNumber);
-    //         return response;
-    //     }
 }

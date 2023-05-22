@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.teamproject.devTalks.dto.request.comment.qna.PatchQnaCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.qna.PostQnaCommentRequestDto;
@@ -56,16 +57,15 @@ public class QnaCommentEntity {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+        this.qnaCommentNumber = dto.getQnaCommentNumber();
         this.commentContent = dto.getCommentContent();
         this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.writerNickname = userEntity.getUserNickname();
         this.writerEmail = userEntity.getUserEmail();
         this.writeDatetime = dateFormat.format(now);
         this.userNumber = userEntity.getUserNumber();
-        this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
+        this.qnaBoardNumber = dto.getQnaBoardNumber();
 
     }
-
-
 
 }

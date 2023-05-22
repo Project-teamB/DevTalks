@@ -19,7 +19,9 @@ import com.teamproject.devTalks.dto.response.board.recruit.GetRecruitBoardListRe
 import com.teamproject.devTalks.dto.response.board.recruit.GetRecruitBoardResponseDto;
 import com.teamproject.devTalks.entity.board.RecruitBoardEntity;
 import com.teamproject.devTalks.entity.comment.RecruitCommentEntity;
+import com.teamproject.devTalks.entity.hashTag.RecruitBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.RecruitHeartEntity;
+import com.teamproject.devTalks.entity.primaryKey.recruit.RecruitHashtagPk;
 import com.teamproject.devTalks.entity.resultSet.RecruitBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.board.RecruitBoardRepository;
@@ -39,18 +41,21 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
     private RecruitBoardRepository recruitBoardRepository;
     private RecruitCommentRepository recruitCommentRepository;
     private RecruitHeartRepository recruitHeartRepository;
+    private RecruitBoardHashTagRepository recruitBoardHashTagRepository;
 
     @Autowired
     public RecruitBoardServiceImplement(
         UserRepository userRepository,
         RecruitBoardRepository recruitBoardRepository,
         RecruitCommentRepository recruitCommentRepository,
-        RecruitHeartRepository recruitHeartRepository
+        RecruitHeartRepository recruitHeartRepository,
+        RecruitBoardHashTagRepository recruitBoardHashTagRepository
     ) {
         this.userRepository = userRepository;
         this.recruitBoardRepository = recruitBoardRepository;
         this.recruitCommentRepository = recruitCommentRepository;
         this.recruitHeartRepository = recruitHeartRepository;
+        this.recruitBoardHashTagRepository = recruitBoardHashTagRepository;
     }
 
     
@@ -74,9 +79,15 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             
             List<RecruitCommentEntity> recruitCommentEntities = recruitCommentRepository.findByRecruitBoardNumber(recruitBoardNumber);
             List<RecruitHeartEntity> recruitHeartEntities = recruitHeartRepository.findByRecruitBoardNumber(recruitBoardNumber);
+            // List<RecruitBoardHashTagEntity> recruitBoardHashTagEntities = recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber);
 
+            // List<String> boardHashTag = new ArrayList<>();
+            // for (RecruitBoardHashTagEntity boardHashTagList: recruitBoardHashTagEntities) {
+            //     String hashTags = boardHashTagList.getBoardHashTag();
+            //     boardHashTag.add(hashTags);
+            // }
 
-            body = new GetRecruitBoardResponseDto(recruitBoardEntity, userEntity, recruitCommentEntities, recruitHeartEntities);
+            body = new GetRecruitBoardResponseDto(recruitBoardEntity, userEntity, recruitCommentEntities, recruitHeartEntities /*boardHashTag*/);
 
         } catch (Exception exception) {
             exception.printStackTrace();

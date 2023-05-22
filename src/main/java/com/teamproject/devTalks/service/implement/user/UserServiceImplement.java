@@ -3,6 +3,7 @@ package com.teamproject.devTalks.service.implement.user;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.FindUserEmailResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
@@ -309,6 +310,27 @@ public class UserServiceImplement implements UserService {
             return CustomResponse.databaseError();
         }
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super FindUserEmailResponseDto> findUserEmail(FindUserEmailRequestDto dto) {
+        
+        FindUserEmailResponseDto body = null;
+        
+        try {
+            
+            // 존재하지 않는 핸드폰 번호
+            UserEntity userEntity = userRepository.findByUserPhoneNumber(dto.getUserPhoneNumber());
+            if(userEntity == null) return CustomResponse.notExistUserPhoneNumber();
+
+
+            body = new FindUserEmailResponseDto(userEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 

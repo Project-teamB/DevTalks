@@ -2,6 +2,7 @@ package com.teamproject.devTalks.service.user;
 
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.FindUserEmailResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
@@ -22,4 +23,6 @@ public interface UserService {
     ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userNumber);
 
     ResponseEntity<? super GetUserInformationResponseDto> getUserInformation(Integer userNumber);
+
+    ResponseEntity<? super FindUserEmailResponseDto> findUserEmail(FindUserEmailRequestDto dto);
 }

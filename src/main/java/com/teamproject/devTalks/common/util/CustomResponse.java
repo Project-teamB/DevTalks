@@ -43,6 +43,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> notExistUserPhoneNumber() {
+        ResponseDto errorBody =
+            new ResponseDto("NP", "Non-Existent userPhoneNumber");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+
     public static ResponseEntity<ResponseDto> noExistUser() {
 
         ResponseDto errorBody =

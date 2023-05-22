@@ -29,42 +29,42 @@ class FailedAuthenticationEntiryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("{\"code\": \"AF\", \"message\": \"Authentication Failed\"}");
     }
-    
+
 }
+
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
 
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-    
+
     @Autowired
     public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
-    
+
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
-    
+    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.cors().and()
                 .csrf().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/user/sign-up", "/user/sign-in","/user/{userNumber}").permitAll()
+                .antMatchers("/user/sign-up", "/user/sign-in", "/user/{userNumber},/user/find-email").permitAll()
                 .antMatchers(HttpMethod.PATCH, "/user/update").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/board/**","/notice/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/board/**", "/notice/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/board/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/board/**").hasRole("USER")
                 .antMatchers(HttpMethod.PATCH, "/board/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/notice/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PATCH,"/notice/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE,"notice/**","qna/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/notice/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "notice/**", "qna/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntiryPoint());
-    
-            httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 
-}
+    }
 }

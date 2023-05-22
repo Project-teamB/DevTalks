@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import com.teamproject.devTalks.entity.board.QnaBoardEntity;
 import com.teamproject.devTalks.entity.primaryKey.qna.QnaHeartPk;
@@ -28,7 +27,7 @@ public class QnaHeartEntity {
     private int qnaBoardNumber;
 
     public QnaHeartEntity(UserEntity userEntity, QnaBoardEntity qnaBoardEntity) {
-      
+
         this.userNumber = userEntity.getUserNumber();
         this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
     }

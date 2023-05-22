@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(RequestPattern.FILE_API)
 @RequiredArgsConstructor
 public class FileController {
-    
+
     private final FileService fileService;
 
     private final String UPLOAD_URL = "upload";
@@ -27,16 +27,14 @@ public class FileController {
 
     @PostMapping(UPLOAD_URL)
     public String upload(
-        @RequestParam("file") MultipartFile file
-    ) {
+            @RequestParam("file") MultipartFile file) {
         return fileService.upload(file);
     }
 
-    @GetMapping(value=GET_URL, produces={MediaType.ALL_VALUE})
+    @GetMapping(value = GET_URL, produces = { MediaType.ALL_VALUE })
     public Resource getFile(
-        @PathVariable("fileName") String fileName
-    ) {
-        
+            @PathVariable("fileName") String fileName) {
+
         return fileService.getFile(fileName);
 
     }

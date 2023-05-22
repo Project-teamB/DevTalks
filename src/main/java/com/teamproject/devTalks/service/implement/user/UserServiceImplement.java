@@ -37,7 +37,6 @@ public class UserServiceImplement implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
-
     @Override
     public ResponseEntity<ResponseDto> userSignUp(UserSignUpRequestDto dto) {
 
@@ -48,30 +47,31 @@ public class UserServiceImplement implements UserService {
         List<String> hashtagList = dto.getUserHashtag();
         List<UserHashtagEntity> userHashtagList = new ArrayList<>();
 
-
-
         String encodedUserPassword = passwordEncoder.encode(dto.getUserPassword());
         dto.setUserPassword(encodedUserPassword);
 
         try {
 
             boolean isExistEmail = userRepository.existsByUserEmail(userEmail);
-            if(isExistEmail) return CustomResponse.existEmail();
+            if (isExistEmail)
+                return CustomResponse.existEmail();
 
             boolean isExistNickname = userRepository.existsByUserNickname(userNickname);
-            if(isExistNickname) return CustomResponse.existNickname();
+            if (isExistNickname)
+                return CustomResponse.existNickname();
 
             boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumber(userPhoneNumber);
-            if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
+            if (isExistPhoneNumber)
+                return CustomResponse.existPhoneNumber();
 
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
 
             int userNumber = userEntity.getUserNumber();
 
-            for(String hashtag : hashtagList) {
+            for (String hashtag : hashtagList) {
 
-                UserHashtagEntity userHashTagEntity = new UserHashtagEntity(userNumber,hashtag);
+                UserHashtagEntity userHashTagEntity = new UserHashtagEntity(userNumber, hashtag);
 
                 userHashtagList.add(userHashTagEntity);
 
@@ -79,8 +79,7 @@ public class UserServiceImplement implements UserService {
 
             userHashtagRepository.saveAll(userHashtagList);
 
-
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             CustomResponse.databaseError();
         }
@@ -96,19 +95,21 @@ public class UserServiceImplement implements UserService {
         String password = dto.getUserPassword();
         String ROLE = "USER";
 
-        try{
+        try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.signInFailed();
+            if (userEntity == null)
+                return CustomResponse.signInFailed();
 
             String encodedPassword = userEntity.getUserPassword();
-            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
-            if(!isEqualPassword) return CustomResponse.signInFailed();
+            boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
+            if (!isEqualPassword)
+                return CustomResponse.signInFailed();
 
-            String jwt = jwtProvider.createJwt(userEmail,ROLE);
+            String jwt = jwtProvider.createJwt(userEmail, ROLE);
             body = new SignInResponseDto(jwt);
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
 
@@ -116,8 +117,6 @@ public class UserServiceImplement implements UserService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-
-
 
     @Override
     public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail) {
@@ -128,25 +127,24 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.noExistUser();
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
 
             int userNumber = userEntity.getUserNumber();
-            List<UserHashtagEntity> userHashtagEntities =
-                    userHashtagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities = userHashtagRepository.findAllByUserNumber(userNumber);
 
-            for(UserHashtagEntity userHashTagEntity: userHashtagEntities){
+            for (UserHashtagEntity userHashTagEntity : userHashtagEntities) {
                 String hashtag = userHashTagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 
-            List<RecommendationEntity> recommendation =
-                    recommendationRepository.findByReceiverUserNumber(userNumber);
+            List<RecommendationEntity> recommendation = recommendationRepository.findByReceiverUserNumber(userNumber);
 
             int recommendationCount = recommendation.size();
 
-            body = new GetMyInfoResponseDto(hashtagList,userEntity,recommendationCount);
+            body = new GetMyInfoResponseDto(hashtagList, userEntity, recommendationCount);
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
 
@@ -158,7 +156,8 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseEntity<? super GetUserInformationResponseDto> getUserInformation(Integer userNumber) {
 
-        if(userNumber == null) return CustomResponse.validationFailed();
+        if (userNumber == null)
+            return CustomResponse.validationFailed();
 
         GetUserInformationResponseDto body = null;
         List<String> hashtagList = new ArrayList<>();
@@ -166,24 +165,23 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByUserNumber(userNumber);
-            if(userEntity == null) return CustomResponse.noExistUser();
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
 
-            List<UserHashtagEntity> userHashtagEntities =
-                    userHashtagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities = userHashtagRepository.findAllByUserNumber(userNumber);
 
-            for(UserHashtagEntity userHashtagEntity: userHashtagEntities){
+            for (UserHashtagEntity userHashtagEntity : userHashtagEntities) {
                 String hashtag = userHashtagEntity.getUserHashtag();
                 hashtagList.add(hashtag);
             }
 
-            List<RecommendationEntity> recommendation =
-                    recommendationRepository.findByReceiverUserNumber(userNumber);
+            List<RecommendationEntity> recommendation = recommendationRepository.findByReceiverUserNumber(userNumber);
 
             int recommendationCount = recommendation.size();
 
-            body = new GetUserInformationResponseDto(hashtagList,userEntity,recommendationCount);
+            body = new GetUserInformationResponseDto(hashtagList, userEntity, recommendationCount);
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
@@ -203,20 +201,23 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) CustomResponse.authenticationFailed();
+            if (userEntity == null)
+                CustomResponse.authenticationFailed();
 
             String encodedCurrentPassword = userEntity.getUserPassword();
 
-            boolean isEqualPassword = passwordEncoder.matches(password,encodedCurrentPassword);
-            if(!isEqualPassword) return CustomResponse.passwordMismatch();
+            boolean isEqualPassword = passwordEncoder.matches(password, encodedCurrentPassword);
+            if (!isEqualPassword)
+                return CustomResponse.passwordMismatch();
 
-            boolean isExistUserNickname =
-                    userRepository.existsByUserNicknameAndUserEmailNot(userNickname,userEmail);
-            if(isExistUserNickname) return CustomResponse.existNickname();
+            boolean isExistUserNickname = userRepository.existsByUserNicknameAndUserEmailNot(userNickname, userEmail);
+            if (isExistUserNickname)
+                return CustomResponse.existNickname();
 
-            boolean isExistPhoneNumber =
-                    userRepository.existsByUserPhoneNumberAndUserEmailNot(userPhoneNumber,userEmail);
-            if(isExistPhoneNumber) return CustomResponse.existPhoneNumber();
+            boolean isExistPhoneNumber = userRepository.existsByUserPhoneNumberAndUserEmailNot(userPhoneNumber,
+                    userEmail);
+            if (isExistPhoneNumber)
+                return CustomResponse.existPhoneNumber();
 
             UserEntity updateUser = new UserEntity(userEntity, dto);
 
@@ -224,41 +225,42 @@ public class UserServiceImplement implements UserService {
 
             int userNumber = userEntity.getUserNumber();
 
-            List<UserHashtagEntity> currentUserHashTagEntities =
-                    userHashtagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> currentUserHashTagEntities = userHashtagRepository.findAllByUserNumber(userNumber);
 
             userHashtagRepository.deleteAll(currentUserHashTagEntities);
 
-            for(String hashtag:hashtagList){
+            for (String hashtag : hashtagList) {
 
-                UserHashtagEntity userHashtagEntity = new UserHashtagEntity(userNumber,hashtag);
+                UserHashtagEntity userHashtagEntity = new UserHashtagEntity(userNumber, hashtag);
                 userHashtagList.add(userHashtagEntity);
 
             }
 
             userHashtagRepository.saveAll(userHashtagList);
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
 
         return CustomResponse.success();
     }
+
     @Override
     public ResponseEntity<ResponseDto> updateUserPassword(
-            String userEmail, UpdateUserPasswordRequestDto dto
-    ) {
+            String userEmail, UpdateUserPasswordRequestDto dto) {
         String currentPassword = dto.getCurrentPassword();
         String changePassword = dto.getChangePassword();
 
         UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-        if(userEntity == null) CustomResponse.noExistUser();
+        if (userEntity == null)
+            CustomResponse.noExistUser();
 
         String encodedCurrentPassword = userEntity.getUserPassword();
-        boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedCurrentPassword);
+        boolean isEqualPassword = passwordEncoder.matches(currentPassword, encodedCurrentPassword);
 
-        if(!isEqualPassword) return CustomResponse.passwordMismatch();
+        if (!isEqualPassword)
+            return CustomResponse.passwordMismatch();
         String encodedChangePassword = passwordEncoder.encode(changePassword);
 
         userEntity.setUserPassword(encodedChangePassword);
@@ -266,6 +268,7 @@ public class UserServiceImplement implements UserService {
 
         return CustomResponse.success();
     }
+
     @Override
     public ResponseEntity<ResponseDto> userDelete(String userEmail, DeleteUserRequestDto dto) {
 
@@ -273,39 +276,41 @@ public class UserServiceImplement implements UserService {
 
         try {
 
-
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
-            if(userEntity == null) return CustomResponse.noExistUser();
+            if (userEntity == null)
+                return CustomResponse.noExistUser();
 
             String encodedPassword = userEntity.getUserPassword();
-            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+            boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
 
-            if(!isEqualPassword) return CustomResponse.passwordMismatch();
+            if (!isEqualPassword)
+                return CustomResponse.passwordMismatch();
 
             int userNumber = userEntity.getUserNumber();
 
-            List<UserHashtagEntity> userHashtagEntities =
-                    userHashtagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities = userHashtagRepository.findAllByUserNumber(userNumber);
 
-            if(userHashtagEntities != null) userHashtagRepository.deleteAll(userHashtagEntities);
+            if (userHashtagEntities != null)
+                userHashtagRepository.deleteAll(userHashtagEntities);
 
+            List<RecommendationEntity> sendRecommendations = recommendationRepository
+                    .findBySenderUserNumber(userNumber);
 
-            List<RecommendationEntity> sendRecommendations =
-                    recommendationRepository.findBySenderUserNumber(userNumber);
+            List<RecommendationEntity> receiveRecommendations = recommendationRepository
+                    .findByReceiverUserNumber(userNumber);
 
-            List<RecommendationEntity> receiveRecommendations=
-                    recommendationRepository.findByReceiverUserNumber(userNumber);
-
-            if(sendRecommendations != null) recommendationRepository.deleteAll(sendRecommendations);
-            if(receiveRecommendations != null)recommendationRepository.deleteAll(receiveRecommendations);
+            if (sendRecommendations != null)
+                recommendationRepository.deleteAll(sendRecommendations);
+            if (receiveRecommendations != null)
+                recommendationRepository.deleteAll(receiveRecommendations);
 
             BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
-            if(blackListEntity != null)blackListRepository.delete(blackListEntity);
+            if (blackListEntity != null)
+                blackListRepository.delete(blackListEntity);
 
             userRepository.deleteByUserEmail(userEmail);
 
-
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
@@ -314,15 +319,15 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public ResponseEntity<? super FindUserEmailResponseDto> findUserEmail(FindUserEmailRequestDto dto) {
-        
+
         FindUserEmailResponseDto body = null;
-        
+
         try {
-            
+
             // 존재하지 않는 핸드폰 번호
             UserEntity userEntity = userRepository.findByUserPhoneNumber(dto.getUserPhoneNumber());
-            if(userEntity == null) return CustomResponse.notExistUserPhoneNumber();
-
+            if (userEntity == null)
+                return CustomResponse.notExistUserPhoneNumber();
 
             body = new FindUserEmailResponseDto(userEntity);
 
@@ -332,7 +337,5 @@ public class UserServiceImplement implements UserService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-
-
 
 }

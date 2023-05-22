@@ -2,6 +2,7 @@ package com.teamproject.devTalks.controller.user;
 
 import com.teamproject.devTalks.dto.request.user.*;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.user.FindUserEmailResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
@@ -81,6 +82,14 @@ public class UserController {
         ResponseEntity<ResponseDto> response = userService.userDelete(userEmail, dto);
         return response;
 
+    }
+
+    @PostMapping("/find-email")
+    ResponseEntity<? super FindUserEmailResponseDto> findUserEmail(
+        @Valid @RequestBody FindUserEmailRequestDto dto
+    ){
+        ResponseEntity<? super FindUserEmailResponseDto> response = userService.findUserEmail(dto);
+        return response;
     }
 
 }

@@ -36,7 +36,7 @@ public class TeacherBoardEntity {
     private String career;
     private String lectureUrl;
     private String category;
-    
+    private boolean recruitmentStatus;
 
     public TeacherBoardEntity(String userEmail, PostTeacherBoardRequestDto dto) {
         LocalDateTime now = LocalDateTime.now();
@@ -50,6 +50,7 @@ public class TeacherBoardEntity {
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
         this.lectureUrl = dto.getLectureUrl();
+        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 
     public TeacherBoardEntity(UserEntity userEntity, PatchTeacherBoardRequestDto dto) {
@@ -65,5 +66,6 @@ public class TeacherBoardEntity {
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
         this.lectureUrl = dto.getLectureUrl();
+        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 }

@@ -21,6 +21,7 @@ public class PostTeacherBoardRequestDto {
     private String teacherBoardImageUrl;
     private String career;
     private List<String> boardHashtag;
+    private boolean recruitmentStatus;
 
     public PostTeacherBoardRequestDto(PostTeacherBoardRequestDto dto){
         this.writerEmail = dto.getWriterEmail();
@@ -30,5 +31,6 @@ public class PostTeacherBoardRequestDto {
         this.teacherContent = dto.getTeacherContent();
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
+        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 }

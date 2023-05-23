@@ -92,4 +92,12 @@ public class UserController {
         return response;
     }
 
+    @PostMapping("/find-password")
+    ResponseEntity<ResponseDto> findUserPassword(
+        @Valid @RequestBody FindUserPasswordRequestDto dto
+    ){
+        ResponseEntity<ResponseDto> response = userService.findUserPassword(dto);
+        return response;
+    }
+
 }

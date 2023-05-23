@@ -25,4 +25,6 @@ public interface UserService {
     ResponseEntity<? super GetUserInformationResponseDto> getUserInformation(Integer userNumber);
 
     ResponseEntity<? super FindUserEmailResponseDto> findUserEmail(FindUserEmailRequestDto dto);
+    
+    ResponseEntity<ResponseDto> findUserPassword(FindUserPasswordRequestDto dto);
 }

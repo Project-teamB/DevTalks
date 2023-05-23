@@ -5,6 +5,7 @@ import com.teamproject.devTalks.dto.request.user.PostBlackListRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetBlackListResponseDto;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
+import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
@@ -35,13 +36,13 @@ public class BlackListServiceImplement implements BlackListService {
            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
            if (!isExistAdmin) return CustomResponse.authenticationFailed();
 
-           boolean isExistUser = userRepository.existsByUserNumber(userNumber);
-           if(!isExistUser) return CustomResponse.noExistUser();
+           UserEntity userEntity = userRepository.findByUserNumber(userNumber);
+           if(userEntity == null) return CustomResponse.noExistUser();
 
            boolean isExistBlackUser = blackListRepository.existsByUserNumber(userNumber);
            if(isExistBlackUser) return CustomResponse.alreadyBlacklisted();
 
-           BlackListEntity blackListEntity = new BlackListEntity(userNumber,reason);
+           BlackListEntity blackListEntity = new BlackListEntity(userEntity,reason);
            blackListRepository.save(blackListEntity);
 
         }catch (Exception exception){

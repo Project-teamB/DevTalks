@@ -64,18 +64,32 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     }
 
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort, String recruitmentStatus) {
 
         try {
             List<TeacherBoardListResultSet> resultSets = null;
-            if (teacherSort.equals("time"))
-                resultSets = teacherBoardRepository.getListOrderByWriteDatetime();
-            else if (teacherSort.equals("heart"))
-                resultSets = teacherBoardRepository.getListOrderByHeartCount();
-            else if (teacherSort.equals("view"))
-                resultSets = teacherBoardRepository.getListOrderByViewCount();
-            else
-                return CustomResponse.validationFailed();
+            boolean status = recruitmentStatus.equals("true");
+            if (status) {
+                // '모집 중'인 경우
+                if (teacherSort.equals("time"))
+                    resultSets = teacherBoardRepository.getListOrderByWriteDatetimeProgress(status);
+                else if (teacherSort.equals("heart"))
+                    resultSets = teacherBoardRepository.getListOrderByHeartCountProgress(status);
+                else if (teacherSort.equals("view"))
+                    resultSets = teacherBoardRepository.getListOrderByViewCountProgress(status);
+                else
+                    return CustomResponse.validationFailed();
+            } else {
+                // '모집 완료'인 경우
+                if (teacherSort.equals("time"))
+                    resultSets = teacherBoardRepository.getListOrderByWriteDatetimeCompleted(status);
+                else if (teacherSort.equals("heart"))
+                    resultSets = teacherBoardRepository.getListOrderByHeartCountCompleted(status);
+                else if (teacherSort.equals("view"))
+                    resultSets = teacherBoardRepository.getListOrderByViewCountCompleted(status);
+                else
+                    return CustomResponse.validationFailed();
+            }
 
             new GetTeacherBoardListResponseDto(resultSets);
 

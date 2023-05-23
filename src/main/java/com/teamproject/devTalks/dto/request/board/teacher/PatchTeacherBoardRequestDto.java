@@ -20,6 +20,7 @@ public class PatchTeacherBoardRequestDto {
     private String teacherContent;
     private String teacherBoardImageUrl;
     private List<String> boardHashtag;
+    private boolean recruitmentStatus;
 
     public PatchTeacherBoardRequestDto(PatchTeacherBoardRequestDto dto){
 
@@ -30,5 +31,6 @@ public class PatchTeacherBoardRequestDto {
         this.career = dto.getCareer();
         this.teacherContent = dto.getTeacherContent();
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
+        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 }

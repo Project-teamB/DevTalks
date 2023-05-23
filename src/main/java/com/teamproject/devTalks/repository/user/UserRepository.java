@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     public boolean existsByUserPhoneNumberAndUserEmailNot(String phoneNumber,String userEmail);
     public boolean existsByUserNicknameAndUserEmailNot(String userNickname, String userEmail);
-    public boolean existsByUserEmailOrUserPhoneNumber(String userEmail, String userPhoneNumber);
+
 
     public UserEntity findByUserEmail(String Email);
     public UserEntity findByUserNumber(Integer userNumber);

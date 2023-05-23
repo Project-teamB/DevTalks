@@ -13,6 +13,7 @@ import com.teamproject.devTalks.entity.report.ReportEntity;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
+import com.teamproject.devTalks.provider.MailProvider;
 import com.teamproject.devTalks.repository.hashTag.UserHashtagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.report.ReportRepository;
@@ -20,6 +21,8 @@ import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,6 +42,7 @@ public class UserServiceImplement implements UserService {
     private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final MailProvider mailProvider;
 
     @Override
     public ResponseEntity<ResponseDto> userSignUp(UserSignUpRequestDto dto) {
@@ -349,9 +353,32 @@ public class UserServiceImplement implements UserService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            CustomResponse.databaseError();
+            return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @Override
+    public ResponseEntity<ResponseDto> findUserPassword(FindUserPasswordRequestDto dto) {
+        
+        String userEmail = dto.getUserEmail();
+
+        try {
+            // 존재하지 않는 유저
+            boolean existsUser = userRepository.existsByUserEmail(userEmail);    
+            if (!existsUser) return CustomResponse.noExistUser();
+
+            // 메일 보내기
+            mailProvider.sendMail(userEmail, "임시 비밀번호", "qwerqwer111!!");
+
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    
 
 }

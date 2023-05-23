@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/report")
+@RequestMapping("report")
 public class ReportController {
 
     private final ReportService reportService;
@@ -35,5 +37,18 @@ public class ReportController {
 
         return response;
     }
+
+    @DeleteMapping("{reportedNumber}")
+    public ResponseEntity<ResponseDto> deleteReport(
+    @AuthenticationPrincipal UserPrinciple userPrinciple,
+    @PathVariable("reportedNumber") int reported
+    ){
+        int reportNumber = userPrinciple.getUserNumber();
+        ResponseEntity<ResponseDto> response = reportService.deleteReport(reportNumber,reported);
+        return response;
+    }
+
+
+
 
 }

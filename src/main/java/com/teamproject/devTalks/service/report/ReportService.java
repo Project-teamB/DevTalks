@@ -8,5 +8,5 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 public interface ReportService {
 
     ResponseEntity<ResponseDto> postReport(int reporter, ReportUserRequestDto dto);
-
+    ResponseEntity<ResponseDto> deleteReport(int reporter, int reported);
 }

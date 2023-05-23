@@ -14,4 +14,5 @@ public interface ReportRepository extends JpaRepository<ReportEntity, ReportPk> 
     public List<ReportEntity> findByReporter(Integer reporter);
     public List<ReportEntity> findByReported(Integer reported);
 
+    ReportEntity findByReporterAndReported(int reporter, int reported);
 }

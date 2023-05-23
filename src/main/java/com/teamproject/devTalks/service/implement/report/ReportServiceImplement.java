@@ -61,4 +61,28 @@ public class ReportServiceImplement implements ReportService {
         return CustomResponse.success();
     }
 
+    @Override
+    public ResponseEntity<ResponseDto> deleteReport(int reporter, int reported) {
+        
+        try {
+            //존재하지 않는 유저
+            boolean userReporter = userRepository.existsByUserNumber(reporter);
+            if (!userReporter) return CustomResponse.noExistUser();
+            // 신고당한사람이 존재하지 않음
+            boolean userReported = userRepository.existsByUserNumber(reported);
+            if (!userReported) return CustomResponse.noExistUser();
+            // 이 정보가 없는경우
+            ReportEntity reportEntity = reportRepository.findByReporterAndReported(reporter, reported);
+            if (reportEntity == null) return CustomResponse.reportEntityisNull();
+
+            reportEntity = reportRepository.findByReporterAndReported(reporter, reported);
+            reportRepository.delete(reportEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
 }

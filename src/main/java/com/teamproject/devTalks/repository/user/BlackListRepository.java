@@ -11,6 +11,7 @@ import java.util.List;
 public interface BlackListRepository extends JpaRepository <BlackListEntity , Integer> {
 
     public boolean existsByUserNumber(Integer userNumber);
+    public boolean existsByUserEmailOrUserPhoneNumber(String userEmail, String userPhoneNumber);
     public BlackListEntity findByUserNumber(Integer userNumber);
     public List<BlackListEntity> findAllByOrderByCreatedAtDesc();
 

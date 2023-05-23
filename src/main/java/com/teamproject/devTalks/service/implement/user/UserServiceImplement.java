@@ -9,11 +9,13 @@ import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
 import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
+import com.teamproject.devTalks.entity.report.ReportEntity;
 import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.repository.hashTag.UserHashtagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
+import com.teamproject.devTalks.repository.report.ReportRepository;
 import com.teamproject.devTalks.repository.user.BlackListRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.user.UserService;
@@ -33,6 +35,7 @@ public class UserServiceImplement implements UserService {
     private final UserRepository userRepository;
     private final UserHashtagRepository userHashtagRepository;
     private final BlackListRepository blackListRepository;
+    private final ReportRepository reportRepository;
     private final RecommendationRepository recommendationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -53,7 +56,7 @@ public class UserServiceImplement implements UserService {
         try {
 
             boolean isBlackListed =
-                    userRepository.existsByUserEmailOrUserPhoneNumber(userEmail,userPhoneNumber);
+                    blackListRepository.existsByUserEmailOrUserPhoneNumber(userEmail,userPhoneNumber);
 
             if(isBlackListed) return CustomResponse.alreadyBlacklisted();
 
@@ -299,16 +302,27 @@ public class UserServiceImplement implements UserService {
             if (userHashtagEntities != null)
                 userHashtagRepository.deleteAll(userHashtagEntities);
 
-            List<RecommendationEntity> sendRecommendations = recommendationRepository
-                    .findBySenderUserNumber(userNumber);
+            List<RecommendationEntity> sendRecommendations =
+                    recommendationRepository.findBySenderUserNumber(userNumber);
 
-            List<RecommendationEntity> receiveRecommendations = recommendationRepository
-                    .findByReceiverUserNumber(userNumber);
+            List<RecommendationEntity> receiveRecommendations =
+                    recommendationRepository.findByReceiverUserNumber(userNumber);
 
             if (sendRecommendations != null)
                 recommendationRepository.deleteAll(sendRecommendations);
             if (receiveRecommendations != null)
                 recommendationRepository.deleteAll(receiveRecommendations);
+
+            List<ReportEntity> sendReportList =
+                    reportRepository.findByReporter(userNumber);
+
+            List<ReportEntity> receiveReportList =
+                    reportRepository.findByReported(userNumber);
+
+            if(sendReportList != null)
+                reportRepository.deleteAll(sendReportList);
+            if(receiveReportList != null)
+                reportRepository.deleteAll(receiveReportList);
 
             userRepository.deleteByUserEmail(userEmail);
 

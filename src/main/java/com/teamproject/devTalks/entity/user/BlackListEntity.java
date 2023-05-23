@@ -19,16 +19,20 @@ public class BlackListEntity {
 
     @Id
     private int userNumber;
+    private String userEmail;
+    private String userPhoneNumber;
     private String reason;
     private String createdAt;
 
 
-    public BlackListEntity(int userNumber, String reason) {
+    public BlackListEntity(UserEntity userEntity, String reason) {
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        this.userNumber = userNumber;
+        this.userNumber = userEntity.getUserNumber();
+        this.userEmail = userEntity.getUserEmail();
+        this.userPhoneNumber = userEntity.getUserPhoneNumber();
         this.reason = reason;
         this.createdAt = now.format(formatter);
     }

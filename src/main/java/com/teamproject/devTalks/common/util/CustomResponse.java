@@ -137,4 +137,9 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    public static ResponseEntity<ResponseDto> reportEntityisNull() {
+        ResponseDto body = new ResponseDto("EN", "No Report");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
 }

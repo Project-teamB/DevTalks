@@ -52,6 +52,11 @@ public class UserServiceImplement implements UserService {
 
         try {
 
+            boolean isBlackListed =
+                    userRepository.existsByUserEmailOrUserPhoneNumber(userEmail,userPhoneNumber);
+
+            if(isBlackListed) return CustomResponse.alreadyBlacklisted();
+
             boolean isExistEmail = userRepository.existsByUserEmail(userEmail);
             if (isExistEmail)
                 return CustomResponse.existEmail();
@@ -288,7 +293,8 @@ public class UserServiceImplement implements UserService {
 
             int userNumber = userEntity.getUserNumber();
 
-            List<UserHashtagEntity> userHashtagEntities = userHashtagRepository.findAllByUserNumber(userNumber);
+            List<UserHashtagEntity> userHashtagEntities =
+                    userHashtagRepository.findAllByUserNumber(userNumber);
 
             if (userHashtagEntities != null)
                 userHashtagRepository.deleteAll(userHashtagEntities);
@@ -303,10 +309,6 @@ public class UserServiceImplement implements UserService {
                 recommendationRepository.deleteAll(sendRecommendations);
             if (receiveRecommendations != null)
                 recommendationRepository.deleteAll(receiveRecommendations);
-
-            BlackListEntity blackListEntity = blackListRepository.findByUserNumber(userNumber);
-            if (blackListEntity != null)
-                blackListRepository.delete(blackListEntity);
 
             userRepository.deleteByUserEmail(userEmail);
 

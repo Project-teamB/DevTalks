@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aspectj.lang.annotation.RequiredTypes;
+import org.hibernate.jdbc.Expectations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.recruit.GetRecruitBoardListResponseDto;
 import com.teamproject.devTalks.entity.board.InformationBoardEntity;
 import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
 import com.teamproject.devTalks.entity.hashTag.InformationBoardHashTagEntity;
@@ -78,6 +80,29 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    // 검색기능
+    @Override
+        public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardSearchList(String group,
+                String searchKeyword) {
+                    
+            GetInformationBoardListResponseDto body = null;
+            
+            try {
+
+                List<InformationBoardListResultSet> resultSet = new ArrayList<>();
+
+                if (group.equals("title")) resultSet = informationBoardRepository.findByInformationBoardTitleContaining("%" + searchKeyword + "%");
+                if (group.equals("nickname")) resultSet = informationBoardRepository.findByInformationWriterNicknameContaining("%" + searchKeyword + "%");
+            
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                return CustomResponse.databaseError();
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+
+        }
 
     @Override
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(Integer informationBoardNumber) {
@@ -354,6 +379,8 @@ public class InformationBoardServiceImplement implements InformationBoardService
             }
             return CustomResponse.success();
         }
+
+        
 }
 
 

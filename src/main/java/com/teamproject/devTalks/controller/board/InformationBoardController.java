@@ -41,6 +41,17 @@ public class InformationBoardController {
             informationBoardService.getInformationBoardList(informationSort);
         return response;
         }
+    
+    // group : 제목으로 검색할것인지, 닉네임으로 검색할것인지 등등
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(
+        @PathVariable("group") String group,
+        @PathVariable("searchKeyword") String searchKeyword
+        ) {
+            ResponseEntity<? super GetInformationBoardListResponseDto> response = 
+            informationBoardService.getInformationBoardSearchList(group, searchKeyword);
+        return response;
+        }
 
     @GetMapping("/{informationBoardNumber}") 
     public ResponseEntity<? super GetInformationBoardResponseDto> getInformationBoard(

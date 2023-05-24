@@ -9,8 +9,8 @@ import lombok.Data;
 @Data
 public class RecruitHeartPk implements Serializable{
 
-    @Column
+    @Column(name="recruit_board_number")
     private int recruitBoardNumber;
-    @Column
+    @Column(name="user_number")
     private int userNumber;
 }

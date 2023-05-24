@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     public UserEntity findByUserEmail(String Email);
     public UserEntity findByUserNumber(Integer userNumber);
     public UserEntity findByUserPhoneNumber(String userPhoneNumber);
-
+    
 
     @Transactional
     public void deleteByUserEmail(String userEmail);

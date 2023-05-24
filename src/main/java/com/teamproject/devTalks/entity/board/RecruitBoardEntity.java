@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.teamproject.devTalks.dto.request.board.recruit.PatchRecruitBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.recruit.PostRecruitBoardRequestDto;
 import com.teamproject.devTalks.entity.user.UserEntity;
 
@@ -51,6 +52,18 @@ public class RecruitBoardEntity {
         this.recruitmentStatus = dto.isRecruitmentStatus();
         this.writeDatetime = writeDatetime;
 
+    }
+
+    public RecruitBoardEntity(UserEntity userEntity, PatchRecruitBoardRequestDto dto) {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        
+        this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
+        this.writerNickname = userEntity.getUserNickname();
+        this.writeDatetime = simpleDateFormat.format(now);
+        this.recruitBoardTitle = dto.getRecruitBoardTitle();
+        this.recruitBoardContent = dto.getRecruitBoardContent();
+        this.recruitBoardImageUrl = dto.getRecruitBoardImageUrl();
 
     }
 

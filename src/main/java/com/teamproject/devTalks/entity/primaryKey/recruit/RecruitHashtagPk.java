@@ -1,7 +1,6 @@
 package com.teamproject.devTalks.entity.primaryKey.recruit;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 
@@ -12,7 +11,7 @@ public class RecruitHashtagPk implements Serializable {
 
     @Column(name="recruit_board_number")
     private int recruitBoardNumber;
-    @Column(name="hashtag")
+    @Column(name="board_hashtag")
     private String boardHashTag;
 
 

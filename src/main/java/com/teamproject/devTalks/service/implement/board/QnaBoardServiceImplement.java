@@ -69,6 +69,30 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // 검색 기능
+    @Override
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardSearchList(String group,
+            String searchKeyword) {
+        
+        GetQnaBoardListResponseDto body = null;
+
+        try {
+
+            List<QnaBoardListResultSet> resultSet = new ArrayList<>();
+
+            if (group.equals("nickname")) resultSet = qnaBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
+            if (group.equals("title")) resultSet = qnaBoardRepository.findByQnaBoardTitleContaining("%" + searchKeyword + "%");
+
+            body = new GetQnaBoardListResponseDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber) {
 
@@ -372,5 +396,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         }
         return CustomResponse.success();
     }
+
 
 }

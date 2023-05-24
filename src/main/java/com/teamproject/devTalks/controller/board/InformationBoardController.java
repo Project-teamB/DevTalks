@@ -42,7 +42,7 @@ public class InformationBoardController {
         return response;
         }
     
-    // group : 제목으로 검색할것인지, 닉네임으로 검색할것인지 등등
+    // group : 검색조건 선택 (닉네임, 제목 ...)
     @GetMapping("/list/{group}/{searchKeyword}")
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(
         @PathVariable("group") String group,

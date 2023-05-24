@@ -95,6 +95,8 @@ public class InformationBoardServiceImplement implements InformationBoardService
                 if (group.equals("title")) resultSet = informationBoardRepository.findByInformationBoardTitleContaining("%" + searchKeyword + "%");
                 if (group.equals("nickname")) resultSet = informationBoardRepository.findByInformationWriterNicknameContaining("%" + searchKeyword + "%");
             
+                body = new GetInformationBoardListResponseDto(resultSet);
+
             } catch (Exception exception) {
                 exception.printStackTrace();
                 return CustomResponse.databaseError();

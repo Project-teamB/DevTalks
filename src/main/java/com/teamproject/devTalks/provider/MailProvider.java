@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class MailProvider {
-    
+
     private final JavaMailSender javaMailSender;
 
     public boolean sendMail(String toEmail, String subject, String text) {
@@ -28,7 +28,5 @@ public class MailProvider {
         }
         return true;
     }
-
-
 
 }

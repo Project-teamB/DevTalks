@@ -102,29 +102,29 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
     }
 
     // 검색 기능
-    // @Override
-    // public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(String group,
-    //         String searchKeyword) {
+    @Override
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(String group,
+            String searchKeyword) {
         
-    //     GetTeacherBoardListResponseDto body = null;
+        GetTeacherBoardListResponseDto body = null;
 
-    //     try {
+        try {
 
-    //         List<TeacherBoardListResultSet> resultSet = new ArrayList<>();
+            List<TeacherBoardListResultSet> resultSet = new ArrayList<>();
 
-    //         if (group.equals("title")) resultSet = teacherBoardRepository.findByTeacherBoardTitleContaining("%" + searchKeyword + "%");
-    //         if (group.equals("nickname")) resultSet = teacherBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
+            if (group.equals("title")) resultSet = teacherBoardRepository.findByTeacherBoardTitleContaining("%" + searchKeyword + "%");
+            if (group.equals("nickname")) resultSet = teacherBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
 
-    //         body = new GetTeacherBoardListResponseDto(resultSet);
+            body = new GetTeacherBoardListResponseDto(resultSet);
 
-    //     } catch (Exception exception) {
-    //         exception.printStackTrace();
-    //         return CustomResponse.databaseError();
-    //     }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
 
-    //     return ResponseEntity.status(HttpStatus.OK).body(body);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
 
-    // }
+    }
 
     @Override
     public ResponseEntity<ResponseDto> postTeacherBoard(String userEmail, PostTeacherBoardRequestDto dto) {

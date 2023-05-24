@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface TeacherBoardService {
     public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(Integer teacherBoardNumber);
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList();
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort, String recruitmentStatus);
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(String group, String searchKeyword);
 

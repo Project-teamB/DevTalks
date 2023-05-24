@@ -46,6 +46,16 @@ public class QnaBoardController {
         return response;
     }
 
+    // group : 검색조건 선택 (닉네임, 제목 ...)
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(
+            @PathVariable("group") String group,
+            @PathVariable("searchKeyword") String searchKeyword
+        ) {
+        ResponseEntity<? super GetQnaBoardListResponseDto> response = boardService.getQnaBoardSearchList(group, searchKeyword);
+        return response;
+    }
+
     @GetMapping("/{qnaBoardNumber}")
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(
             @PathVariable("qnaBoardNumber") int qnaBoardNumber) {

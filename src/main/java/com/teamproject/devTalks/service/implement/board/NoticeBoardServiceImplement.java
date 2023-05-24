@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,6 +72,30 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @Override
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group,
+            String searchKeyword) {
+        
+        GetNoticeBoardListResponseDto body = null;
+
+        try {
+
+            List<NoticeBoardEntity> noticeBoardEntityList = new ArrayList<>();
+
+            if (group.equals("title")) noticeBoardEntityList = noticeBoardRepository.findByNoticeTitleContaining("%" + searchKeyword + "%");
+
+            body = new GetNoticeBoardListResponseDto(noticeBoardEntityList);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
+
+    }
+
     @Override
     public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
         try {
@@ -141,4 +166,6 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
 
         return CustomResponse.success();
     }
+
+    
 }

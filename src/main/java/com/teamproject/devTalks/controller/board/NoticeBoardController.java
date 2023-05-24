@@ -57,6 +57,19 @@ public class NoticeBoardController {
 
     }
 
+    // group : 검색조건 선택 (닉네임, 제목 ...)
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(
+        @PathVariable("group") String group,
+        @PathVariable("searchKeyword") String searchKeyword
+    ){
+
+        ResponseEntity<? super GetNoticeBoardListResponseDto> response
+                = noticeBoardService.getNoticeSearchList(group, searchKeyword);
+        return response;
+
+    }
+
     @PatchMapping("")
     public ResponseEntity<ResponseDto> updateNotice(
             @Valid @RequestBody PatchNoticeBoardRequestDto dto,

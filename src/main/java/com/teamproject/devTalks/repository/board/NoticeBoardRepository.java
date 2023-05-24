@@ -11,4 +11,7 @@ public interface NoticeBoardRepository extends JpaRepository<NoticeBoardEntity,I
 
     public NoticeBoardEntity findByNoticeBoardNumber(int boardNumber);
     List<NoticeBoardEntity> findAllByOrderByWriteDatetimeDesc();
+
+    public List<NoticeBoardEntity> findByNoticeTitleContaining(String searchKeyword);
+    
 }

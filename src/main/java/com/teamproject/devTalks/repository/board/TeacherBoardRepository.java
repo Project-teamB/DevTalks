@@ -144,4 +144,48 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                 "group by teacherBoardNumber " +
                 "order by viewCount DESC ", nativeQuery = true)
         public List<TeacherBoardListResultSet> getListOrderByViewCountProgress(@Param("status") boolean status);
+
+        // @Query
+        // (value = "SELECT " +
+        //         "T.teacher_board_number AS teacherBoardNumber, " +
+        //         "T.teacher_title AS teacherTitle, " +
+        //         "T.teacher_content AS teacherContent, " +
+        //         "T.teacher_board_image_url AS teacherBoardImageUrl, " +
+        //         "T.write_datetime AS writeDatetime, " +
+        //         "T.view_count AS viewCount, " +
+        //         "T.writer_email AS writerEmail, " +
+        //         "T.writer_nickname AS writerNickname, " +
+        //         "T.writer_profile_image_url AS writerProfileImageUrl, " +
+        //         "count(C.comment_number) AS teacherCommentCount, " +
+        //         "count(H.user_number) AS teacherHeartCount " +
+        //         "FROM teacher T " +
+        //         "LEFT JOIN teacher_heart H " +
+        //         "ON T.teacher_board_number = H.teacher_board_number " +
+        //         "WHERE T.recruitment_status = :status " +
+        //         "WHERE T.teacher_title LIKE ? " +
+        //         "group by teacherBoardNumber " +
+        //         "order by writeDatetime DESC ", nativeQuery = true)
+        // public List<TeacherBoardListResultSet> findByTeacherBoardTitleContaining(String searchKeyword);
+
+        // @Query
+        // (value = "SELECT " +
+        //         "T.teacher_board_number AS teacherBoardNumber, " +
+        //         "T.teacher_title AS teacherTitle, " +
+        //         "T.teacher_content AS teacherContent, " +
+        //         "T.teacher_board_image_url AS teacherBoardImageUrl, " +
+        //         "T.write_datetime AS writeDatetime, " +
+        //         "T.view_count AS viewCount, " +
+        //         "T.writer_email AS writerEmail, " +
+        //         "T.writer_nickname AS writerNickname, " +
+        //         "T.writer_profile_image_url AS writerProfileImageUrl, " +
+        //         "count(C.comment_number) AS teacherCommentCount, " +
+        //         "count(H.user_number) AS teacherHeartCount " +
+        //         "FROM teacher T " +
+        //         "LEFT JOIN teacher_heart H " +
+        //         "ON T.teacher_board_number = H.teacher_board_number " +
+        //         "WHERE T.recruitment_status = :status " +
+        //         "WHERE T.writer_nickname LIKE ? " +
+        //         "group by teacherBoardNumber " +
+        //         "order by writeDatetime DESC ", nativeQuery = true)
+        // public List<TeacherBoardListResultSet> findByWriterNicknameContaining(String searchKeyword);
 }

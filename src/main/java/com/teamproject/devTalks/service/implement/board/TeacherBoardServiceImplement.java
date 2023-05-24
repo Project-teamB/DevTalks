@@ -5,6 +5,7 @@ import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardReque
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.heart.teacher.PostTeacherHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
@@ -99,6 +100,31 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         }
         return CustomResponse.success();
     }
+
+    // 검색 기능
+    // @Override
+    // public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(String group,
+    //         String searchKeyword) {
+        
+    //     GetTeacherBoardListResponseDto body = null;
+
+    //     try {
+
+    //         List<TeacherBoardListResultSet> resultSet = new ArrayList<>();
+
+    //         if (group.equals("title")) resultSet = teacherBoardRepository.findByTeacherBoardTitleContaining("%" + searchKeyword + "%");
+    //         if (group.equals("nickname")) resultSet = teacherBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
+
+    //         body = new GetTeacherBoardListResponseDto(resultSet);
+
+    //     } catch (Exception exception) {
+    //         exception.printStackTrace();
+    //         return CustomResponse.databaseError();
+    //     }
+
+    //     return ResponseEntity.status(HttpStatus.OK).body(body);
+
+    // }
 
     @Override
     public ResponseEntity<ResponseDto> postTeacherBoard(String userEmail, PostTeacherBoardRequestDto dto) {
@@ -253,4 +279,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         }
         return CustomResponse.success();
     }
+
+    
 }

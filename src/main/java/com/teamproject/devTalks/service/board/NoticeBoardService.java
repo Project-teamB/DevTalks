@@ -15,6 +15,7 @@ public interface NoticeBoardService {
 
 
     ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeList();
+    ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group, String searchKeyword);
 
     ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto);
 

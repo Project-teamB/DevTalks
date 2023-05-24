@@ -48,6 +48,17 @@ public class TeacherBoardController {
         return response;
     }
 
+    // group : 검색조건 선택 (닉네임, 제목 ...)
+    // @GetMapping("/list/{group}/{searchKeyword}")
+    // public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(
+    //     @PathVariable("group") String group, 
+    //     @PathVariable("searchKeyword") String searchKeyword
+    // ) {
+    //     ResponseEntity<? super GetTeacherBoardListResponseDto> response =
+    //         teacherBoardService.getTeacherBoardList(group, searchKeyword);
+    //     return response;
+    // }
+
     @PostMapping("")
     public ResponseEntity<ResponseDto> postTeacherBoard(
         @Valid @RequestBody PostTeacherBoardRequestDto requestBody,

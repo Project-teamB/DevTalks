@@ -13,6 +13,7 @@ import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity,Integer> {
         public TeacherBoardEntity findByTeacherBoardNumber(int boardNumber);
         public TeacherBoardEntity findByWriterEmail(String email);
+        List<TeacherBoardListResultSet> findAllByOrderByWriteDatetimeDesc();
 
         @Transactional
         void deleteByteacherBoardNumber(int teacherBoardNumber);

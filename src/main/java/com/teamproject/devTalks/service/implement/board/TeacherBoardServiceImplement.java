@@ -5,7 +5,6 @@ import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardReque
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.heart.teacher.PostTeacherHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
-import com.teamproject.devTalks.dto.response.board.information.GetInformationBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
@@ -64,8 +63,27 @@ public class TeacherBoardServiceImplement implements TeacherBoardService{
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    //전체 조회(최신순)
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort, String recruitmentStatus) {
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(){
+        GetTeacherBoardListResponseDto body = null;
+        try {
+
+            List<TeacherBoardListResultSet> teacherBoardEntityList =
+                    teacherBoardRepository.findAllByOrderByWriteDatetimeDesc();
+
+            body = new GetTeacherBoardListResponseDto(teacherBoardEntityList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 모집상태에 따른 정렬
+    @Override
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort, String recruitmentStatus){
 
         try {
             List<TeacherBoardListResultSet> resultSets = null;

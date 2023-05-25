@@ -29,7 +29,6 @@ public class GetInformationBoardResponseDto extends ResponseDto {
     private String contentSource;
     private int viewCount;
     private String writeDatetime;
-    private String updateDatetime;
     private List<Comment> commentList;
     private int heartCount;
     private List<String> heartList;

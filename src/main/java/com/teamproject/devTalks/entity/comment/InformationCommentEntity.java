@@ -33,7 +33,6 @@ public class InformationCommentEntity {
     private String writerEmail;
     private String writerProfileImageUrl;
     private String writeDatetime;
-    private String updateDatetime;
     private int userNumber;
     private int informationBoardNumber;
 

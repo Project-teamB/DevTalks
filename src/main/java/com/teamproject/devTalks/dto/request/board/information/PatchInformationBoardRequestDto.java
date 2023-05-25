@@ -1,5 +1,7 @@
 package com.teamproject.devTalks.dto.request.board.information;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -17,6 +19,6 @@ public class PatchInformationBoardRequestDto {
     private String informationBoardImageUrl;
     @NotBlank
     private String contentSource;
-    private String boardHashtag;
+    private List<String> boardHashtag;
     
 }

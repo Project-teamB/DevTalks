@@ -7,6 +7,7 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
+import com.teamproject.devTalks.entity.resultSet.RecruitBoardListResultSet;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.repository.board.NoticeBoardRepository;
 import com.teamproject.devTalks.repository.user.AdminRepository;
@@ -74,8 +75,7 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group,
-            String searchKeyword) {
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
         
         GetNoticeBoardListResponseDto body = null;
 
@@ -92,7 +92,6 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
-
 
     }
 

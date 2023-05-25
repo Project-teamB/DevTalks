@@ -30,6 +30,9 @@ public interface RecruitBoardService {
     public ResponseEntity<ResponseDto> postRecruitHeart(String userEmail, Integer recruitBoardNumber, PostRecruitHeartRequestDto dto);
     public ResponseEntity<ResponseDto> deleteRecruitHeart(String userEmail, Integer recruitBoardNumber);
 
+    public ResponseEntity<ResponseDto> deleteAdminRecruitBoard(String adminEmail, Integer recruitBoardNumber);
+    public ResponseEntity<ResponseDto> deleteAdminRecruitComment(String adminEmail, Integer recruitCommentNumber);
+
 
     
 }

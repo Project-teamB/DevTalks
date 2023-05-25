@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 public class RecruitCommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int recruitCommentNumber;
     private int recruitBoardNumber;
+    private int recruitCommentNumber;
     private int userNumber;
     private String recruitCommentContent;
     private String writerNickname;

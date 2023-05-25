@@ -26,7 +26,9 @@ public class GetRecruitBoardListResponseDto extends ResponseDto {
             RecruitBoardSummary recruitBoardSummary = new RecruitBoardSummary(result);
             recruitBoardList.add(recruitBoardSummary);
         }
+        
         this.recruitBoardList = recruitBoardList;
+
     }
 }
 
@@ -44,7 +46,7 @@ class RecruitBoardSummary {
     private int viewCount;
     private int commentCount;
     private int heartCount;
-    private boolean recruitmentStatus;
+    private int recruitmentStatus;
 
     public RecruitBoardSummary(RecruitBoardListResultSet resultSet) {
         this.recruitBoardNumber = resultSet.getRecruitBoardNumber();
@@ -56,6 +58,6 @@ class RecruitBoardSummary {
         this.viewCount = resultSet.getViewCount();
         this.commentCount = resultSet.getCommentCount();
         this.heartCount = resultSet.getHeartCount();
-        this.recruitmentStatus = resultSet.isRecruitmentStatus();
+        this.recruitmentStatus = resultSet.getRecruitmentStatus();
     }
 }

@@ -115,7 +115,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
                         "ON Q.qna_board_number = C.qna_board_number " +
                         "LEFT JOIN qna_heart H " +
                         "ON Q.qna_board_number = H.qna_board_number " +
-                        "WHERE Q.qna_board_title LIKE ? " +
+                        "WHERE Q.qna_title LIKE ? " +
                         "group by qnaBoardNumber " +
                         "order by writeDatetime DESC ", nativeQuery = true // sql문법그대로 jpa에서 쓸수 있게 해주는거
         )

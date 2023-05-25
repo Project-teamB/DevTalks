@@ -1,5 +1,6 @@
 package com.teamproject.devTalks.service.implement.chat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.mysql.cj.protocol.Message;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
@@ -73,9 +75,10 @@ public class ChatServiceImplement implements ChatService {
             chatRoomRepository.findByChatRoomNumber(chatRoomNumber);
             if(chatRoomEntity == null) return CustomResponse.notExistChatRoomNumber();
 
+            chatMessageRepository.setChatStatusTrue(chatRoomNumber);
             List<ChatMessageListResultSet> resultSet = 
             chatMessageRepository.getListOrderBySentDatetime(chatRoomNumber);
-
+                       
             body = new GetChatMessageListResponseDto(resultSet);
 
         } catch (Exception exception){
@@ -85,6 +88,7 @@ public class ChatServiceImplement implements ChatService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);    
     }
+
 
     @Override
     public ResponseEntity<ResponseDto> deleteChatRoom(Integer chatRoomNumber) {

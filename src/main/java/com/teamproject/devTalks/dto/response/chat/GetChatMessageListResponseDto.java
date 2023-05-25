@@ -3,6 +3,7 @@ package com.teamproject.devTalks.dto.response.chat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.protocol.Message;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatMessageListResultSet;
 
@@ -24,7 +25,6 @@ public class GetChatMessageListResponseDto extends ResponseDto {
             ChatMessage chatMessage = new ChatMessage(resultSet);
             ChatMessageList.add(chatMessage);
         }
-
     }
 
     @Getter

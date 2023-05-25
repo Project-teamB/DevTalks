@@ -6,5 +6,6 @@ public interface ChatMessageListResultSet {
     public String getUserNickname();
     public String getSentDatetime();
     public String getMessage();
+    public boolean getChatStatus();
 
 }

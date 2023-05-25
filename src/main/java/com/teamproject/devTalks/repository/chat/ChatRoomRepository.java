@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.mysql.cj.protocol.Message;
 import com.teamproject.devTalks.entity.chat.ChatRoomEntity;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatRoomListResultSet;
 
@@ -23,8 +24,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Intege
     "ORDER BY M.sent_datetime DESC", nativeQuery = true)
     List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc();
     
-//     List<Message> findByChatRoomNumberOrderByList(String chatRoomNumber);
-
     ChatRoomEntity findByChatRoomNumber(String chatRoomNumber);
+
+
 
     }

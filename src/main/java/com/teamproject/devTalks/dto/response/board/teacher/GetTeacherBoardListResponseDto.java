@@ -47,14 +47,12 @@ class TeacherBoardSummary {
     public TeacherBoardSummary(TeacherBoardListResultSet teacherBoardEntity) {
         this.teacherBoardNumber = teacherBoardEntity.getteacherBoardNumber();
         this.teacherTitle = teacherBoardEntity.getteacherTitle();
-        this.teacherContent = teacherBoardEntity.getteacherContent();
         this.writeDatetime = teacherBoardEntity.getwriteDatetime();
         this.viewCount = teacherBoardEntity.getviewCount();
         this.writerEmail = teacherBoardEntity.getwriterEmail();
         this.writerNickname = teacherBoardEntity.getwriterNickname();
         this.writerProfileImageUrl = teacherBoardEntity.getwriterProfileImageUrl();
 
-        this.teacherBoardImageUrl = teacherBoardEntity.getteacherBoardImageUrl();
         this.heartCount = teacherBoardEntity.getheartCount();
         this.teacherBoardHashtag = teacherBoardEntity.gethashTag();
     }

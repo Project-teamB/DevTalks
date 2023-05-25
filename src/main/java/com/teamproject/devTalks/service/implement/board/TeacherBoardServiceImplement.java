@@ -69,9 +69,13 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
 
     // 전체 조회(최신순)
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList() {
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(Integer teacherBoardNumber) {
         GetTeacherBoardListResponseDto body = null;
+
         try {
+            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
+            if (teacherBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
 
             List<TeacherBoardListResultSet> teacherBoardEntityList = teacherBoardRepository
                     .findByOrderByWriteDatetimeDesc();
@@ -87,10 +91,17 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
 
     // 모집상태에 따른 정렬
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort,
-            String recruitmentStatus) {
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(Integer teacherBoardNumber, 
+            String teacherSort, String recruitmentStatus) {
 
         try {
+            if (teacherBoardNumber == null)
+                return CustomResponse.validationFailed();
+
+            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
+            if (teacherBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
             List<TeacherBoardListResultSet> resultSets = null;
             boolean status = recruitmentStatus.equals("true");
             if (status) {
@@ -126,12 +137,15 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
 
     // 검색 기능
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(String group,
-            String searchKeyword) {
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(Integer teacherBoardNumber,
+            String group, String searchKeyword) {
 
         GetTeacherBoardListResponseDto body = null;
 
         try {
+            TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
+            if (teacherBoardEntity == null)
+                return CustomResponse.notExistBoardNumber();
 
             List<TeacherBoardListResultSet> resultSet = new ArrayList<>();
 
@@ -188,18 +202,22 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null)
-                return CustomResponse.noExistUser();
+                return CustomResponse.authenticationFailed();
 
             TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
             if (teacherBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
+            boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
+            if (!equalWriter)
+                return CustomResponse.noPermission();
+
             TeacherBoardEntity teacherBoardEntityPathch = new TeacherBoardEntity(userEntity, dto);
             teacherBoardRepository.save(teacherBoardEntityPathch);
 
-            int teacherBoardNumber = teacherBoardEntity.getTeacherBoardNumber();
+            int teacherBoardNumber1 = teacherBoardEntity.getTeacherBoardNumber();
             List<TeacherBoardHashTagEntity> currentTeacherBoardHashTagEntities = teacherBoardHashTagRepository
-                    .findAllByTeacherBoardNumber(teacherBoardNumber);
+                    .findAllByTeacherBoardNumber(teacherBoardNumber1);
 
             teacherBoardHashTagRepository.deleteAll(currentTeacherBoardHashTagEntities);
 
@@ -221,9 +239,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     public ResponseEntity<ResponseDto> deleteTeacherBoard(String userEmail, Integer teacherBoardNumber) {
 
         try {
-            if (teacherBoardNumber == null)
-                return CustomResponse.validationFailed();
-
             TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
             if (teacherBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
@@ -273,9 +288,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     public ResponseEntity<ResponseDto> deleteTeacherHeart(String userEmail, Integer teacherBoardNumber) {
 
         try {
-            if (teacherBoardNumber == null)
-                return CustomResponse.validationFailed();
-
             TeacherBoardEntity teacherBoardEntity = teacherBoardRepository.findByTeacherBoardNumber(0);
             if (teacherBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();

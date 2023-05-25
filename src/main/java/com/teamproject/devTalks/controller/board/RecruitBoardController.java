@@ -58,16 +58,6 @@ public class RecruitBoardController {
         return response;
     }
 
-    // 특정 게시물 리스트 조회
-    @GetMapping("/list")
-    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList() {
-    
-        ResponseEntity<? super GetRecruitBoardListResponseDto> response = 
-            recruitBoardService.getRecruitBoardList();
-        return response;
-    
-    }
-
     // 특정 게시물 수정
     @PatchMapping("/{recruitBoardNumber}")
     public ResponseEntity<ResponseDto> patchRecruitBoard(
@@ -177,6 +167,28 @@ public class RecruitBoardController {
     ) {
         String adminEmail = adminPrinciple.getAdminEmail();
         ResponseEntity<ResponseDto> response = recruitBoardService.deleteRecruitComment(adminEmail, recruitBoardNumber, recruitCommentNumber);
+        return response;
+    }
+
+    // 전체 게시물 리스트 조회
+    @GetMapping("/list/{sort}")
+    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(
+        @PathVariable("sort") String recruitSort
+    ) {
+    
+        ResponseEntity<? super GetRecruitBoardListResponseDto> response = 
+            recruitBoardService.getRecruitBoardList(recruitSort);
+        return response;
+    
+    }
+
+    // 검색 기능
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(
+        @PathVariable("group") String group,
+        @PathVariable("searchKeyword") String searchKeyword
+    ) {
+        ResponseEntity<? super GetRecruitBoardListResponseDto> response = recruitBoardService.getRecruitBoardSearchList(group, searchKeyword);
         return response;
     }
 }

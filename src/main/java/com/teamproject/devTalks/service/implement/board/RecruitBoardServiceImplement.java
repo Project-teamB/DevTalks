@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import com.teamproject.devTalks.repository.board.RecruitBoardRepository;
 import com.teamproject.devTalks.repository.comment.RecruitCommentRepository;
 import com.teamproject.devTalks.repository.hashTag.RecruitBoardHashTagRepository;
 import com.teamproject.devTalks.repository.heart.RecruitHeartRepository;
+import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.board.RecruitBoardService;
 
@@ -42,16 +44,19 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
     private RecruitCommentRepository recruitCommentRepository;
     private RecruitHeartRepository recruitHeartRepository;
     private RecruitBoardHashTagRepository recruitBoardHashTagRepository;
+    private AdminRepository adminRepository;
 
     @Autowired
     public RecruitBoardServiceImplement(
         UserRepository userRepository,
+        AdminRepository adminRepository,
         RecruitBoardRepository recruitBoardRepository,
         RecruitCommentRepository recruitCommentRepository,
         RecruitHeartRepository recruitHeartRepository,
         RecruitBoardHashTagRepository recruitBoardHashTagRepository
     ) {
         this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
         this.recruitBoardRepository = recruitBoardRepository;
         this.recruitCommentRepository = recruitCommentRepository;
         this.recruitHeartRepository = recruitHeartRepository;
@@ -79,33 +84,71 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             
             List<RecruitCommentEntity> recruitCommentEntities = recruitCommentRepository.findByRecruitBoardNumber(recruitBoardNumber);
             List<RecruitHeartEntity> recruitHeartEntities = recruitHeartRepository.findByRecruitBoardNumber(recruitBoardNumber);
-            // List<RecruitBoardHashTagEntity> recruitBoardHashTagEntities = recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber);
+            List<RecruitBoardHashTagEntity> recruitBoardHashTagEntities = recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber);
 
-            // List<String> boardHashTag = new ArrayList<>();
-            // for (RecruitBoardHashTagEntity boardHashTagList: recruitBoardHashTagEntities) {
-            //     String hashTags = boardHashTagList.getBoardHashTag();
-            //     boardHashTag.add(hashTags);
-            // }
+            List<String> boardHashTag = new ArrayList<>();
+            for (RecruitBoardHashTagEntity boardHashTagList: recruitBoardHashTagEntities) {
+                String hashTags = boardHashTagList.getBoardHashTag();
+                boardHashTag.add(hashTags);
+            }
 
-            body = new GetRecruitBoardResponseDto(recruitBoardEntity, userEntity, recruitCommentEntities, recruitHeartEntities /*boardHashTag*/);
+            body = new GetRecruitBoardResponseDto(recruitBoardEntity, userEntity, recruitCommentEntities, recruitHeartEntities, boardHashTag);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
         
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
 
     }
     
     @Override
-    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList() {
+    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(String recruitSort) {
         
         GetRecruitBoardListResponseDto body = null;
 
         try {
 
-            List<RecruitBoardListResultSet> resultSet = recruitBoardRepository.getRecruitBoardList();
+            List<RecruitBoardListResultSet> resultSet = null;
+
+            if(recruitSort.equals("time")) 
+                resultSet = recruitBoardRepository.getRecruitBoardListOrderByWriteDateTime();
+            
+            if(recruitSort.equals("heartCount"))
+                resultSet = recruitBoardRepository.getRecruitBoardListOrderByHeartCount();
+            
+            if(recruitSort.equals("commentCount"))
+                resultSet = recruitBoardRepository.getRecruitBoardListOrderByCommentCount();
+            
+            if(recruitSort.equals("viewCount"))
+                resultSet = recruitBoardRepository.getRecruitBoardListOrderByViewCount();
+
+
+            body = new GetRecruitBoardListResponseDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
+    }
+
+    // 검색 기능 구현
+    @Override
+    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardSearchList(String group, String searchKeyword) {
+        
+        GetRecruitBoardListResponseDto body = null;
+
+        try {
+
+            List<RecruitBoardListResultSet> resultSet = new ArrayList<>();
+
+            if (group.equals("title")) resultSet = recruitBoardRepository.findByRecruitBoardTitleContaining("%" + searchKeyword + "%");
+            if (group.equals("nickname")) resultSet = recruitBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
+
             body = new GetRecruitBoardListResponseDto(resultSet);
 
         } catch (Exception exception) {
@@ -216,7 +259,7 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             // 존재하지 않는 유저 오류 반환
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.noExistUser();
-
+            
             //  존재하지 않는 게시물 번호 반환
             RecruitBoardEntity recruitBoardEntity = 
                 recruitBoardRepository.findByRecruitBoardNumber(recruitBoardNumber);
@@ -346,6 +389,37 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
         return CustomResponse.success();
 
     }
+
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminRecruitBoard(String adminEmail, Integer recruitBoardNumber) {
+        
+        try {
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if (!existAdmin) return CustomResponse.authenticationFailed();
+
+            recruitBoardRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            recruitHeartRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            recruitBoardRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+
+    }
+
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminRecruitComment(String adminEmail, Integer recruitCommentNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAdminRecruitComment'");
+    }
+
+
+
+
 
     
 

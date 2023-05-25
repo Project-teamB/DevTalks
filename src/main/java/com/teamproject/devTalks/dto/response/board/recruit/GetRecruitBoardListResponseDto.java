@@ -26,7 +26,9 @@ public class GetRecruitBoardListResponseDto extends ResponseDto {
             RecruitBoardSummary recruitBoardSummary = new RecruitBoardSummary(result);
             recruitBoardList.add(recruitBoardSummary);
         }
+        
         this.recruitBoardList = recruitBoardList;
+
     }
 }
 
@@ -37,29 +39,25 @@ public class GetRecruitBoardListResponseDto extends ResponseDto {
 class RecruitBoardSummary {
     private int recruitBoardNumber;
     private String recruitBoardTitle;
-    private String recruitBoardContent;
-    private String recruitBoardImageUrl;
     private String writeDatetime;
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImageUrl;
+    private int viewCount;
     private int commentCount;
     private int heartCount;
-    private List<String> boardHashTag;
-    private boolean recruitmentStatus;
+    private int recruitmentStatus;
 
     public RecruitBoardSummary(RecruitBoardListResultSet resultSet) {
         this.recruitBoardNumber = resultSet.getRecruitBoardNumber();
         this.recruitBoardTitle = resultSet.getRecruitBoardTitle();
-        this.recruitBoardContent = resultSet.getRecruitBoardContent();
-        this.recruitBoardImageUrl = resultSet.getRecruitBoardImageUrl();
         this.writeDatetime = resultSet.getWriteDatetime();
         this.writerEmail = resultSet.getWriterEmail();
         this.writerNickname = resultSet.getWriterNickname();
         this.writerProfileImageUrl = resultSet.getWriterProfileImageUrl();
+        this.viewCount = resultSet.getViewCount();
         this.commentCount = resultSet.getCommentCount();
         this.heartCount = resultSet.getHeartCount();
-        this.boardHashTag = resultSet.getBoardHashTag();
-        this.recruitmentStatus = resultSet.isRecruitmentStatus();
+        this.recruitmentStatus = resultSet.getRecruitmentStatus();
     }
 }

@@ -27,9 +27,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.security.auth.Subject;
 
 @Service
 @RequiredArgsConstructor
@@ -358,6 +363,7 @@ public class UserServiceImplement implements UserService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // 비밀번호찾기
     @Override
     public ResponseEntity<ResponseDto> findUserPassword(FindUserPasswordRequestDto dto) {
         
@@ -367,18 +373,23 @@ public class UserServiceImplement implements UserService {
             // 존재하지 않는 유저
             boolean existsUser = userRepository.existsByUserEmail(userEmail);    
             if (!existsUser) return CustomResponse.noExistUser();
-
+            String text = UUID.randomUUID().toString();
             // 메일 보내기
-            mailProvider.sendMail(userEmail, "임시 비밀번호", "qwerqwer111!!");
-
-
+            mailProvider.sendMail(userEmail, "임시비밀번호", text);
+            
+            // 현재비밀번호를 임시비밀번호로 바꾸기
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+        
+            String temporaryPassword = text;
+            String encodedTemporaryPassword = passwordEncoder.encode(temporaryPassword);
+            userEntity.setUserPassword(encodedTemporaryPassword);
+            userRepository.save(userEntity);
+            
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
         return CustomResponse.success();
     }
-
-    
 
 }

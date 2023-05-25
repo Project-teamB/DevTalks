@@ -58,7 +58,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 resultSets = qnaBoardRepository.getListOrderByHeartCount();
             else if (qnaSort.equals("comment"))
                 resultSets = qnaBoardRepository.getListOrderByCommentCount();
-            else return CustomResponse.validationFailed();
+            else
+                return CustomResponse.validationFailed();
 
             body = new GetQnaBoardListResponseDto(resultSets);
 
@@ -69,12 +70,38 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // 검색 기능
+    @Override
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardSearchList(String group,
+            String searchKeyword) {
+
+        GetQnaBoardListResponseDto body = null;
+
+        try {
+
+            List<QnaBoardListResultSet> resultSet = new ArrayList<>();
+
+            if (group.equals("nickname"))
+                resultSet = qnaBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
+            if (group.equals("title"))
+                resultSet = qnaBoardRepository.findByQnaBoardTitleContaining("%" + searchKeyword + "%");
+
+            body = new GetQnaBoardListResponseDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber) {
 
         GetQnaBoardResponseDto body = null;
         try {
-            
+
             // 존재하지 않는 게시물 반환
             QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
             if (qnaBoardEntity == null)
@@ -88,10 +115,11 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             UserEntity userEntity = userRepository.findByUserEmail(qnaBoardWriterEmail);
 
             List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(qnaBoardNumber);
-            List<QnaBoardHashTagEntity> qnaBoardHashTagEntities = qnaBoardHashTagRepository.findByQnaBoardNumber(qnaBoardNumber);
-        
+            List<QnaBoardHashTagEntity> qnaBoardHashTagEntities = qnaBoardHashTagRepository
+                    .findByQnaBoardNumber(qnaBoardNumber);
+
             List<String> hashStrings = new ArrayList<>();
-            for(QnaBoardHashTagEntity hashtagList: qnaBoardHashTagEntities) {
+            for (QnaBoardHashTagEntity hashtagList : qnaBoardHashTagEntities) {
                 String hashTags = hashtagList.getBoardHashtag();
                 hashStrings.add(hashTags);
             }
@@ -100,12 +128,13 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             int qnaHeartCount = qnaHeartEntities.size();
 
             List<Integer> heartIntegers = new ArrayList<>();
-            for(QnaHeartEntity heartList:qnaHeartEntities){
+            for (QnaHeartEntity heartList : qnaHeartEntities) {
                 int hearts = heartList.getUserNumber();
                 heartIntegers.add(hearts);
             }
-            
-            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, hashStrings, qnaHeartCount, heartIntegers);
+
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities, hashStrings,
+                    qnaHeartCount, heartIntegers);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -217,7 +246,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto dto) {
         try {
-            
+
             // 존재하지 않는 유저(이메일)
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null)
@@ -314,7 +343,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<ResponseDto> deleteQnaHeart(String userEmail, int qnaBoardNumber) {
         try {
-            
+
             // 존재하지 않는 유저(이메일)
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null)
@@ -336,7 +365,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             // 존재하지 않는 관리자(이메일)
             boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
             if (!existAdmin)
-                return CustomResponse.authenticationFailed(); // 인증실패(관리자 없음)
+                return CustomResponse.noExistAdmin();
             // 존재하지 않는 게시물 번호
             QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByQnaBoardNumber(qnaBoardNumber);
             if (qnaBoardEntity == null)
@@ -359,10 +388,9 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     public ResponseEntity<ResponseDto> deleteAdminQnaComment(String adminEmail, int qnaCommentNumber) {
         try {
 
-            // 권한없음
             boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
             if (!existAdmin)
-                return CustomResponse.authenticationFailed();
+                return CustomResponse.noExistAdmin();
 
             qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
             // 댓글 번호를 찾아서 지우는 것

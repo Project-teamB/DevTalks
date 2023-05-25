@@ -31,20 +31,44 @@ public class TeacherBoardController {
 
     @GetMapping("{teacherBoardNumber}")
     public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(
-        @Valid @PathVariable("teacherBoardNumber") Integer teacherboardNumber
+        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ){
         ResponseEntity<? super GetTeacherBoardResponseDto> response =
-            teacherBoardService.getTeacherBoard(teacherboardNumber);
+            teacherBoardService.getTeacherBoard(teacherBoardNumber);
         return response;
     }
 
-    @GetMapping("/list/{sort}/{recruitmentStatus}")
+    //전체 조회
+    @GetMapping("/list")
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(
+        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
+    ){
+        ResponseEntity<? super GetTeacherBoardListResponseDto> response
+                = teacherBoardService.getTeacherBoardList(teacherBoardNumber);
+        return response;
+    }
+
+    //정렬 : sort(시간, 좋아요, 조회수) / recruitmentStatus(모집 상태. 모집중-0, 모집완료-1)
+    @GetMapping("/list/{sort}/{recruitmentStatus}")
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(
+        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
         @PathVariable("sort") String teacherSort, 
         @PathVariable("recruitmentStatus") String recruitmentStatus
     ) {
         ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-            teacherBoardService.getTeacherBoardList(teacherSort, recruitmentStatus);
+            teacherBoardService.getTeacherBoardRecruitmentList(teacherBoardNumber, teacherSort, recruitmentStatus);
+        return response;
+    }
+
+    //group : 검색조건 선택 (닉네임, 제목 ...)
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(
+        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
+        @PathVariable("group") String group, 
+        @PathVariable("searchKeyword") String searchKeyword
+    ) {
+        ResponseEntity<? super GetTeacherBoardListResponseDto> response =
+            teacherBoardService.getTeacherBoardSearchList(teacherBoardNumber,group, searchKeyword);
         return response;
     }
 

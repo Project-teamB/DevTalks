@@ -6,6 +6,7 @@ import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestD
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardSearchListResponseDto;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.security.AdminPrinciple;
 import com.teamproject.devTalks.service.board.NoticeBoardService;
@@ -53,6 +54,19 @@ public class NoticeBoardController {
 
         ResponseEntity<? super GetNoticeBoardListResponseDto> response
                 = noticeBoardService.getNoticeList();
+        return response;
+
+    }
+
+    // group : 검색조건 선택 (닉네임, 제목 ...)
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetNoticeBoardSearchListResponseDto> getNoticeSearchList(
+        @PathVariable("group") String group,
+        @PathVariable("searchKeyword") String searchKeyword
+    ){
+
+        ResponseEntity<? super GetNoticeBoardSearchListResponseDto> response
+                = noticeBoardService.getNoticeSearchList(group, searchKeyword);
         return response;
 
     }

@@ -17,6 +17,8 @@ public interface QnaBoardService {
 
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(int qnaBoardNumber);
 
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardSearchList(String group, String searchKeyword);
+
     public ResponseEntity<ResponseDto> postQnaBoard(String userEmail, PostQnaBoardRequestDto dto);
 
     public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto dto);

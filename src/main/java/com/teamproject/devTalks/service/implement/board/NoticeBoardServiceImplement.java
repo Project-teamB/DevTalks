@@ -6,7 +6,10 @@ import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestD
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardSearchListResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
+import com.teamproject.devTalks.entity.resultSet.NoticeBoardListResultSet;
+import com.teamproject.devTalks.entity.resultSet.RecruitBoardListResultSet;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.repository.board.NoticeBoardRepository;
 import com.teamproject.devTalks.repository.user.AdminRepository;
@@ -16,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,6 +75,28 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @Override
+    public ResponseEntity<? super GetNoticeBoardSearchListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
+        
+        GetNoticeBoardSearchListResponseDto body = null;
+
+        try {
+
+            List<NoticeBoardListResultSet> resultSet = new ArrayList<>();
+
+            if (group.equals("title")) resultSet = noticeBoardRepository.findByNoticeTitleContaining("%" + searchKeyword + "%");
+
+            body = new GetNoticeBoardSearchListResponseDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
+    }
+
     @Override
     public ResponseEntity<ResponseDto> postNotice(String adminEmail, PostNoticeBoardRequestDto dto) {
         try {
@@ -141,4 +167,6 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
 
         return CustomResponse.success();
     }
+
+    
 }

@@ -155,7 +155,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.authenticationFailed();
         
-            InformationBoardEntity informationBoardEntity = new InformationBoardEntity(userEmail, dto);
+            InformationBoardEntity informationBoardEntity = new InformationBoardEntity(userEntity, dto);
             informationBoardRepository.save(informationBoardEntity);
 
             for (String boardHashtag : hashtagList) {

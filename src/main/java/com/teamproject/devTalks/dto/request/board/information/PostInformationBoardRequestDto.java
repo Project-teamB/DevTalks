@@ -18,13 +18,5 @@ public class PostInformationBoardRequestDto {
     @NotBlank
     private String contentSource;
     private List<String> boardHashtag;
-
-    public PostInformationBoardRequestDto(PostInformationBoardRequestDto dto) {
-        this.informationBoardTitle = dto.informationBoardTitle;
-        this.informationBoardContent = dto.informationBoardContent;
-        this.informationBoardImageUrl = dto.informationBoardImageUrl;
-        this.contentSource = dto.contentSource;
-        this.boardHashtag = dto.boardHashtag;
-    }
     
 }

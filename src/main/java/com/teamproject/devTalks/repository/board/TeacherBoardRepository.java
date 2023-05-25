@@ -18,15 +18,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -41,15 +39,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -61,15 +57,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -81,15 +75,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -102,15 +94,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -122,15 +112,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -142,15 +130,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -162,15 +148,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -182,15 +166,13 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
         @Query(value = "SELECT " +
                         "T.teacher_board_number AS teacherBoardNumber, " +
                         "T.teacher_title AS teacherTitle, " +
-                        "T.teacher_content AS teacherContent, " +
-                        "T.teacher_board_image_url AS teacherBoardImageUrl, " +
                         "T.write_datetime AS writeDatetime, " +
                         "T.view_count AS viewCount, " +
                         "T.writer_email AS writerEmail, " +
                         "T.writer_nickname AS writerNickname, " +
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
-                        "count(C.comment_number) AS teacherCommentCount, " +
                         "count(H.user_number) AS teacherHeartCount " +
+                        "T.hashTag As hashTag " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +

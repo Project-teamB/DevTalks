@@ -6,7 +6,9 @@ import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestD
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
+import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardSearchListResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
+import com.teamproject.devTalks.entity.resultSet.NoticeBoardListResultSet;
 import com.teamproject.devTalks.entity.resultSet.RecruitBoardListResultSet;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.repository.board.NoticeBoardRepository;
@@ -75,17 +77,17 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
+    public ResponseEntity<? super GetNoticeBoardSearchListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
         
-        GetNoticeBoardListResponseDto body = null;
+        GetNoticeBoardSearchListResponseDto body = null;
 
         try {
 
-            List<NoticeBoardEntity> noticeBoardEntityList = new ArrayList<>();
+            List<NoticeBoardListResultSet> resultSet = new ArrayList<>();
 
-            if (group.equals("title")) noticeBoardEntityList = noticeBoardRepository.findByNoticeTitleContaining("%" + searchKeyword + "%");
+            if (group.equals("title")) resultSet = noticeBoardRepository.findByNoticeTitleContaining("%" + searchKeyword + "%");
 
-            body = new GetNoticeBoardListResponseDto(noticeBoardEntityList);
+            body = new GetNoticeBoardSearchListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();

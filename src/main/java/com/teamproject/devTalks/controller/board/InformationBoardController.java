@@ -141,7 +141,7 @@ public class InformationBoardController {
 
     @DeleteMapping("/heart/{informationBoardNumber}")
     public ResponseEntity<ResponseDto> deleteInformationHeart(
-        @PathVariable("informationBoardNumber") int informationBoardNumber,
+        @PathVariable("informationBoardNumber") Integer informationBoardNumber,
         @AuthenticationPrincipal UserPrinciple userPrinciple
     ) {
         String userEmail = userPrinciple.getUserEmail();

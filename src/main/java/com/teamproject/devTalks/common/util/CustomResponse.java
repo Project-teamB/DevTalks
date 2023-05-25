@@ -51,6 +51,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> noExistAdmin() {
+
+        ResponseDto errorBody = new ResponseDto("NA", "Non-Existent Admin");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> authenticationFailed() {
 
         ResponseDto errorBody = new ResponseDto("AF", "Authentication failed");
@@ -141,6 +148,5 @@ public class CustomResponse {
         ResponseDto body = new ResponseDto("NR", "No Report");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
-
 
 }

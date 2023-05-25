@@ -43,7 +43,7 @@ public class GetChatMessageListResponseDto extends ResponseDto {
         public ChatMessage(ChatMessageListResultSet resultSet) {
             this.chatRoomNumber = resultSet.getChatRoomNumber();
             this.chatMessageNumber = resultSet.getChatMessageNumber();
-            // this.userNickname = resultSet.getUserNickname();
+            this.userNickname = resultSet.getUserNickname();
             this.sentDatetime = resultSet.getSentDatetime();
             this.chatMessage = resultSet.getMessage();
         }

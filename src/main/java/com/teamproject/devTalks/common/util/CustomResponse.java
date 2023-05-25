@@ -39,6 +39,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> notExistChatRoomNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NR", "Non-Existent Chat Room Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> notExistUserPhoneNumber() {
         ResponseDto errorBody = new ResponseDto("NP", "Non-Existent userPhoneNumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);

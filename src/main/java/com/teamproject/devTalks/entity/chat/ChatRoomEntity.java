@@ -18,6 +18,6 @@ public class ChatRoomEntity {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int chatRoomNumber;
+    private String chatRoomNumber;
     private int userNumber;
 }

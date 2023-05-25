@@ -55,8 +55,8 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
             this.informationBoardTitle = resultSet.getInformationBoardTitle();
             this.viewCount = resultSet.getViewCount();
             this.writeDatetime = resultSet.getWriteDatetime();            
-            this.commentCount = resultSet.getCommentCount();
-            this.heartCount = resultSet.getHeartCount();
-        }
+            this.commentCount = resultSet.getCommentCount() != null ? resultSet.getCommentCount() : 0;
+            this.heartCount = resultSet.getHeartCount() != null ? resultSet.getHeartCount() :0 ;
+            }
     }
 }

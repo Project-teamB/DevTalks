@@ -48,7 +48,7 @@ public class QnaBoardController {
 
     // group : 검색조건 선택 (닉네임, 제목 ...)
     @GetMapping("/list/{group}/{searchKeyword}")
-    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList(
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardSearchList(
             @PathVariable("group") String group,
             @PathVariable("searchKeyword") String searchKeyword
         ) {

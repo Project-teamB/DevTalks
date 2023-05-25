@@ -29,6 +29,7 @@ import com.teamproject.devTalks.repository.board.RecruitBoardRepository;
 import com.teamproject.devTalks.repository.comment.RecruitCommentRepository;
 import com.teamproject.devTalks.repository.hashTag.RecruitBoardHashTagRepository;
 import com.teamproject.devTalks.repository.heart.RecruitHeartRepository;
+import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.board.RecruitBoardService;
 
@@ -43,16 +44,19 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
     private RecruitCommentRepository recruitCommentRepository;
     private RecruitHeartRepository recruitHeartRepository;
     private RecruitBoardHashTagRepository recruitBoardHashTagRepository;
+    private AdminRepository adminRepository;
 
     @Autowired
     public RecruitBoardServiceImplement(
         UserRepository userRepository,
+        AdminRepository adminRepository,
         RecruitBoardRepository recruitBoardRepository,
         RecruitCommentRepository recruitCommentRepository,
         RecruitHeartRepository recruitHeartRepository,
         RecruitBoardHashTagRepository recruitBoardHashTagRepository
     ) {
         this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
         this.recruitBoardRepository = recruitBoardRepository;
         this.recruitCommentRepository = recruitCommentRepository;
         this.recruitHeartRepository = recruitHeartRepository;
@@ -95,7 +99,7 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             return CustomResponse.databaseError();
         }
         
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
 
     }
     
@@ -108,7 +112,7 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
             List<RecruitBoardListResultSet> resultSet = null;
 
-            if(recruitSort.equals("latest")) 
+            if(recruitSort.equals("time")) 
                 resultSet = recruitBoardRepository.getRecruitBoardListOrderByWriteDateTime();
             
             if(recruitSort.equals("heartCount"))
@@ -142,8 +146,8 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
             List<RecruitBoardListResultSet> resultSet = new ArrayList<>();
 
-            if (group.equals("nickname")) resultSet = recruitBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
             if (group.equals("title")) resultSet = recruitBoardRepository.findByRecruitBoardTitleContaining("%" + searchKeyword + "%");
+            if (group.equals("nickname")) resultSet = recruitBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
 
             body = new GetRecruitBoardListResponseDto(resultSet);
 
@@ -384,6 +388,33 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
         return CustomResponse.success();
 
+    }
+
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminRecruitBoard(String adminEmail, Integer recruitBoardNumber) {
+        
+        try {
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if (!existAdmin) return CustomResponse.authenticationFailed();
+
+            recruitBoardRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            recruitHeartRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            recruitBoardRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+
+    }
+
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteAdminRecruitComment(String adminEmail, Integer recruitCommentNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAdminRecruitComment'");
     }
 
 

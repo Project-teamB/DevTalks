@@ -25,6 +25,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
     private String recruitBoardContent;
     private String recruitBoardImageUrl;
     private String writeDatetime;
+    private String writerEmail;
     private String writerNickname;
     private String writerProfileImageUrl;
     private int viewCount;
@@ -45,6 +46,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
         this.recruitBoardImageUrl = recruitBoardEntity.getRecruitBoardImageUrl();
         this.recruitmentStatus = recruitBoardEntity.isRecruitmentStatus();
         this.writeDatetime = recruitBoardEntity.getWriteDatetime();
+        this.writerEmail = userEntity.getUserEmail();
         this.writerNickname = userEntity.getUserNickname();
         this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.viewCount = recruitBoardEntity.getViewCount();
@@ -62,8 +64,8 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class RecruitComment {
-    private int recruitCommentNumber;
     private int recruitBoardNumber;
+    private int recruitCommentNumber;
     private int userNumber;
     private String recruitCommentContent;
     private String writerEmail;
@@ -72,8 +74,8 @@ class RecruitComment {
     private String writeDatetime;
 
     RecruitComment(RecruitCommentEntity recruitCommentEntity) {
-        this.recruitCommentNumber = recruitCommentEntity.getRecruitCommentNumber();
         this.recruitBoardNumber = recruitCommentEntity.getRecruitBoardNumber();
+        this.recruitCommentNumber = recruitCommentEntity.getRecruitCommentNumber();
         this.userNumber = recruitCommentEntity.getUserNumber();
         this.recruitCommentContent = recruitCommentEntity.getRecruitCommentContent();
         this.writerEmail = recruitCommentEntity.getWriterEmail();

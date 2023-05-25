@@ -20,12 +20,17 @@ import com.teamproject.devTalks.repository.chat.ChatMessageRepository;
 import com.teamproject.devTalks.repository.chat.ChatRoomRepository;
 import com.teamproject.devTalks.service.chat.ChatService;
 
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class ChatServiceImplement implements ChatService {
-    
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
+
+    public ChatServiceImplement(ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.chatMessageRepository = chatMessageRepository;
+    }
+
     @Override
     public ResponseEntity<ResponseDto> createChatRoom(Integer userNumber) {
         // TODO Auto-generated method stub
@@ -44,9 +49,9 @@ public class ChatServiceImplement implements ChatService {
         GetChatRoomListResponseDto body = null;
         
         try {        
-        // List<ChatRoomListResultSet> resultSet = 
-        // ChatRoomRepository.getListOrderBySentDatetimeDesc();
-        // body = new GetChatRoomListResponseDto(resultSet);
+        List<ChatRoomListResultSet> resultSet = 
+        chatRoomRepository.findAllByOrderBySentDatetimeDesc();
+        body = new GetChatRoomListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -58,28 +63,27 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(String chatRoomNumber) {
-        
-//         if (chatRoomNumber == null) return CustomResponse.validationFailed();
-//         GetChatMessageListResponseDto body = null;
-// 
-//         try {
-//             ChatRoomEntity chatRoomEntity = 
-//             ChatRoomRepository.findByChatRoomNumber(chatRoomNumber);
-//             if(chatRoomEntity == null) return CustomResponse.notExistChatRoomNumber();
-// 
-//             List<ChatMessageListResultSet> resultSet = 
-//             ChatMessageRepository.getListOrderBySentDatetime(chatRoomNumber);
-// 
-//             body = new GetChatMessageListResponseDto(resultSet);
-// 
-//         } catch (Exception exception){
-//             exception.printStackTrace();
-//             return CustomResponse.databaseError();
-//         }
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber) {     
 
-        // return ResponseEntity.status(HttpStatus.OK).body(body);    
-    return null;
+        if (chatRoomNumber == null) return CustomResponse.validationFailed();
+        GetChatMessageListResponseDto body = null;
+
+        try {
+            ChatRoomEntity chatRoomEntity = 
+            chatRoomRepository.findByChatRoomNumber(chatRoomNumber);
+            if(chatRoomEntity == null) return CustomResponse.notExistChatRoomNumber();
+
+            List<ChatMessageListResultSet> resultSet = 
+            chatMessageRepository.getListOrderBySentDatetime(chatRoomNumber);
+
+            body = new GetChatMessageListResponseDto(resultSet);
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);    
     }
 
     @Override

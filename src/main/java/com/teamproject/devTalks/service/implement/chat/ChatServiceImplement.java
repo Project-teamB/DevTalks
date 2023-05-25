@@ -20,7 +20,6 @@ import com.teamproject.devTalks.repository.chat.ChatMessageRepository;
 import com.teamproject.devTalks.repository.chat.ChatRoomRepository;
 import com.teamproject.devTalks.service.chat.ChatService;
 
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class ChatServiceImplement implements ChatService {
@@ -50,9 +49,9 @@ public class ChatServiceImplement implements ChatService {
         GetChatRoomListResponseDto body = null;
         
         try {        
-        // List<ChatRoomListResultSet> resultSet = 
-        // ChatRoomRepository.getListOrderBySentDatetimeDesc();
-        // body = new GetChatRoomListResponseDto(resultSet);
+        List<ChatRoomListResultSet> resultSet = 
+        chatRoomRepository.findAllByOrderBySentDatetimeDesc();
+        body = new GetChatRoomListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -64,7 +63,7 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(String chatRoomNumber) {     
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber) {     
 
         if (chatRoomNumber == null) return CustomResponse.validationFailed();
         GetChatMessageListResponseDto body = null;

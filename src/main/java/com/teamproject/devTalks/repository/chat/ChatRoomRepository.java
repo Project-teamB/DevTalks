@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.teamproject.devTalks.entity.chat.ChatRoomEntity;
+import com.teamproject.devTalks.entity.resultSet.chat.ChatRoomListResultSet;
 
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Integer> {
@@ -20,7 +21,10 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Intege
     "WHERE user_number = ?)" +
     "AND U.user_number <> ?" +
     "ORDER BY M.sent_datetime DESC", nativeQuery = true)
-    List<ChatRoomEntity> findAllByOrderBySentDatetimeDesc();
+    List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc();
+    
+//     List<Message> findByChatRoomNumberOrderByList(String chatRoomNumber);
 
     ChatRoomEntity findByChatRoomNumber(String chatRoomNumber);
-}
+
+    }

@@ -13,7 +13,7 @@ public interface ChatService {
     public ResponseEntity<ResponseDto> createChatRoom(Integer userNumber);
     public ResponseEntity<ResponseDto> postChatMessage(Integer chatRoomNumber);
     public ResponseEntity<? super GetChatRoomListResponseDto> getChatRoomList(Integer userNumber);
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(String chatRoomNumber);
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber);
     public ResponseEntity<ResponseDto> deleteChatRoom(Integer chatRoomNumber);
     public ResponseEntity<ResponseDto> deleteChatMessage(Integer chatRoomNumber, Integer chatMessageNumber);
 

@@ -15,7 +15,7 @@ import com.teamproject.devTalks.entity.resultSet.InformationBoardListResultSet;
 @Repository
 public interface InformationBoardRepository extends JpaRepository<InformationBoardEntity, Integer> {
     
-    public InformationBoardEntity findByInformationBoardNumber(int informationBoardNumber);
+    public InformationBoardEntity findByInformationBoardNumber(Integer informationBoardNumber);
 
     // @Query(value = "SELECT " +
     //     "I.information_board_number AS informationBoardNumber, " +

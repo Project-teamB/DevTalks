@@ -16,17 +16,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetInformationBoardListResponseDto extends ResponseDto {
 
-    private List<BoardSummary> RecruitBoardList;
+    private List<BoardSummary> informationBoardList;
 
     public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSets) {
         super("SU", "Success");
 
-        this.RecruitBoardList = new ArrayList<>();
+        this.informationBoardList = new ArrayList<>();
 
         if (resultSets != null) {
             for (InformationBoardListResultSet resultSet : resultSets) {
                 BoardSummary boardSummary = new BoardSummary(resultSet);
-                RecruitBoardList.add(boardSummary);
+                informationBoardList.add(boardSummary);
             }
         }
 

@@ -136,7 +136,7 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
     }
 
-    // 검색 기능 구현
+    // 전체 리스트 검색
     @Override
     public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardSearchList(String group, String searchKeyword) {
         

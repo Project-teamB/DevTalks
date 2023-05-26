@@ -109,15 +109,11 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(GetChatMessageListResponseDto dto) {     
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(String chatRoomNumber) {     
 
-        int fromNumber = dto.getFromNumber();
-        String chatRoomNumber = dto.getChatRoomNumber();
+        GetChatMessageListResponseDto body = null;
 
         try {
-            boolean existedUser = userRepository.existsByUserNumber(fromNumber);
-            if (!existedUser) return CustomResponse.noExistUser();
-
             boolean existedChatRoom = chatRoomRepository.existsByChatRoomNumber(chatRoomNumber);
             if(!existedChatRoom) return CustomResponse.notExistChatRoomNumber();
 
@@ -125,13 +121,14 @@ public class ChatServiceImplement implements ChatService {
             List<ChatMessageListResultSet> resultSet = 
             chatMessageRepository.getListOrderBySentDatetime(chatRoomNumber);
 
-            GetChatMessageListResponseDto body = new GetChatMessageListResponseDto(resultSet);
-            return ResponseEntity.status(HttpStatus.OK).body(body);
+            body = new GetChatMessageListResponseDto(resultSet);
 
         } catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+        
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 
@@ -156,15 +153,11 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> deleteChatMessage(String chatRoomNumber, Integer chatMessageNumber) {
+    public ResponseEntity<ResponseDto> deleteChatMessage(Integer chatMessageNumber) {
 
         try {
-            if (chatRoomNumber == null||chatMessageNumber == null) 
+            if (chatMessageNumber == null) 
             return CustomResponse.validationFailed();
-
-            ChatRoomEntity chatRoomEntity = 
-            chatRoomRepository.findByChatRoomNumber(chatRoomNumber);
-            if (chatRoomEntity == null) return CustomResponse.notExistChatRoomNumber();
 
             List<ChatMessageEntity> chatMessageEntities = 
             chatMessageRepository.findByChatMessageNumber(chatMessageNumber);

@@ -14,8 +14,8 @@ public interface ChatService {
     public ResponseEntity<ResponseDto> createChatRoom(Integer userNumber);
     public ResponseEntity<ResponseDto> postChatMessage(PostChatMessageDto dto);
     public ResponseEntity<? super GetChatRoomListResponseDto> getChatRoomList(Integer userNumber);
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(GetChatMessageListResponseDto dto);
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(String chatRoomNumber);
     public ResponseEntity<ResponseDto> deleteChatRoom(String chatRoomNumber);
-    public ResponseEntity<ResponseDto> deleteChatMessage(String chatRoomNumber, Integer chatMessageNumber);
+    public ResponseEntity<ResponseDto> deleteChatMessage(Integer chatMessageNumber);
 
 }

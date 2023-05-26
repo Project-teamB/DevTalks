@@ -120,6 +120,7 @@ public interface RecruitBoardRepository extends JpaRepository<RecruitBoardEntity
     "ON R.recruit_board_number = C.recruit_board_number " +
     "LEFT JOIN recruit_heart H " +
     "ON R.recruit_board_number = H.recruit_board_number " +
+    "WHERE R.recruit_board_title LIKE ? " +
     "GROUP BY recruitBoardNumber " +
     "ORDER BY writeDatetime DESC ", nativeQuery = true
     )
@@ -141,6 +142,7 @@ public interface RecruitBoardRepository extends JpaRepository<RecruitBoardEntity
     "ON R.recruit_board_number = C.recruit_board_number " +
     "LEFT JOIN recruit_heart H " +
     "ON R.recruit_board_number = H.recruit_board_number " +
+    "WHERE R.writer_nickname LIKE ? " +
     "GROUP BY recruitBoardNumber " +
     "ORDER BY writeDatetime DESC ", nativeQuery = true
     )

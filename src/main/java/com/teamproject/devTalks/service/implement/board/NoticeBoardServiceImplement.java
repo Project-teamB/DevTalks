@@ -6,10 +6,7 @@ import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestD
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
-import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardSearchListResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
-import com.teamproject.devTalks.entity.resultSet.NoticeBoardListResultSet;
-import com.teamproject.devTalks.entity.resultSet.RecruitBoardListResultSet;
 import com.teamproject.devTalks.entity.user.AdminEntity;
 import com.teamproject.devTalks.repository.board.NoticeBoardRepository;
 import com.teamproject.devTalks.repository.user.AdminRepository;
@@ -76,18 +73,19 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // TODO: 공지사항 검색기능 수정
     @Override
-    public ResponseEntity<? super GetNoticeBoardSearchListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
         
-        GetNoticeBoardSearchListResponseDto body = null;
+        GetNoticeBoardListResponseDto body = null;
 
         try {
 
-            List<NoticeBoardListResultSet> resultSet = new ArrayList<>();
+            List<NoticeBoardEntity> resultSet = new ArrayList<>();
 
-            if (group.equals("title")) resultSet = noticeBoardRepository.findByNoticeTitleContaining("%" + searchKeyword + "%");
+            if (group.equals("title")) resultSet = noticeBoardRepository.findByNoticeTitleContaining(searchKeyword);
 
-            body = new GetNoticeBoardSearchListResponseDto(resultSet);
+            body = new GetNoticeBoardListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();

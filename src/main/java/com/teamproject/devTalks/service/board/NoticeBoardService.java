@@ -5,7 +5,7 @@ import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestD
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
-import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardSearchListResponseDto;
+
 
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +17,7 @@ public interface NoticeBoardService {
 
 
     ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeList();
-    ResponseEntity<? super GetNoticeBoardSearchListResponseDto> getNoticeSearchList(String group, String searchKeyword);
+    ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group, String searchKeyword);
 
     ResponseEntity<ResponseDto> updateNotice(String adminEmail, PatchNoticeBoardRequestDto dto);
 

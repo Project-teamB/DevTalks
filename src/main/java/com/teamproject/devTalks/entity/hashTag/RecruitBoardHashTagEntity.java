@@ -24,4 +24,5 @@ public class RecruitBoardHashTagEntity {
     private int recruitBoardNumber;
     @Id
     private String boardHashTag;
+
 }

@@ -43,39 +43,39 @@ public class TeacherBoardController {
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(
         @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ){
-        ResponseEntity<? super GetTeacherBoardListResponseDto> response
-                = teacherBoardService.getTeacherBoardList(teacherBoardNumber);
+        ResponseEntity<? super GetTeacherBoardListResponseDto> response = 
+            teacherBoardService.getTeacherBoardList(teacherBoardNumber);
         return response;
     }
 
-    //정렬 : sort(시간, 좋아요, 조회수) / recruitmentStatus(모집 상태. 모집중-0, 모집완료-1)
+    //정렬 : sort(시간, 좋아요, 조회수) / recruitmentStatus(모집 상태. 모집중:0, 모집완료:1)
     @GetMapping("/list/{sort}/{recruitmentStatus}")
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(
-        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
         @PathVariable("sort") String teacherSort, 
-        @PathVariable("recruitmentStatus") String recruitmentStatus
+        @PathVariable("recruitmentStatus") String recruitmentStatus,
+        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ) {
         ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-            teacherBoardService.getTeacherBoardRecruitmentList(teacherBoardNumber, teacherSort, recruitmentStatus);
+            teacherBoardService.getTeacherBoardRecruitmentList(teacherSort, recruitmentStatus, teacherBoardNumber);
         return response;
     }
 
     //group : 검색조건 선택 (닉네임, 제목 ...)
     @GetMapping("/list/{group}/{searchKeyword}")
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(
-        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
         @PathVariable("group") String group, 
-        @PathVariable("searchKeyword") String searchKeyword
+        @PathVariable("searchKeyword") String searchKeyword,
+        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ) {
         ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-            teacherBoardService.getTeacherBoardSearchList(teacherBoardNumber,group, searchKeyword);
+            teacherBoardService.getTeacherBoardSearchList(group, searchKeyword, teacherBoardNumber);
         return response;
     }
 
     @PostMapping("")
     public ResponseEntity<ResponseDto> postTeacherBoard(
-        @Valid @RequestBody PostTeacherBoardRequestDto requestBody,
-        @AuthenticationPrincipal UserPrinciple userPrinciple
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody PostTeacherBoardRequestDto requestBody
     ) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
@@ -85,8 +85,8 @@ public class TeacherBoardController {
 
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchTeacherBoard(
-        @Valid @RequestBody PatchTeacherBoardRequestDto requestBody,
-        @AuthenticationPrincipal UserPrinciple userPrinciple
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody PatchTeacherBoardRequestDto requestBody
     ) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
@@ -96,8 +96,8 @@ public class TeacherBoardController {
 
     @DeleteMapping("/{teacherBoardNumber}")
     public ResponseEntity<ResponseDto> deleteTeacherBoard(
-        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
-        @AuthenticationPrincipal UserPrinciple userPrinciple
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response =
@@ -107,8 +107,8 @@ public class TeacherBoardController {
 
     @PostMapping("/heart")
     public ResponseEntity<ResponseDto> postTeacherHeart(
-        @Valid @RequestBody PostTeacherHeartRequestDto requestBody,
-        @AuthenticationPrincipal UserPrinciple userPrinciple
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @Valid @RequestBody PostTeacherHeartRequestDto requestBody
     ) {                
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
@@ -118,8 +118,8 @@ public class TeacherBoardController {
         
     @DeleteMapping("/heart/{teacherBoardNumber}")
     public ResponseEntity<ResponseDto> deleteTeacherHeart(
-        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber,
-        @AuthenticationPrincipal UserPrinciple userPrinciple
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
@@ -129,11 +129,12 @@ public class TeacherBoardController {
 
     @DeleteMapping("/admin/{teacherBoardNumber}")
     public ResponseEntity<ResponseDto> deleteAdminTeacherBoard(
-        @PathVariable("teacherBoardNumber") int teacherBoardNumber,
-        @AuthenticationPrincipal AdminPrinciple adminPrinciple
+        @AuthenticationPrincipal AdminPrinciple adminPrinciple,
+        @PathVariable("teacherBoardNumber") int teacherBoardNumber
     ) {
         String adminEmail = adminPrinciple.getAdminEmail();
-        ResponseEntity<ResponseDto> response = teacherBoardService.deleteTeacherBoard(adminEmail, teacherBoardNumber);
+        ResponseEntity<ResponseDto> response = 
+            teacherBoardService.deleteTeacherBoard(adminEmail, teacherBoardNumber);
         return response;
     }
 

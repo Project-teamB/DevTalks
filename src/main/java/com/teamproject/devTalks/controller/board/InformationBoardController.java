@@ -120,7 +120,7 @@ public class InformationBoardController {
     @DeleteMapping("/comment/{informationCommentNumber}")
     public ResponseEntity<ResponseDto> deleteInformationComment(
         @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @Valid @RequestBody Integer InformationCommentNumber
+        @PathVariable("informationCommentNumber") Integer InformationCommentNumber
     ) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
@@ -141,7 +141,7 @@ public class InformationBoardController {
 
     @DeleteMapping("/heart/{informationBoardNumber}")
     public ResponseEntity<ResponseDto> deleteInformationHeart(
-        @PathVariable("informationBoardNumber") int informationBoardNumber,
+        @PathVariable("informationBoardNumber") Integer informationBoardNumber,
         @AuthenticationPrincipal UserPrinciple userPrinciple
     ) {
         String userEmail = userPrinciple.getUserEmail();

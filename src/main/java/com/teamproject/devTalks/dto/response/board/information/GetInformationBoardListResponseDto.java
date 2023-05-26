@@ -16,17 +16,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetInformationBoardListResponseDto extends ResponseDto {
 
-    private List<BoardSummary> informationBoardList;
+    private List<BoardSummary> RecruitBoardList;
 
     public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSets) {
         super("SU", "Success");
 
-        this.informationBoardList = new ArrayList<>();
+        this.RecruitBoardList = new ArrayList<>();
 
         if (resultSets != null) {
             for (InformationBoardListResultSet resultSet : resultSets) {
                 BoardSummary boardSummary = new BoardSummary(resultSet);
-                informationBoardList.add(boardSummary);
+                RecruitBoardList.add(boardSummary);
             }
         }
 
@@ -55,8 +55,8 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
             this.informationBoardTitle = resultSet.getInformationBoardTitle();
             this.viewCount = resultSet.getViewCount();
             this.writeDatetime = resultSet.getWriteDatetime();            
-            this.commentCount = resultSet.getCommentCount();
-            this.heartCount = resultSet.getHeartCount();
-        }
+            this.commentCount = resultSet.getCommentCount() != null ? resultSet.getCommentCount() : 0;
+            this.heartCount = resultSet.getHeartCount() != null ? resultSet.getHeartCount() :0 ;
+            }
     }
 }

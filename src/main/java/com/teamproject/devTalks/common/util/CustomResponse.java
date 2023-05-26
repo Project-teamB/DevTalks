@@ -39,6 +39,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> notExistChatRoomNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NR", "Non-Existent Chat Room Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> notExistUserPhoneNumber() {
         ResponseDto errorBody = new ResponseDto("NP", "Non-Existent userPhoneNumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
@@ -47,6 +54,13 @@ public class CustomResponse {
     public static ResponseEntity<ResponseDto> noExistUser() {
 
         ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> noExistAdmin() {
+
+        ResponseDto errorBody = new ResponseDto("NA", "Non-Existent Admin");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
 
     }
@@ -141,6 +155,5 @@ public class CustomResponse {
         ResponseDto body = new ResponseDto("NR", "No Report");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
-
 
 }

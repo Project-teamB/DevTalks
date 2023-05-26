@@ -10,12 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostInformationCommentRequestDto {
     @NotNull
-    private int informationBoardNumber;
+    private Integer informationBoardNumber;
     @NotBlank
     private String informationCommentContent;
 
-    public PostInformationCommentRequestDto(PostInformationCommentRequestDto dto) {
-        this.informationBoardNumber = dto.getInformationBoardNumber();
-        this.informationCommentContent = dto.getInformationCommentContent();
-    }
 }

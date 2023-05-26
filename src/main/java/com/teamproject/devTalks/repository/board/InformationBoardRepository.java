@@ -25,7 +25,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.information_board_title AS informationBoardTitle, " +
         "I.information_board_content AS informationBoardContent, " +
         "I.information_board_image_url AS informationBoardImageUrl, " +
-        "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
         "count(C.information_comment_number) AS informationCommentCount, " +

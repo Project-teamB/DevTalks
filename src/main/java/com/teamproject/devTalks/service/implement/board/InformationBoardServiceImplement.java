@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.repository.board.InformationBoardRepository;
 import com.teamproject.devTalks.repository.comment.InformationCommentRepository;
-import com.teamproject.devTalks.repository.hashTag.InformationBoardHashtagRepository;
+import com.teamproject.devTalks.repository.hashTag.InformationBoardHashTagRepository;
 import com.teamproject.devTalks.repository.heart.InformationHeartRepository;
 import com.teamproject.devTalks.repository.user.AdminRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
@@ -22,7 +22,7 @@ import com.teamproject.devTalks.dto.response.board.information.GetInformationBoa
 import com.teamproject.devTalks.dto.response.board.recruit.GetRecruitBoardListResponseDto;
 import com.teamproject.devTalks.entity.board.InformationBoardEntity;
 import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
-import com.teamproject.devTalks.entity.hashTag.InformationBoardHashtagEntity;
+import com.teamproject.devTalks.entity.hashTag.InformationBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.InformationHeartEntity;
 import com.teamproject.devTalks.entity.resultSet.InformationBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
@@ -45,7 +45,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
     private final InformationBoardRepository informationBoardRepository;
     private final InformationCommentRepository informationCommentRepository;
     private final InformationHeartRepository informationHeartRepository;
-    private final InformationBoardHashtagRepository informationBoardHashtagRepository;
+    private final InformationBoardHashTagRepository informationBoardHashTagRepository;
     private final AdminRepository adminRepository;
 
     @Override
@@ -129,10 +129,10 @@ public class InformationBoardServiceImplement implements InformationBoardService
             List<InformationHeartEntity> informationHeartEntities = 
             informationHeartRepository.findByInformationBoardNumber(informationBoardNumber);
             List<String> heartList = informationHeartRepository.findByInformationBoardNumberToUserNumber(informationBoardNumber);
-            List<InformationBoardHashtagEntity> informationBoardHashTagEntities = 
-            informationBoardHashtagRepository.findByInformationBoardNumber(informationBoardNumber);        
+            List<InformationBoardHashTagEntity> informationBoardHashTagEntities = 
+            informationBoardHashTagRepository.findByInformationBoardNumber(informationBoardNumber);        
             List<String> hashtagStrings = new ArrayList<>();
-            for(InformationBoardHashtagEntity hashtagList: informationBoardHashTagEntities) {
+            for(InformationBoardHashTagEntity hashtagList: informationBoardHashTagEntities) {
                 String hashtags = hashtagList.getBoardHashtag();
                 hashtagStrings.add(hashtags);
             }
@@ -149,7 +149,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
     @Override
     public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto) {
         List<String> hashtagList = dto.getBoardHashtag();
-        List<InformationBoardHashtagEntity> informationHashtagList = new ArrayList<>();
+        List<InformationBoardHashTagEntity> informationHashtagList = new ArrayList<>();
 
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
@@ -159,12 +159,12 @@ public class InformationBoardServiceImplement implements InformationBoardService
             informationBoardRepository.save(informationBoardEntity);
 
             for (String boardHashtag : hashtagList) {
-                InformationBoardHashtagEntity informationBoardHashTagEntity = 
-                new InformationBoardHashtagEntity(boardHashtag, informationBoardEntity.getInformationBoardNumber());
+                InformationBoardHashTagEntity informationBoardHashTagEntity = 
+                new InformationBoardHashTagEntity(boardHashtag, informationBoardEntity.getInformationBoardNumber());
                 informationHashtagList.add(informationBoardHashTagEntity); 
                 }
 
-            informationBoardHashtagRepository.saveAll(informationHashtagList);
+            informationBoardHashTagRepository.saveAll(informationHashtagList);
     
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -296,7 +296,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
 
             informationCommentRepository.deleteByInformationBoardNumber(informationBoardNumber);
             informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);            
-            informationBoardHashtagRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            informationBoardHashTagRepository.deleteByInformationBoardNumber(informationBoardNumber);
             informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
 
         } catch (Exception exception) {

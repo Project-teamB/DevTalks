@@ -10,4 +10,5 @@ public interface TeacherBoardListResultSet {
     public String getwriterProfileImageUrl();
     public int getheartCount();
     public String gethashTag();
+    public int getRecruitmentStatus();
 }

@@ -25,6 +25,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -46,6 +47,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -64,6 +66,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -82,6 +85,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -101,6 +105,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -119,6 +124,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -137,6 +143,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -155,6 +162,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -173,6 +181,7 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "T.writer_profile_image_url AS writerProfileImageUrl, " +
                         "count(H.user_number) AS teacherHeartCount " +
                         "T.hashTag As hashTag " +
+                        "T.recruitment_status AS recruitmentStatus " +
                         "FROM teacher T " +
                         "LEFT JOIN teacher_heart H " +
                         "ON T.teacher_board_number = H.teacher_board_number " +
@@ -180,4 +189,23 @@ public interface TeacherBoardRepository extends JpaRepository<TeacherBoardEntity
                         "group by teacherBoardNumber " +
                         "order by writeDatetime DESC ", nativeQuery = true)
         public List<TeacherBoardListResultSet> findByWriterNicknameContaining(String searchKeyword);
+
+        // @Query(value = "SELECT " +
+        //                 "T.teacher_board_number AS teacherBoardNumber, " +
+        //                 "T.teacher_title AS teacherTitle, " +
+        //                 "T.write_datetime AS writeDatetime, " +
+        //                 "T.view_count AS viewCount, " +
+        //                 "T.writer_email AS writerEmail, " +
+        //                 "T.writer_nickname AS writerNickname, " +
+        //                 "T.writer_profile_image_url AS writerProfileImageUrl, " +
+        //                 "count(H.user_number) AS teacherHeartCount " +
+        //                 "T.hashTag As hashTag " +
+        //                 "T.recruitment_status AS recruitmentStatus " +
+        //                 "FROM teacher T " +
+        //                 "LEFT JOIN teacher_heart H " +
+        //                 "ON T.teacher_board_number = H.teacher_board_number " +
+        //                 "WHERE T.teacher_content LIKE ? " +
+        //                 "group by teacherBoardNumber " +
+        //                 "order by writeDatetime DESC ", nativeQuery = true)
+        // public List<TeacherBoardListResultSet> findByTeacherBoardContentContaining(String searchKeyword);
 }

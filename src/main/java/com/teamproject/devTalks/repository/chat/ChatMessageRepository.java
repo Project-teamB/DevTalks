@@ -2,6 +2,8 @@ package com.teamproject.devTalks.repository.chat;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,8 @@ import com.teamproject.devTalks.entity.resultSet.chat.ChatMessageListResultSet;
 
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, Integer> {
+
+    List<ChatMessageEntity> findByChatMessageNumber(int chatMessageNumber);
 
     @Query(value = "SELECT M.message_number, M.message, M.sent_datetime, U.user_number " +
     "FROM chat_message M, chat_room R, user U " +
@@ -32,7 +36,11 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, 
             nativeQuery = true)
     void setChatStatusTrue(String chatRoomNumber);
 
+    @Transactional
+    void deleteAllByChatRoomNumber(String chatRoomNumber);
 
+    @Transactional
+    void deleteByChatRoomNumberAndChatMessageNumber(String chatRoomNumber, Integer chatMessageNumber);
     }
 
 

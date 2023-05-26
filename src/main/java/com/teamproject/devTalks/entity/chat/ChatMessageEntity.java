@@ -9,8 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
-import com.teamproject.devTalks.entity.user.UserEntity;
+import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,13 +31,11 @@ public class ChatMessageEntity {
     private boolean chatStatus;
 
 
-    public ChatMessageEntity(UserEntity userEntity, ChatRoomEntity chatRoomEntity, GetChatMessageListResponseDto dto){
-
-        this.chatMessageNumber = getChatMessageNumber();
-        this.fromNumber = userEntity.getUserNumber();
-        this.message = getMessage();
+    public ChatMessageEntity(PostChatMessageDto dto) {
+        this.fromNumber = dto.getFromNumber();
+        this.message = dto.getMessage();
         this.sentDatetime = getCurrentDateTime();
-        this.chatRoomNumber = chatRoomEntity.getChatRoomNumber();
+        this.chatRoomNumber = dto.getChatRoomNumber();
         this.chatStatus = false;
     }
 

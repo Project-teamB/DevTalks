@@ -76,7 +76,6 @@ public class ReportServiceImplement implements ReportService {
             if (reportEntity == null) return CustomResponse.reportEntityisNull();
 
             reportEntity = reportRepository.findByReporterAndReported(reporter, reported);
-            reportRepository.delete(reportEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();

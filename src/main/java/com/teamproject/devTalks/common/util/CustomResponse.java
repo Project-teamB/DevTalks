@@ -46,6 +46,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> notExistChatMessageNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NM", "Non-Existent Chat Message Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> notExistUserPhoneNumber() {
         ResponseDto errorBody = new ResponseDto("NP", "Non-Existent userPhoneNumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
@@ -96,6 +103,14 @@ public class CustomResponse {
     public static ResponseEntity<ResponseDto> existPhoneNumber() {
 
         ResponseDto errorBody = new ResponseDto("EP", "Existent User Phone Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
+    
+    public static ResponseEntity<ResponseDto> existChatRoom() {
+
+        ResponseDto errorBody = new ResponseDto("EC", "Existent Chat Room");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
 
     }

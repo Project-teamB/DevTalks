@@ -3,7 +3,9 @@ package com.teamproject.devTalks.dto.response.chat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Message;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatMessageListResultSet;
 
@@ -15,7 +17,16 @@ import lombok.Setter;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class GetChatMessageListResponseDto extends ResponseDto {
+
+    @NotBlank
+    private int fromNumber;
+    @NotEmpty
+    private String ChatRoomNumber;
+    @NotEmpty
+    private String Message;
+
 
     private List<ChatMessage> ChatMessageList;
 

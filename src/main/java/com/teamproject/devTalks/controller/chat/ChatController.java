@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
+import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatRoomListResponseDto;
@@ -40,19 +41,22 @@ public class ChatController {
 
     @GetMapping("/list/{chat_room_number}")
     public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(
-        @PathVariable("chat_room_number") String chatRoomNumber
+        @PathVariable("chat_room_number") String chatRoomNumber,
+        @AuthenticationPrincipal UserPrinciple userPrinciple
         ) {
+        Integer userNumber = userPrinciple.getUserNumber();
         ResponseEntity<? super GetChatMessageListResponseDto> response = 
-        chatService.getChatMessageList(chatRoomNumber);
+        chatService.getChatMessageList(userNumber, chatRoomNumber);
         return response;
     }
 
     @PostMapping("/room")
     public ResponseEntity<ResponseDto> createChatRoom(
-        @AuthenticationPrincipal UserPrinciple userPrinciple) {
-        Integer userNumber = userPrinciple.getUserNumber();
+        @Valid @RequestBody PostChatRoomDto RequestBody,
+        @AuthenticationPrincipal UserPrinciple userPrinciple
+        ) {
             ResponseEntity<ResponseDto> response = 
-            chatService.createChatRoom(userNumber);
+            chatService.createChatRoom(RequestBody);
             return response;
         }
 

@@ -11,34 +11,38 @@ import org.springframework.stereotype.Repository;
 
 import com.mysql.cj.protocol.Message;
 import com.teamproject.devTalks.entity.chat.ChatRoomEntity;
+import com.teamproject.devTalks.entity.primaryKey.chat.ChatRoomPk;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatRoomListResultSet;
 
 @Repository
-public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Integer> {
+public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, ChatRoomPk> {
 
     boolean existsByChatRoomNumber(String chatRoomNumber);
 
-    @Query (value = "SELECT R.chat_room_number AS chatRoomNumber" +
-    "FROM chat_room R" +
-    "LEFT JOIN chat_message M ON R.chat_room_number = M.chat_room_number" +
-    "LEFT JOIN user U ON M.from_number = U.user_number" +
-    "WHERE R.chat_room_number IN" +
-    "(SELECT chat_room_number FROM chat_room" +
-    "WHERE user_number = ?)" +
-    "AND U.user_number <> ?" +
-    "ORDER BY M.sent_datetime DESC", nativeQuery = true)
-    List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc();
+    @Query (value = "SELECT R.chat_room_number AS chatRoomNumber, " +
+    "U.user_status AS userStatus, " +
+    "U.user_nickname AS userNickname, " +
+    "M.message AS lastMessage, " +
+    "M.sent_datetime AS sentDatetime " + 
+    "FROM chat_room R " +
+    "LEFT JOIN (SELECT * FROM chat_message GROUP BY chat_room_number ORDER BY sent_datetime DESC) M ON R.chat_room_number = M.chat_room_number " +
+    "LEFT JOIN user U ON R.user_number = U.user_number " +
+    "WHERE R.chat_room_number IN " +
+    "(SELECT chat_room_number FROM chat_room " +
+    "WHERE user_number = :userNumber) " +
+    "AND U.user_number <> :userNumber " +
+    "ORDER BY M.sent_datetime DESC ", nativeQuery = true)
+    List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc(@Param("userNumber") Integer userNumber);
     
     ChatRoomEntity findByChatRoomNumber(String chatRoomNumber);
 
-    @Query(value = "SELECT * FROM chat_room R " +
-    "WHERE EXISTS (" +
-    "SELECT 1 FROM chat_message M " +
-    "LEFT JOIN user U ON M.from_number = U.user_number " +
-    "WHERE M.chat_room_number = R.chat_room_number " +
-    "AND U.user_number = :userNumber" +
-    ")", nativeQuery = true)
-    ChatRoomEntity findByUserNumber(@Param("userNumber") Integer userNumber);
+    //  중복 제거 
+
+    @Query(value = "SELECT * FROM chat_room " +
+    "WHERE chat_room_number IN  " +
+    "(SELECT chat_room_number FROM chat_room WHERE user_number = :fromNumber) " +
+    "AND user_number = :toNumber ", nativeQuery = true)
+    public ChatRoomEntity findExistChatRoomCountByUserNumber(@Param("fromNumber") Integer fromNumber, @Param("toNumber") Integer toNumber);
 
     @Transactional
     void deleteByChatRoomNumber(String chatRoomNumber);

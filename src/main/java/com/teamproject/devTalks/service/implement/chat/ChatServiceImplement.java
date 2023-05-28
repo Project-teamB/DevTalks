@@ -1,8 +1,12 @@
 package com.teamproject.devTalks.service.implement.chat;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,11 +104,14 @@ public class ChatServiceImplement implements ChatService {
         
         GetChatRoomListResponseDto body = null;
         
-        try {        
-        List<ChatRoomListResultSet> resultSet = 
-        chatRoomRepository.findAllByOrderBySentDatetimeDesc(userNumber);
-        System.out.println(userNumber);
-        body = new GetChatRoomListResponseDto(resultSet);
+        try {
+            UserEntity userEntity = userRepository.findByUserNumber(userNumber);
+            if(userEntity == null) return CustomResponse.authenticationFailed();
+
+            List<ChatRoomListResultSet> resultSet = 
+            chatRoomRepository.findAllByOrderBySentDatetimeDesc(userNumber);
+            System.out.println(userNumber);
+            body = new GetChatRoomListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -116,6 +123,7 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber) {     
 
         GetChatMessageListResponseDto body = null;
@@ -130,8 +138,10 @@ public class ChatServiceImplement implements ChatService {
 
             body = new GetChatMessageListResponseDto(resultSet);
 
+
         } catch (Exception exception){
             exception.printStackTrace();
+            // throw new RuntimeException(exception);
             return CustomResponse.databaseError();
         }
         
@@ -144,15 +154,17 @@ public class ChatServiceImplement implements ChatService {
         try {
             if (chatRoomNumber == null) return CustomResponse.validationFailed();
 
-            ChatRoomEntity chatRoomEntity = 
-            chatRoomRepository.findByChatRoomNumber(chatRoomNumber);
-            if (chatRoomEntity == null) return CustomResponse.notExistChatRoomNumber();
+            List<ChatRoomEntity> chatRooms = chatRoomRepository.findByChatRoomNumber(chatRoomNumber);
+            if (chatRooms.isEmpty()) return CustomResponse.notExistChatRoomNumber();
             
-            chatMessageRepository.deleteAllByChatRoomNumber(chatRoomNumber);
-            chatRoomRepository.deleteByChatRoomNumber(chatRoomNumber);
+            for (ChatRoomEntity chatRoom : chatRooms) {
+                chatMessageRepository.deleteAllByChatRoomNumber(chatRoom.getChatRoomNumber());
+                chatRoomRepository.deleteByChatRoomNumber(chatRoom.getChatRoomNumber());
+            }
 
         } catch (Exception exception) {
             exception.printStackTrace();
+            // throw new RuntimeException(exception);
             return CustomResponse.databaseError();
         }
 

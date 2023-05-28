@@ -43,7 +43,7 @@ public class GetChatRoomListResponseDto extends ResponseDto {
 
         public ChatSummary(ChatRoomListResultSet resultSet) {
             this.chatRoomNumber = resultSet.getChatRoomNumber();
-            this.userStatus = resultSet.getUserStatus() == 1;
+            this.userStatus = resultSet.getUserStatus() == 0;
             this.userNickname = resultSet.getUserNickname();
             this.lastMessage = resultSet.getLastMessage();
             this.sentDateTime = resultSet.getSentDateTime();

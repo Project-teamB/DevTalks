@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -34,7 +35,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, ChatRo
     "ORDER BY M.sent_datetime DESC ", nativeQuery = true)
     List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc(@Param("userNumber") Integer userNumber);
     
-    ChatRoomEntity findByChatRoomNumber(String chatRoomNumber);
+    List<ChatRoomEntity> findByChatRoomNumber(String chatRoomNumber);
 
     //  중복 제거 
 
@@ -45,6 +46,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, ChatRo
     public ChatRoomEntity findExistChatRoomCountByUserNumber(@Param("fromNumber") Integer fromNumber, @Param("toNumber") Integer toNumber);
 
     @Transactional
-    void deleteByChatRoomNumber(String chatRoomNumber);
+    @Modifying
+    @Query(value = "DELETE FROM chat_room WHERE chat_room_number = :chatRoomNumber", nativeQuery = true)
+    void deleteByChatRoomNumber(@Param("chatRoomNumber")String chatRoomNumber);
 
     }

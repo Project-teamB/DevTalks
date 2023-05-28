@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity(name="information_hashtag")
 @Table(name="information_hashtag")
 @IdClass(InformationHashtagPk.class)
-public class InformationBoardHashTagEntity {
+public class InformationBoardHashtagEntity {
     @Id
     private String boardHashtag;
     @Id

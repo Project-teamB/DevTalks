@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
+import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatRoomListResponseDto;
@@ -38,23 +39,28 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> createChatRoom(Integer userNumber) {
-
-        if (userNumber == null) return CustomResponse.validationFailed();
+    public ResponseEntity<ResponseDto> createChatRoom(PostChatRoomDto dto) {
+        Integer fromNumber = dto.getFromNumber();
+        Integer toNumber = dto.getToNumber();
 
         try {
-        UserEntity userEntity = userRepository.findByUserNumber(userNumber);
-        if (userEntity == null) return CustomResponse.noExistUser();
+        UserEntity userEntity1 = userRepository.findByUserNumber(fromNumber);
+        if (userEntity1 == null) return CustomResponse.authenticationFailed();
 
-        ChatRoomEntity existingChatRoom = chatRoomRepository.findByUserNumber(userNumber);
-        if (existingChatRoom != null) return CustomResponse.existChatRoom();
+        UserEntity userEntity2 = userRepository.findByUserNumber(toNumber);
+        if (userEntity2 == null) return CustomResponse.noExistUser();
+      
+        ChatRoomEntity chatRoomEntity =  chatRoomRepository.findExistChatRoomCountByUserNumber(fromNumber, toNumber);
+        if (chatRoomEntity != null) return CustomResponse.existChatRoom();
 
-        ChatRoomEntity chatRoomEntity = new ChatRoomEntity();
-        String chatRoomNumber = UUID.randomUUID().toString();
-
-        chatRoomEntity.setChatRoomNumber(chatRoomNumber);
-        chatRoomEntity.setUserNumber(userNumber);        
-        chatRoomRepository.save(chatRoomEntity);    
+        String chatRoomNumber = UUID.randomUUID().toString();   
+        ChatRoomEntity toChatRoomEntity = new ChatRoomEntity(chatRoomNumber, toNumber);
+        chatRoomRepository.save(toChatRoomEntity);  
+        System.out.println(toChatRoomEntity.toString());
+        ChatRoomEntity fromChatRoomEntity = new ChatRoomEntity(chatRoomNumber, fromNumber);
+        chatRoomRepository.save(fromChatRoomEntity);  
+        System.out.println(fromChatRoomEntity.toString());  
+  
         
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -96,7 +102,8 @@ public class ChatServiceImplement implements ChatService {
         
         try {        
         List<ChatRoomListResultSet> resultSet = 
-        chatRoomRepository.findAllByOrderBySentDatetimeDesc();
+        chatRoomRepository.findAllByOrderBySentDatetimeDesc(userNumber);
+        System.out.println(userNumber);
         body = new GetChatRoomListResponseDto(resultSet);
 
         } catch (Exception exception) {
@@ -109,29 +116,26 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(GetChatMessageListResponseDto dto) {     
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber) {     
 
-        int fromNumber = dto.getFromNumber();
-        String chatRoomNumber = dto.getChatRoomNumber();
+        GetChatMessageListResponseDto body = null;
 
         try {
-            boolean existedUser = userRepository.existsByUserNumber(fromNumber);
-            if (!existedUser) return CustomResponse.noExistUser();
-
             boolean existedChatRoom = chatRoomRepository.existsByChatRoomNumber(chatRoomNumber);
             if(!existedChatRoom) return CustomResponse.notExistChatRoomNumber();
 
-            chatMessageRepository.setChatStatusTrue(chatRoomNumber);
+            chatMessageRepository.setChatStatusTrue(userNumber, chatRoomNumber);
             List<ChatMessageListResultSet> resultSet = 
             chatMessageRepository.getListOrderBySentDatetime(chatRoomNumber);
 
-            GetChatMessageListResponseDto body = new GetChatMessageListResponseDto(resultSet);
-            return ResponseEntity.status(HttpStatus.OK).body(body);
+            body = new GetChatMessageListResponseDto(resultSet);
 
         } catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+        
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 
@@ -156,15 +160,11 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> deleteChatMessage(String chatRoomNumber, Integer chatMessageNumber) {
+    public ResponseEntity<ResponseDto> deleteChatMessage(Integer chatMessageNumber) {
 
         try {
-            if (chatRoomNumber == null||chatMessageNumber == null) 
+            if (chatMessageNumber == null) 
             return CustomResponse.validationFailed();
-
-            ChatRoomEntity chatRoomEntity = 
-            chatRoomRepository.findByChatRoomNumber(chatRoomNumber);
-            if (chatRoomEntity == null) return CustomResponse.notExistChatRoomNumber();
 
             List<ChatMessageEntity> chatMessageEntities = 
             chatMessageRepository.findByChatMessageNumber(chatMessageNumber);

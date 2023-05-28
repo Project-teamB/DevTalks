@@ -5,17 +5,18 @@ import org.springframework.stereotype.Service;
 import com.teamproject.devTalks.dto.response.chat.GetChatRoomListResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
+import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 
 
 @Service
 public interface ChatService {
 
-    public ResponseEntity<ResponseDto> createChatRoom(Integer userNumber);
+    public ResponseEntity<ResponseDto> createChatRoom(PostChatRoomDto dto);
     public ResponseEntity<ResponseDto> postChatMessage(PostChatMessageDto dto);
     public ResponseEntity<? super GetChatRoomListResponseDto> getChatRoomList(Integer userNumber);
-    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(GetChatMessageListResponseDto dto);
+    public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber);
     public ResponseEntity<ResponseDto> deleteChatRoom(String chatRoomNumber);
-    public ResponseEntity<ResponseDto> deleteChatMessage(String chatRoomNumber, Integer chatMessageNumber);
+    public ResponseEntity<ResponseDto> deleteChatMessage(Integer chatMessageNumber);
 
 }

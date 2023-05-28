@@ -19,6 +19,8 @@ public class GetChatRoomListResponseDto extends ResponseDto {
     private List<ChatSummary> ChatRoomList;
 
     public GetChatRoomListResponseDto(List<ChatRoomListResultSet> resultSetList) {
+        super("SU", "SUCCESS");
+        
         ChatRoomList = new ArrayList<>();
         for (ChatRoomListResultSet resultSet : resultSetList) {
             ChatSummary chatSummary = new ChatSummary(resultSet);
@@ -38,11 +40,10 @@ public class GetChatRoomListResponseDto extends ResponseDto {
         private String lastMessage;
         private String sentDateTime;
 
-        // 읽지않은 메시지 갯수 ?
 
         public ChatSummary(ChatRoomListResultSet resultSet) {
             this.chatRoomNumber = resultSet.getChatRoomNumber();
-            this.userStatus = resultSet.getUserStatus();
+            this.userStatus = resultSet.getUserStatus() == 1;
             this.userNickname = resultSet.getUserNickname();
             this.lastMessage = resultSet.getLastMessage();
             this.sentDateTime = resultSet.getSentDateTime();

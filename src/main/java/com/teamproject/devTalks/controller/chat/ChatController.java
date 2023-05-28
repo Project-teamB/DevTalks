@@ -1,7 +1,5 @@
 package com.teamproject.devTalks.controller.chat;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -41,7 +39,7 @@ public class ChatController {
 
     @GetMapping("/list/{chat_room_number}")
     public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(
-        @PathVariable("chat_room_number") String chatRoomNumber,
+        @PathVariable("chatRoomNumber") String chatRoomNumber,
         @AuthenticationPrincipal UserPrinciple userPrinciple
         ) {
         Integer userNumber = userPrinciple.getUserNumber();
@@ -60,7 +58,7 @@ public class ChatController {
             return response;
         }
 
-    @PostMapping("/message")
+    @PostMapping("/message/{chat_room_number}")
     public ResponseEntity<ResponseDto> postChatMessage(
         @Valid @RequestBody PostChatMessageDto RequestBody,
         @PathVariable("chat_room_number") String chatRoomNumber
@@ -70,7 +68,7 @@ public class ChatController {
             return response;
     }
 
-    @DeleteMapping("/room")
+    @DeleteMapping("/room/{chat_room_number}")
     public ResponseEntity<ResponseDto> deleteChatRoom(
         @PathVariable("chat_room_number") String chatRoomNumber 
     ) {
@@ -79,7 +77,7 @@ public class ChatController {
         return response;
     }
 
-    @DeleteMapping("/message")
+    @DeleteMapping("/message/{chat_message_number}")
     public ResponseEntity<ResponseDto> deleteChatMessage(
         @PathVariable("chat_message_number") Integer chatMessageNumber
     ) {

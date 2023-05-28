@@ -23,8 +23,8 @@ public class ChatMessageEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int chatMessageNumber;
-    private int fromNumber;
+    private Integer chatMessageNumber;
+    private Integer fromNumber;
     private String message;
     private String sentDatetime;
     private String chatRoomNumber;

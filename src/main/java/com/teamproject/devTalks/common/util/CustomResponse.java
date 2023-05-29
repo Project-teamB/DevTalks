@@ -146,6 +146,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    public static ResponseEntity<ResponseDto> alreadyBlocked() {
+        ResponseDto body = new ResponseDto("AB", "ALREADY Blocked");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     public static ResponseEntity<ResponseDto> noExistRecommendation() {
         ResponseDto body = new ResponseDto("NR", "Non-Exist Recommendation");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
@@ -158,6 +163,11 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> cannotReportToSelf() {
         ResponseDto body = new ResponseDto("CP", "You cannot report yourself.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> cannotBlockToSelf() {
+        ResponseDto body = new ResponseDto("CB", "You cannot Block yourself");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 

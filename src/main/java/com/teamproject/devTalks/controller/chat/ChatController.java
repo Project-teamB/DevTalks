@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
 import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
+import com.teamproject.devTalks.dto.request.chat.PostUserBlockRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatRoomListResponseDto;
@@ -67,6 +68,16 @@ public class ChatController {
             chatService.postChatMessage(RequestBody);
             return response;
     }
+
+    @PostMapping("/userBlock")
+    public ResponseEntity<ResponseDto> userBlock(
+        @Valid @RequestBody PostUserBlockRequestDto RequestBody,
+        @AuthenticationPrincipal UserPrinciple userPrinciple
+        ) {
+            ResponseEntity<ResponseDto> response = 
+            chatService.userBlock(RequestBody);
+            return response;
+        }
 
     @DeleteMapping("/room/{chat_room_number}")
     public ResponseEntity<ResponseDto> deleteChatRoom(

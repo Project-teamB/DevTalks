@@ -15,16 +15,19 @@ import org.springframework.stereotype.Service;
 import com.teamproject.devTalks.common.util.CustomResponse;
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
 import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
+import com.teamproject.devTalks.dto.request.chat.PostUserBlockRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatRoomListResponseDto;
 import com.teamproject.devTalks.entity.chat.ChatMessageEntity;
 import com.teamproject.devTalks.entity.chat.ChatRoomEntity;
+import com.teamproject.devTalks.entity.chat.UserBlockEntity;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatMessageListResultSet;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatRoomListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.repository.chat.ChatMessageRepository;
 import com.teamproject.devTalks.repository.chat.ChatRoomRepository;
+import com.teamproject.devTalks.repository.chat.UserBlockRepository;
 import com.teamproject.devTalks.repository.user.UserRepository;
 import com.teamproject.devTalks.service.chat.ChatService;
 
@@ -34,12 +37,14 @@ public class ChatServiceImplement implements ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
+    private final UserBlockRepository userBlockRepository;
 
     public ChatServiceImplement(ChatRoomRepository chatRoomRepository, 
-    ChatMessageRepository chatMessageRepository, UserRepository userRepository) {
+    ChatMessageRepository chatMessageRepository, UserRepository userRepository, UserBlockRepository userBlockRepository) {
         this.chatRoomRepository = chatRoomRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.userRepository = userRepository;
+        this.userBlockRepository = userBlockRepository;
     }
 
     @Override
@@ -97,6 +102,40 @@ public class ChatServiceImplement implements ChatService {
             }
 
             return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> userBlock(PostUserBlockRequestDto dto) {
+
+        int senderNumber = dto.getSenderNumber();
+        int receiverNumber = dto.getReceiverNumber();
+
+        try {            
+            UserEntity senderUserEntity = userRepository.findByUserNumber(senderNumber);
+            if (senderUserEntity == null) return CustomResponse.authenticationFailed();
+
+            UserEntity receiverUserEntity = userRepository.findByUserNumber(receiverNumber);
+            if (receiverUserEntity == null) return CustomResponse.noExistUser();
+
+            boolean checkSameUser = (senderNumber == receiverNumber);
+            if(checkSameUser) return CustomResponse.cannotBlockToSelf();
+
+            boolean isExistBlock =
+            userBlockRepository.existsBySenderNumberAndReceiverNumber(senderNumber, receiverNumber);
+            if(isExistBlock) return CustomResponse.alreadyBlocked();
+
+            UserBlockEntity userBlockEntity = new UserBlockEntity(dto);
+
+            userBlockRepository.save(userBlockEntity);
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+       
     }
 
     @Override
@@ -192,5 +231,7 @@ public class ChatServiceImplement implements ChatService {
 
         return CustomResponse.success();
     }
+
+
     }
 

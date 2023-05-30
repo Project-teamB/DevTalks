@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
 import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
 import com.teamproject.devTalks.dto.request.chat.PostUserBlockRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
@@ -53,31 +52,20 @@ public class ChatController {
     public ResponseEntity<ResponseDto> createChatRoom(
         @Valid @RequestBody PostChatRoomDto RequestBody,
         @AuthenticationPrincipal UserPrinciple userPrinciple
-        ) {
-            ResponseEntity<ResponseDto> response = 
-            chatService.createChatRoom(RequestBody);
-            return response;
-        }
-
-    @PostMapping("/message/{chat_room_number}")
-    public ResponseEntity<ResponseDto> postChatMessage(
-        @Valid @RequestBody PostChatMessageDto RequestBody,
-        @PathVariable("chat_room_number") String chatRoomNumber
-        ) {
-            ResponseEntity<ResponseDto> response =
-            chatService.postChatMessage(RequestBody);
-            return response;
+    ) {
+        ResponseEntity<ResponseDto> response = chatService.createChatRoom(RequestBody);
+        return response;
     }
 
     @PostMapping("/userBlock")
     public ResponseEntity<ResponseDto> userBlock(
         @Valid @RequestBody PostUserBlockRequestDto RequestBody,
         @AuthenticationPrincipal UserPrinciple userPrinciple
-        ) {
-            ResponseEntity<ResponseDto> response = 
-            chatService.userBlock(RequestBody);
-            return response;
-        }
+    ) {
+        ResponseEntity<ResponseDto> response = 
+        chatService.userBlock(RequestBody);
+        return response;
+    }
 
     @DeleteMapping("/room/{chat_room_number}")
     public ResponseEntity<ResponseDto> deleteChatRoom(

@@ -81,27 +81,27 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> postChatMessage(PostChatMessageDto dto) {
+    public boolean postChatMessage(PostChatMessageDto dto) {
 
         int fromNumber = dto.getFromNumber();
         String chatRoomNumber = dto.getChatRoomNumber();
 
         try {
             boolean existedUser = userRepository.existsByUserNumber(fromNumber);
-            if (!existedUser) return CustomResponse.noExistUser();
+            if (!existedUser) return false;
 
             boolean existedChatRoom = chatRoomRepository.existsByChatRoomNumber(chatRoomNumber);
-            if (!existedChatRoom) return CustomResponse.notExistChatRoomNumber();
+            if (!existedChatRoom) return false;
 
             ChatMessageEntity chatMessageEntity = new ChatMessageEntity(dto);
             chatMessageRepository.save(chatMessageEntity);
 
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                return CustomResponse.databaseError();
-            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
 
-            return CustomResponse.success();
+        return true;
     }
 
     @Override

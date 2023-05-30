@@ -24,21 +24,24 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, ChatRo
     "U.user_status AS userStatus, " +
     "U.user_nickname AS userNickname, " +
     "M.message AS lastMessage, " +
-    "M.sent_datetime AS sentDatetime " + 
+    "M.sent_datetime AS sentDatetime, " + 
+    "count(MS.chat_message_number) AS unreadMessageCount " +
     "FROM chat_room R " +
-    "LEFT JOIN (SELECT * FROM chat_message GROUP BY chat_room_number ORDER BY sent_datetime DESC) M ON R.chat_room_number = M.chat_room_number " +
     "LEFT JOIN user U ON R.user_number = U.user_number " +
+    "LEFT JOIN chat_message M ON R.chat_room_number = M.chat_room_number AND M.sent_datetime = " +
+    "(SELECT sent_datetime FROM chat_message WHERE chat_room_number = R.chat_room_number ORDER BY sent_datetime DESC LIMIT 1) " +
+    "LEFT JOIN (SELECT * FROM chat_message WHERE NOT chat_status AND from_number <> :userNumber) MS ON R.chat_room_number = MS.chat_room_number " +
     "WHERE R.chat_room_number IN " +
     "(SELECT chat_room_number FROM chat_room " +
     "WHERE user_number = :userNumber) " +
     "AND U.user_number <> :userNumber " +
+    "GROUP BY R.chat_room_number " +
     "ORDER BY M.sent_datetime DESC ", nativeQuery = true)
     List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc(@Param("userNumber") Integer userNumber);
     
     List<ChatRoomEntity> findByChatRoomNumber(String chatRoomNumber);
 
     //  중복 제거 
-
     @Query(value = "SELECT * FROM chat_room " +
     "WHERE chat_room_number IN  " +
     "(SELECT chat_room_number FROM chat_room WHERE user_number = :fromNumber) " +

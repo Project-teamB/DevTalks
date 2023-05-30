@@ -14,11 +14,12 @@ import com.teamproject.devTalks.dto.response.ResponseDto;
 public interface ChatService {
 
     public ResponseEntity<ResponseDto> createChatRoom(PostChatRoomDto dto);
-    public ResponseEntity<ResponseDto> postChatMessage(PostChatMessageDto dto);
     public ResponseEntity<ResponseDto> userBlock(PostUserBlockRequestDto dto);
     public ResponseEntity<? super GetChatRoomListResponseDto> getChatRoomList(Integer userNumber);
     public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Integer userNumber, String chatRoomNumber);
     public ResponseEntity<ResponseDto> deleteChatRoom(String chatRoomNumber);
     public ResponseEntity<ResponseDto> deleteChatMessage(Integer chatMessageNumber);
+    
+    public boolean postChatMessage(PostChatMessageDto dto);
 
 }

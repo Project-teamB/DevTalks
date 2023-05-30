@@ -392,4 +392,34 @@ public class UserServiceImplement implements UserService {
         return CustomResponse.success();
     }
 
+    @Override
+    public boolean isExistedUser(String userEmail) {
+        
+        boolean checkExistedUser = false;
+
+        try {
+            checkExistedUser = userRepository.existsByUserEmail(userEmail);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
+        return checkExistedUser;
+
+    }
+
+    @Override
+    public Integer findByUserEmailEquals(String userEmail) {
+
+        try { 
+            Integer userNumber = userRepository.findByUserEmailEquals(userEmail);
+            if (userNumber != null) return userNumber;
+
+         } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+         }         
+         return null;
+
+    }
+
 }

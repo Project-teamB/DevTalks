@@ -67,4 +67,5 @@ public class UserEntity {
         this.chatAcceptance = dto.isChatAcceptance();
 
     }
+
 }

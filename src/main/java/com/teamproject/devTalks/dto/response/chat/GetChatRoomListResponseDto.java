@@ -39,6 +39,7 @@ public class GetChatRoomListResponseDto extends ResponseDto {
         private String userNickname;
         private String lastMessage;
         private String sentDateTime;
+        private Integer unreadMessageCount;
 
 
         public ChatSummary(ChatRoomListResultSet resultSet) {
@@ -47,6 +48,7 @@ public class GetChatRoomListResponseDto extends ResponseDto {
             this.userNickname = resultSet.getUserNickname();
             this.lastMessage = resultSet.getLastMessage();
             this.sentDateTime = resultSet.getSentDateTime();
+            this.unreadMessageCount = resultSet.getUnreadMessageCount() != null ? resultSet.getUnreadMessageCount() : 0;
         }
     }
 }

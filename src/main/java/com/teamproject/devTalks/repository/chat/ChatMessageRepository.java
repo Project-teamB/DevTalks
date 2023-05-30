@@ -17,6 +17,7 @@ import com.teamproject.devTalks.entity.resultSet.chat.ChatMessageListResultSet;
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, Integer> {
 
+
     List<ChatMessageEntity> findByChatMessageNumber(int chatMessageNumber);
 
     @Query(value = "SELECT DISTINCT M.chat_room_number AS chatRoomNumber, " +

@@ -6,4 +6,5 @@ public interface ChatRoomListResultSet {
     public String getUserNickname();
     public String getLastMessage();
     public String getSentDateTime();
+    public Integer getUnreadMessageCount();
 }

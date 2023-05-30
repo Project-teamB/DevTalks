@@ -27,4 +27,8 @@ public interface UserService {
     ResponseEntity<? super FindUserEmailResponseDto> findUserEmail(FindUserEmailRequestDto dto);
     
     ResponseEntity<ResponseDto> findUserPassword(FindUserPasswordRequestDto dto);
+
+    boolean isExistedUser(String userEmail);
+
+    Integer findByUserEmailEquals(String userEmail);
 }

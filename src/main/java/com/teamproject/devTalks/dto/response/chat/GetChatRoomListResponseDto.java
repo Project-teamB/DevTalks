@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -32,6 +33,7 @@ public class GetChatRoomListResponseDto extends ResponseDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     class ChatSummary {
         private String chatRoomNumber;
         private String userProfileImageUrl;

@@ -39,7 +39,7 @@ public class ChatController {
 
     @GetMapping("/list/{chat_room_number}")
     public ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(
-        @PathVariable("chatRoomNumber") String chatRoomNumber,
+        @PathVariable("chat_room_number") String chatRoomNumber,
         @AuthenticationPrincipal UserPrinciple userPrinciple
         ) {
         Integer userNumber = userPrinciple.getUserNumber();

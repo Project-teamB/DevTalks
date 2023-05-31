@@ -36,7 +36,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
 
     public GetRecruitBoardResponseDto(
         RecruitBoardEntity recruitBoardEntity, UserEntity userEntity, List<RecruitCommentEntity> recruitCommentEntities, 
-        List<RecruitHeartEntity> recruitHeartEntities, List<String> boardHashTagList
+        List<RecruitHeartEntity> recruitHeartEntities, List<String> boardHashStrings
     ) {
         super("SU", "Success");
 
@@ -53,8 +53,7 @@ public class GetRecruitBoardResponseDto extends ResponseDto {
         this.recruitmentStatus = recruitBoardEntity.isRecruitmentStatus();
         this.commentList = RecruitComment.createList(recruitCommentEntities);
         this.heartList = RecruitHeart.createList(recruitHeartEntities);
-        this.boardHashTagList = boardHashTagList;
-
+        this.boardHashTagList = boardHashStrings;
     }
 
 }
@@ -119,6 +118,29 @@ class RecruitHeart {
     }
 
 }
+
+// @Getter
+// @Setter
+// @NoArgsConstructor
+// @AllArgsConstructor
+// class RecruitBoardHashTag {
+//     private int recruitBoardNumber;
+//     private List<String> boardHashTag;
+
+//     RecruitBoardHashTag(RecruitBoardHashTagEntity recruitBoardHashTagEntity) {
+//         this.recruitBoardNumber = recruitBoardHashTagEntity.getRecruitBoardNumber();
+//         this.boardHashTag = recruitBoardHashTagEntity.getBoardHashTag();
+//     }
+
+//     static List<RecruitBoardHashTag> createList(List<RecruitBoardHashTagEntity> recruitBoardHashTagEntities) {
+//         List<RecruitBoardHashTag> recruitBoardHashTagList = new ArrayList<>();
+//         for(RecruitBoardHashTagEntity recruitBoardHashTagEntity: recruitBoardHashTagEntities) {
+//             RecruitBoardHashTag recruitBoardHashTag = new RecruitBoardHashTag(recruitBoardHashTagEntity);
+//             recruitBoardHashTagList.add(recruitBoardHashTag);
+//         }
+//         return recruitBoardHashTagList;
+//     }
+// }
 
 
 

@@ -49,6 +49,28 @@ public class RecruitBoardController {
         return response;
     }
 
+    // 전체 게시물 리스트 조회
+    @GetMapping("/list/{sort}")
+    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(
+        @PathVariable("sort") String recruitSort
+    ) {
+    
+        ResponseEntity<? super GetRecruitBoardListResponseDto> response = 
+            recruitBoardService.getRecruitBoardList(recruitSort);
+        return response;
+    
+    }
+
+    // 검색 기능
+    @GetMapping("/list/{group}/{searchKeyword}")
+    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(
+        @PathVariable("group") String group,
+        @PathVariable("searchKeyword") String searchKeyword
+    ) {
+        ResponseEntity<? super GetRecruitBoardListResponseDto> response = recruitBoardService.getRecruitBoardSearchList(group, searchKeyword);
+        return response;
+    }
+
     // 특정 게시물 조회
     @GetMapping("/{recruitBoardNumber}")
     public  ResponseEntity<? super GetRecruitBoardResponseDto> getRecruitBoard(
@@ -170,27 +192,7 @@ public class RecruitBoardController {
         return response;
     }
 
-    // 전체 게시물 리스트 조회
-    @GetMapping("/list/{sort}")
-    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(
-        @PathVariable("sort") String recruitSort
-    ) {
-    
-        ResponseEntity<? super GetRecruitBoardListResponseDto> response = 
-            recruitBoardService.getRecruitBoardList(recruitSort);
-        return response;
-    
-    }
 
-    // 검색 기능
-    @GetMapping("/list/{group}/{searchKeyword}")
-    public ResponseEntity<? super GetRecruitBoardListResponseDto> getRecruitBoardList(
-        @PathVariable("group") String group,
-        @PathVariable("searchKeyword") String searchKeyword
-    ) {
-        ResponseEntity<? super GetRecruitBoardListResponseDto> response = recruitBoardService.getRecruitBoardSearchList(group, searchKeyword);
-        return response;
-    }
 }
 
     

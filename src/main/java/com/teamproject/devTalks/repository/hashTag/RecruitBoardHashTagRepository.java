@@ -12,9 +12,12 @@ import com.teamproject.devTalks.entity.primaryKey.recruit.RecruitHashtagPk;
 @Repository
 public interface RecruitBoardHashTagRepository extends JpaRepository<RecruitBoardHashTagEntity, RecruitHashtagPk> {
     
-    List<RecruitBoardHashTagEntity> findAllByRecruitBoardNumber(int recruitBoardNumber);
+    public List<RecruitBoardHashTagEntity> findAllByRecruitBoardNumber(int recruitBoardNumber);
     
     @Transactional
     void deleteByRecruitBoardNumber(int recruitBoardNumber);
+
+    @Transactional
+    void deleteByBoardHashTagAndRecruitBoardNumber(int recruitBoardNumber, String BoardHashTag);
 
 }

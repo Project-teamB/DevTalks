@@ -58,6 +58,7 @@ public class RecruitBoardEntity {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         
+        this.recruitBoardNumber = dto.getRecruitBoardNumber();
         this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.writerNickname = userEntity.getUserNickname();
         this.writeDatetime = simpleDateFormat.format(now);

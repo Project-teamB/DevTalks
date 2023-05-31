@@ -11,8 +11,10 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
+import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
+import com.teamproject.devTalks.repository.chat.ChatRoomRepository;
 import com.teamproject.devTalks.service.chat.ChatService;
 import com.teamproject.devTalks.service.user.UserService;
 
@@ -41,7 +43,7 @@ public class WebSocketProvider extends TextWebSocketHandler {
             session.close();
             return;
         }
-
+        
         list.add(session);
         log.info(session + " 채팅 연결");
 
@@ -50,6 +52,7 @@ public class WebSocketProvider extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         // 메시지 송수신
+        String sessionId = session.getId();
         String payload = message.getPayload();
         String token = session.getHandshakeHeaders().getFirst("Authorization");
         String email = jwtProvider.validateJwt(token);
@@ -63,13 +66,14 @@ public class WebSocketProvider extends TextWebSocketHandler {
         Integer fromNumber = userService.findByUserEmailEquals(email);
         String chatRoomNumber = session.getHandshakeHeaders().getFirst("chatRoomNumber");
 
-        PostChatMessageDto dto = new PostChatMessageDto(Integer.parseInt(String.valueOf(fromNumber)), payload, chatRoomNumber);
-        boolean result = chatService.postChatMessage(dto);
+        PostChatMessageDto MessageDto = new PostChatMessageDto(Integer.parseInt(String.valueOf(fromNumber)), payload, chatRoomNumber);
+        boolean result = chatService.postChatMessage(MessageDto);
 
         if (!result) return;
 
         for(WebSocketSession webSocketSession: list) {
-            webSocketSession.sendMessage(message);
+            if (!webSocketSession.getId().equals(sessionId))
+                webSocketSession.sendMessage(message);
         }
 }
 

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.mysql.cj.protocol.Message;
 import com.teamproject.devTalks.entity.chat.ChatRoomEntity;
 import com.teamproject.devTalks.entity.primaryKey.chat.ChatRoomPk;
 import com.teamproject.devTalks.entity.resultSet.chat.ChatRoomListResultSet;
@@ -19,6 +18,12 @@ import com.teamproject.devTalks.entity.resultSet.chat.ChatRoomListResultSet;
 public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, ChatRoomPk> {
 
     boolean existsByChatRoomNumber(String chatRoomNumber);
+
+    @Query (value = "SELECT R.chat_room_number AS chatRoomNumber, " +
+    "FROM chat_room R " +
+    "LEFT JOIN user U ON R.user_number = U.user_number " +
+    "WHERE U.user_number = :toNumber ", nativeQuery = true)
+    String findChatRoomNumberByUserNumber(Integer toNumber);
 
     @Query (value = "SELECT R.chat_room_number AS chatRoomNumber, " +
     "U.user_status AS userStatus, " +
@@ -35,7 +40,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, ChatRo
     "(SELECT chat_room_number FROM chat_room " +
     "WHERE user_number = :userNumber) " +
     "AND U.user_number <> :userNumber " +
-    "GROUP BY R.chat_room_number " +
+    "GROUP BY R.chat_room_number, U.user_status, U.user_nickname, M.message, M.sent_datetime " +
     "ORDER BY M.sent_datetime DESC ", nativeQuery = true)
     List<ChatRoomListResultSet> findAllByOrderBySentDatetimeDesc(@Param("userNumber") Integer userNumber);
     

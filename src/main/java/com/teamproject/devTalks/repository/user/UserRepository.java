@@ -33,6 +33,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     , nativeQuery = true)
     public Integer findByUserEmailEquals(@Param("userEmail") String userEmail);
     
+    @Query(value = "SELECT " +
+    "U.user_number AS userNumber " +
+    "FROM user U " +
+    "WHERE U.user_nickname = :userNickname"
+    , nativeQuery = true)
+    public Integer findByUserNicknameEquals(@Param("userNickname") String userNickname);
 
     @Transactional
     public void deleteByUserEmail(String userEmail);

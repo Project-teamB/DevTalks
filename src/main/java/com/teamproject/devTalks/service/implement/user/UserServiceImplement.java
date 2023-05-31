@@ -422,4 +422,17 @@ public class UserServiceImplement implements UserService {
 
     }
 
+    @Override
+    public Integer findByUserNicknameEquals(String userNickname) {
+        try { 
+            Integer userNumber = ((UserService) userRepository).findByUserNicknameEquals(userNickname);
+            if (userNickname != null) return userNumber;
+
+         } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+         }         
+         return null;
+    }
+
 }

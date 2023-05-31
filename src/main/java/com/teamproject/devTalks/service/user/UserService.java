@@ -31,4 +31,6 @@ public interface UserService {
     boolean isExistedUser(String userEmail);
 
     Integer findByUserEmailEquals(String userEmail);
+
+    Integer findByUserNicknameEquals(String userNickname);
 }

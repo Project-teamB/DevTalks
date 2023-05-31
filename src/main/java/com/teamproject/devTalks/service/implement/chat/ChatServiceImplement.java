@@ -149,8 +149,9 @@ public class ChatServiceImplement implements ChatService {
 
             List<ChatRoomListResultSet> resultSet = 
             chatRoomRepository.findAllByOrderBySentDatetimeDesc(userNumber);
-            System.out.println(userNumber);
+            System.out.println(resultSet.toString());
             body = new GetChatRoomListResponseDto(resultSet);
+            System.out.println(body.getChatRoomList().toString());
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -230,6 +231,23 @@ public class ChatServiceImplement implements ChatService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public String getChatRoomNumber(Integer toNumber) {
+
+        try {
+            
+        String chatRoomNumber = chatRoomRepository.findChatRoomNumberByUserNumber(toNumber);
+            
+        return chatRoomNumber;
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+        }
+
+
     }
 
 

@@ -86,13 +86,15 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             List<RecruitHeartEntity> recruitHeartEntities = recruitHeartRepository.findByRecruitBoardNumber(recruitBoardNumber);
             List<RecruitBoardHashTagEntity> recruitBoardHashTagEntities = recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber);
 
-            List<String> boardHashTag = new ArrayList<>();
+            List<String> boardHashStrings = new ArrayList<>();
             for (RecruitBoardHashTagEntity boardHashTagList: recruitBoardHashTagEntities) {
-                String hashTags = boardHashTagList.getBoardHashTag();
-                boardHashTag.add(hashTags);
+                String boardHashTags = boardHashTagList.getBoardHashTag();
+                boardHashStrings.add(boardHashTags);
             }
+            
+            System.out.println(boardHashStrings);
 
-            body = new GetRecruitBoardResponseDto(recruitBoardEntity, userEntity, recruitCommentEntities, recruitHeartEntities, boardHashTag);
+            body = new GetRecruitBoardResponseDto(recruitBoardEntity, userEntity, recruitCommentEntities, recruitHeartEntities, boardHashStrings);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -163,6 +165,9 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
     @Override
     public ResponseEntity<ResponseDto> postRecruitBoard(String userEmail, PostRecruitBoardRequestDto dto) {
 
+        List<String> boardHashTagList = dto.getBoardHashTag();
+        List<RecruitBoardHashTagEntity> recruitBoardHashTagList = new ArrayList<>();
+
         try {
             // 존재하지 않는 유저 오류 반환
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
@@ -170,6 +175,14 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
             RecruitBoardEntity recruitBoardEntity = new RecruitBoardEntity(userEntity, dto);
             recruitBoardRepository.save(recruitBoardEntity);
+
+            for (String boardHashTag: boardHashTagList){
+                RecruitBoardHashTagEntity recruitBoardHashTagEntity =
+                new RecruitBoardHashTagEntity(recruitBoardEntity.getRecruitBoardNumber(), boardHashTag);
+                recruitBoardHashTagList.add(recruitBoardHashTagEntity);
+            }
+
+            recruitBoardHashTagRepository.saveAll(recruitBoardHashTagList);
 
         } catch (Exception exception) {
             // 데이터베이스 오류 반환
@@ -253,6 +266,8 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> postRecruitComment(String userEmail, Integer recruitBoardNumber, PostRecruitCommentRequestDto dto) {
+
+        System.out.println(recruitBoardNumber);
 
         try {
 
@@ -413,8 +428,20 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> deleteAdminRecruitComment(String adminEmail, Integer recruitCommentNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAdminRecruitComment'");
+        
+        try {
+
+            boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!existAdmin) return CustomResponse.noExistAdmin();
+
+            recruitCommentRepository.deleteByRecruitCommentNumber(recruitCommentNumber);
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+
     }
 
 

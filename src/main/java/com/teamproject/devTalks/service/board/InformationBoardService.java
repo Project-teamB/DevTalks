@@ -18,7 +18,7 @@ public interface InformationBoardService {
 
     public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto);
     public ResponseEntity<ResponseDto> postInformationComment(String userEmail, PostInformationCommentRequestDto dto);
-    public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, PostInformationHeartRequestDto dto);
+    public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, Integer informationBoardNumber);
 
     public ResponseEntity<ResponseDto> patchInformationBoard(String userEmail, PatchInformationBoardRequestDto dto);
     public ResponseEntity<ResponseDto> patchInformationComment(String userEmail, PatchInformationCommentRequestDto dto);

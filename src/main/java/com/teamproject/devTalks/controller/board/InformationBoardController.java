@@ -128,14 +128,14 @@ public class InformationBoardController {
         return response;
     }
 
-    @PostMapping("/heart")
+    @PostMapping("/heart/{informationBoardNumber}")
     public ResponseEntity<ResponseDto> postInformationHeart(
         @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @Valid @RequestBody PostInformationHeartRequestDto requestBody
+        @PathVariable("informationBoardNumber") Integer informationBoardNumber
     ) {                
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
-        informationBoardService.postInformationHeart(userEmail, requestBody);
+        informationBoardService.postInformationHeart(userEmail, informationBoardNumber);
         return response;
     }   
 

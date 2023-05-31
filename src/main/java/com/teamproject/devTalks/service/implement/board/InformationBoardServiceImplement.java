@@ -229,14 +229,14 @@ public class InformationBoardServiceImplement implements InformationBoardService
     }
     
     @Override
-    public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, PostInformationHeartRequestDto dto) {
+    public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, Integer informationBoardNumber) {
 
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.authenticationFailed();
 
             InformationBoardEntity informationBoardEntity = 
-            informationBoardRepository.findByInformationBoardNumber(dto.getInformationBoardNumber());
+            informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
             if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
             InformationHeartEntity informationHeartEntity = new InformationHeartEntity(userEntity, informationBoardEntity);

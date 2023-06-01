@@ -67,4 +67,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     "WHERE U.user_email = :userEmail"
     , nativeQuery = true)
     public void setUserStatusTrue(@Param("userEmail") String userEmail);
+
+    @Query(value = "SELECT " +
+    "U.chat_acceptance AS chatAcceptance " +
+    "FROM user U " +
+    "WHERE U.user_number = :userNumber"
+    , nativeQuery = true)
+    public Byte findByChatAcceptanceTrue(@Param("userNumber") Integer userNumber);
 }

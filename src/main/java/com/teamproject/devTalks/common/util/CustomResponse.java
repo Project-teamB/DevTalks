@@ -170,6 +170,10 @@ public class CustomResponse {
         ResponseDto body = new ResponseDto("CB", "You cannot Block yourself");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
+    public static ResponseEntity<ResponseDto> notAcceptChatUser() {
+        ResponseDto body = new ResponseDto("NH", "This user did not accept the chat");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 
     public static ResponseEntity<ResponseDto> alreadyBlacklisted() {
         ResponseDto body = new ResponseDto("AB", "ALREADY BLACKLISTED");

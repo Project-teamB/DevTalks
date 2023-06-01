@@ -30,6 +30,7 @@ public class UserEntity {
     private String userIntroduction;
     private String userProfileImageUrl;
     private boolean agreePersonalInformation;
+    @Column(columnDefinition = "TINYINT")
     private boolean chatAcceptance;
     private String createdAt;
     private boolean userStatus;

@@ -7,6 +7,7 @@ import com.teamproject.devTalks.dto.response.user.FindUserEmailResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
+import com.teamproject.devTalks.entity.chat.UserBlockEntity;
 import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.report.ReportEntity;
@@ -14,6 +15,7 @@ import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.provider.MailProvider;
+import com.teamproject.devTalks.repository.chat.UserBlockRepository;
 import com.teamproject.devTalks.repository.hashTag.UserHashtagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.report.ReportRepository;
@@ -48,6 +50,7 @@ public class UserServiceImplement implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final MailProvider mailProvider;
+    private final UserBlockRepository userBlockRepository;
 
     @Override
     public ResponseEntity<ResponseDto> userSignUp(UserSignUpRequestDto dto) {
@@ -124,8 +127,7 @@ public class UserServiceImplement implements UserService {
                 return CustomResponse.signInFailed();
 
             String jwt = jwtProvider.createJwt(userEmail, ROLE);
-            body = new SignInResponseDto(jwt);
-            userRepository.setUserStatusTrue(userEmail);            
+            body = new SignInResponseDto(jwt);     
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -140,7 +142,7 @@ public class UserServiceImplement implements UserService {
     public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail) {
 
         GetMyInfoResponseDto body = null;
-        List<String> hashtagList = new ArrayList<>();
+        List<String> hashtagList = new ArrayList<>();        
 
         try {
 
@@ -160,7 +162,9 @@ public class UserServiceImplement implements UserService {
 
             int recommendationCount = recommendation.size();
 
-            body = new GetMyInfoResponseDto(hashtagList, userEntity, recommendationCount);
+            List<String> blockUserNicknames = userBlockRepository.findAllBlockUserNicknameByUserNumber(userNumber);
+            
+            body = new GetMyInfoResponseDto(hashtagList, userEntity, recommendationCount, blockUserNicknames);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -421,19 +425,6 @@ public class UserServiceImplement implements UserService {
          }         
          return null;
 
-    }
-
-    @Override
-    public Integer findByUserNicknameEquals(String userNickname) {
-        try { 
-            Integer userNumber = ((UserService) userRepository).findByUserNicknameEquals(userNickname);
-            if (userNickname != null) return userNumber;
-
-         } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
-         }         
-         return null;
     }
 
 }

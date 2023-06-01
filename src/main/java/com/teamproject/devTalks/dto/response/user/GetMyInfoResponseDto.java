@@ -20,12 +20,14 @@ public class GetMyInfoResponseDto extends ResponseDto {
     private boolean chatAcceptance;
     private List<String> userHashTag;
     private int recommendationCount;
+    private List<String> blockUserList;
 
     public GetMyInfoResponseDto(
 
             List<String> hashtagList ,
             UserEntity userEntity,
-            int recommendationCount
+            int recommendationCount,
+            List<String> blockUserList
 
     ){
         super("SU","Success");
@@ -38,6 +40,7 @@ public class GetMyInfoResponseDto extends ResponseDto {
         this.chatAcceptance = userEntity.isChatAcceptance();
         this.userHashTag = hashtagList;
         this.recommendationCount = recommendationCount;
+        this.blockUserList = blockUserList;
 
     }
 

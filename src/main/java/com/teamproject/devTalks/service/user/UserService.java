@@ -32,6 +32,4 @@ public interface UserService {
 
     Integer findByUserEmailEquals(String userEmail);
 
-    Integer findByUserNicknameEquals(String userNickname);
-
 }

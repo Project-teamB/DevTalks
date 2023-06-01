@@ -11,10 +11,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.teamproject.devTalks.dto.request.chat.PostChatMessageDto;
-import com.teamproject.devTalks.dto.request.chat.PostChatRoomDto;
-import com.teamproject.devTalks.dto.response.ResponseDto;
-import com.teamproject.devTalks.dto.response.chat.GetChatMessageListResponseDto;
-import com.teamproject.devTalks.repository.chat.ChatRoomRepository;
 import com.teamproject.devTalks.service.chat.ChatService;
 import com.teamproject.devTalks.service.user.UserService;
 

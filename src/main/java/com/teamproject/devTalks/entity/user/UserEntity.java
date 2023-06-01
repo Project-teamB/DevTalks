@@ -49,7 +49,7 @@ public class UserEntity {
         this.chatAcceptance = dto.isChatAcceptance();
         this.agreePersonalInformation = dto.isAgreePersonalInformation();
         this.createdAt = now.format(formatter);
-        this.userStatus = dto.isUserStatus();
+        this.userStatus = false;
 
     }
 

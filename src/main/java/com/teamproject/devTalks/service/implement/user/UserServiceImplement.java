@@ -125,6 +125,7 @@ public class UserServiceImplement implements UserService {
 
             String jwt = jwtProvider.createJwt(userEmail, ROLE);
             body = new SignInResponseDto(jwt);
+            userRepository.setUserStatusTrue(userEmail);            
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -434,5 +435,6 @@ public class UserServiceImplement implements UserService {
          }         
          return null;
     }
+
 
 }

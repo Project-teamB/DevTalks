@@ -62,6 +62,9 @@ public class ChatServiceImplement implements ChatService {
         ChatRoomEntity chatRoomEntity =  chatRoomRepository.findExistChatRoomCountByUserNumber(fromNumber, toNumber);
         if (chatRoomEntity != null) return CustomResponse.existChatRoom();
 
+        Byte isChatAcceptanceTrueUser = userRepository.findByChatAcceptanceTrue(toNumber);
+        if(isChatAcceptanceTrueUser == 0) return CustomResponse.notAcceptChatUser();
+
         String chatRoomNumber = UUID.randomUUID().toString();   
         ChatRoomEntity toChatRoomEntity = new ChatRoomEntity(chatRoomNumber, toNumber);
         chatRoomRepository.save(toChatRoomEntity);  

@@ -8,6 +8,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import com.teamproject.devTalks.dto.request.chat.PostUserBlockRequestDto;
+import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.entity.primaryKey.chat.UserBlockPK;
 import com.teamproject.devTalks.entity.user.UserEntity;
 
@@ -33,4 +34,8 @@ public class UserBlockEntity {
         this.receiverNumber = dto.getReceiverNumber();
 
 }
+
+    public UserBlockEntity(Integer SenderNumber) {
+        this.receiverNumber = getReceiverNumber();
+    }
 }

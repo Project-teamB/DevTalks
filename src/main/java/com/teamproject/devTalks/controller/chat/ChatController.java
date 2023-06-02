@@ -67,6 +67,18 @@ public class ChatController {
         return response;
     }
 
+    @DeleteMapping("/userBlock/{receiver_number}")
+    public ResponseEntity<ResponseDto> deleteUserBlock(
+        @AuthenticationPrincipal UserPrinciple userPrinciple,
+        @PathVariable("receiver_number") Integer receiverNumber
+    ) {        
+        Integer senderNumber = userPrinciple.getUserNumber();
+        ResponseEntity<ResponseDto> response = 
+        chatService.deleteUserBlock(senderNumber, receiverNumber);
+        return response;
+    }
+
+
     @DeleteMapping("/room/{chat_room_number}")
     public ResponseEntity<ResponseDto> deleteChatRoom(
         @PathVariable("chat_room_number") String chatRoomNumber 

@@ -72,6 +72,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> neverBlockedUser() {
+
+        ResponseDto errorBody = new ResponseDto("NK", "user I've never blocked");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> authenticationFailed() {
 
         ResponseDto errorBody = new ResponseDto("AF", "Authentication failed");

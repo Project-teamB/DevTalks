@@ -66,7 +66,7 @@ public class ChatServiceImplement implements ChatService {
         if(isChatAcceptanceTrueUser == 0) return CustomResponse.notAcceptChatUser();
 
         Byte checkIsBlocked = userBlockRepository.isBlockedUserNumber(fromNumber, toNumber);
-        if(checkIsBlocked == 1) return CustomResponse.blockedChatUser();
+        if(checkIsBlocked >= 1) return CustomResponse.blockedChatUser();
 
         String chatRoomNumber = UUID.randomUUID().toString();   
         ChatRoomEntity toChatRoomEntity = new ChatRoomEntity(chatRoomNumber, toNumber);
@@ -254,6 +254,33 @@ public class ChatServiceImplement implements ChatService {
         }
 
 
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteUserBlock(Integer senderNumber, Integer receiverNumber) {
+
+        try {
+            UserEntity senderEntity = userRepository.findByUserNumber(senderNumber);
+            if(senderEntity == null) return CustomResponse.authenticationFailed();
+
+            UserEntity receiverEntity = userRepository.findByUserNumber(receiverNumber);
+            if(receiverEntity == null) return CustomResponse.noExistUser();
+
+            List<UserBlockEntity> findBlockReceiverUser = 
+            userBlockRepository.findBySenderNumberAndReceiverNumber(senderNumber, receiverNumber);
+            if(findBlockReceiverUser.isEmpty()) return CustomResponse.neverBlockedUser();
+
+            UserBlockEntity userBlockEntity = userBlockRepository.deleteBySenderNumberAndReceiverNumber(senderNumber, receiverNumber);
+            
+            userBlockRepository.delete(userBlockEntity);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+        
     }
 
 

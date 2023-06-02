@@ -72,6 +72,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> neverBlockedUser() {
+
+        ResponseDto errorBody = new ResponseDto("NK", "user I've never blocked");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> authenticationFailed() {
 
         ResponseDto errorBody = new ResponseDto("AF", "Authentication failed");
@@ -172,6 +179,11 @@ public class CustomResponse {
     }
     public static ResponseEntity<ResponseDto> notAcceptChatUser() {
         ResponseDto body = new ResponseDto("NH", "This user did not accept the chat");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> blockedChatUser() {
+        ResponseDto body = new ResponseDto("BU", "The user who blocked me");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 

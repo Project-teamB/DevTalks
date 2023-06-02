@@ -175,6 +175,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    public static ResponseEntity<ResponseDto> blockedChatUser() {
+        ResponseDto body = new ResponseDto("BU", "The user who blocked me");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     public static ResponseEntity<ResponseDto> alreadyBlacklisted() {
         ResponseDto body = new ResponseDto("AB", "ALREADY BLACKLISTED");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);

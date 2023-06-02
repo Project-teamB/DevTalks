@@ -23,4 +23,11 @@ public interface UserBlockRepository extends JpaRepository<UserBlockEntity, User
     "LEFT JOIN user U ON U.user_number = B.receiver_number " +
     "WHERE B.sender_number = :senderNumber", nativeQuery = true)
     public List<String> findAllBlockUserNicknameByUserNumber(@Param("senderNumber") Integer senderNumber);
+
+    // 채팅을 걸고싶은 상대방이 나를 차단한 유저인지 확인
+    @Query (value = "SELECT COUNT(*) " +
+    "FROM user_block " +
+    "WHERE sender_number = :toNumber " +
+    "AND receiver_number = :fromNumber ", nativeQuery = true)
+    public Byte isBlockedUserNumber(@Param("fromNumber") Integer receiverNumber, @Param("toNumber") Integer senderNumber);
 }

@@ -10,6 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import com.teamproject.devTalks.provider.ChatWebSocketHandler;
+import com.teamproject.devTalks.provider.SignInWebSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,13 +19,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    private final ChatWebSocketHandler webSocketProvider;
+    private final ChatWebSocketHandler chatWebSocketHandler;
+    private final SignInWebSocketHandler signInWebSocketHandler;
+
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         
         registry
-            .addHandler(webSocketProvider, "/web-socket")
+            .addHandler(chatWebSocketHandler, "/web-socket")
+            .addHandler(signInWebSocketHandler, "/web-socket/sign-in")
             .setAllowedOrigins("*");
 
     }

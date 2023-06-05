@@ -13,11 +13,12 @@ import com.teamproject.devTalks.entity.primaryKey.information.InformationHashtag
 @Repository
 public interface InformationBoardHashTagRepository extends JpaRepository<InformationBoardHashTagEntity, InformationHashtagPk> {
 
-    public List<InformationBoardHashTagEntity> findByInformationBoardNumber(int informationBoardNumber);
+    public List<InformationBoardHashTagEntity> findByInformationBoardNumber(Integer informationBoardNumber);
+
     
     @Transactional
-    void deleteByInformationBoardNumber(int informationBoardNumber);
+    void deleteByInformationBoardNumber(Integer informationBoardNumber);
 
     @Transactional
-    void deleteByBoardHashtagAndInformationBoardNumber(String boardHashtag, int informationBoardNumber);
+    void deleteByBoardHashtagAndInformationBoardNumber(String boardHashtag, Integer informationBoardNumber);
 }

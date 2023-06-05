@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class PatchInformationBoardRequestDto {
@@ -17,7 +20,7 @@ public class PatchInformationBoardRequestDto {
     private String informationBoardImageUrl;
     @NotBlank
     private String contentSource;
-    private String boardHashtag;
+    private List<String> boardHashtag;
 
     public PatchInformationBoardRequestDto(PatchInformationBoardRequestDto dto) {
         this.informationBoardNumber = dto.getInformationBoardNumber();

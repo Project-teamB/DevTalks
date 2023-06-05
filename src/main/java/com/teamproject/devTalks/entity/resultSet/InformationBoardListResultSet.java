@@ -9,6 +9,6 @@ public interface InformationBoardListResultSet {
     public String getInformationBoardTitle();
     public int getViewCount();
     public String getWriteDatetime();
-    public int getCommentCount();
-    public int getHeartCount();
+    public Integer getCommentCount();
+    public Integer getHeartCount();
 }

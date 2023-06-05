@@ -13,15 +13,15 @@ import com.teamproject.devTalks.entity.primaryKey.information.InformationHeartPk
 @Repository
 public interface InformationHeartRepository  extends JpaRepository<InformationHeartEntity, InformationHeartPk> {
 
-    List<InformationHeartEntity> findByInformationBoardNumber(int informationBoardNumber);
+    List<InformationHeartEntity> findByInformationBoardNumber(Integer informationBoardNumber);
     @Query(value="SELECT user_number FROM information_heart WHERE information_board_number = ?", nativeQuery=true)
-    List<String> findByInformationBoardNumberToUserNumber(int informationBoardNumber);
+    List<String> findByInformationBoardNumberToUserNumber(Integer informationBoardNumber);
 
     @Transactional
-    void deleteByInformationBoardNumber(int informationBoardNumber);
+    void deleteByInformationBoardNumber(Integer informationBoardNumber);
 
     @Transactional
-    void deleteByUserNumberAndInformationBoardNumber(int userNumber, int informationBoardNumber);
+    void deleteByUserNumberAndInformationBoardNumber(Integer userNumber, Integer informationBoardNumber);
 
 
 

@@ -13,7 +13,7 @@ import com.teamproject.devTalks.entity.resultSet.InformationBoardListResultSet;
 @Repository
 public interface InformationBoardRepository extends JpaRepository<InformationBoardEntity, Integer> {
     
-    public InformationBoardEntity findByInformationBoardNumber(int informationBoardNumber);
+    public InformationBoardEntity findByInformationBoardNumber(Integer informationBoardNumber);
 
     @Query(value = "SELECT " +
         "I.information_board_number AS informationBoardNumber, " +
@@ -34,7 +34,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "group by informationBoardNumber " +
         "order by writeDatetime ", nativeQuery = true)
     @Transactional
-    int deleteByInformationBoardNumber(int informationBoardNumber);
+    Integer deleteByInformationBoardNumber(Integer informationBoardNumber);
 
     // 최신순 정보 게시물 목록 조회    
     @Query(value = "SELECT " +

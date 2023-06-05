@@ -83,7 +83,7 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
 
             List<NoticeBoardEntity> noticeBoardEntityList = new ArrayList<>();
 
-            if (group.equals("title")) noticeBoardEntityList = noticeBoardRepository.findByNoticeTitleContaining("%" + searchKeyword + "%");
+            if (group.equals("title")) noticeBoardEntityList = noticeBoardRepository.findByNoticeTitleContaining(searchKeyword);
 
             body = new GetNoticeBoardListResponseDto(noticeBoardEntityList);
 

@@ -155,16 +155,21 @@ public class InformationBoardServiceImplement implements InformationBoardService
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if(userEntity == null) return CustomResponse.authenticationFailed();
         
-            InformationBoardEntity informationBoardEntity = new InformationBoardEntity(userEmail, dto);
+            InformationBoardEntity informationBoardEntity = new InformationBoardEntity(userEntity, dto);
             informationBoardRepository.save(informationBoardEntity);
 
-            for (String boardHashtag : hashtagList) {
-                InformationBoardHashTagEntity informationBoardHashTagEntity = 
-                new InformationBoardHashTagEntity(boardHashtag, informationBoardEntity.getInformationBoardNumber());
-                informationHashtagList.add(informationBoardHashTagEntity); 
-                }
+            int boardNumber = informationBoardEntity.getInformationBoardNumber();
+
+            for(String hashtag : hashtagList){
+                InformationBoardHashTagEntity informationBoardHashTagEntity =
+                        new InformationBoardHashTagEntity(hashtag,boardNumber);
+
+                informationHashtagList.add(informationBoardHashTagEntity);
+            }
 
             informationBoardHashTagRepository.saveAll(informationHashtagList);
+
+
     
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -181,6 +186,8 @@ public class InformationBoardServiceImplement implements InformationBoardService
         String informationBoardTitle = dto.getInformationBoardTitle();
         String informationBoardContent = dto.getInformationBoardContent();
         String informationBoardImageUrl = dto.getInformationBoardImageUrl();
+        List<String> updateHashtag = dto.getBoardHashtag();
+        List<InformationBoardHashTagEntity> updateHashtagEntities= new ArrayList<>();
 
         try {
             InformationBoardEntity informationBoardEntity = 
@@ -195,6 +202,22 @@ public class InformationBoardServiceImplement implements InformationBoardService
             informationBoardEntity.setInformationBoardImageUrl(informationBoardImageUrl);
 
             informationBoardRepository.save(informationBoardEntity);
+
+            List<InformationBoardHashTagEntity> currentHashtag =
+                    informationBoardHashTagRepository.findByInformationBoardNumber(informationBoardNumber);
+
+            if(currentHashtag != null) informationBoardHashTagRepository.deleteAll(currentHashtag);
+
+            for(String hashtag : updateHashtag){
+
+                InformationBoardHashTagEntity informationBoardHashTagEntity =
+                        new InformationBoardHashTagEntity(hashtag,informationBoardNumber);
+
+                updateHashtagEntities.add(informationBoardHashTagEntity);
+
+            }
+
+            informationBoardHashTagRepository.saveAll(updateHashtagEntities);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -294,9 +317,13 @@ public class InformationBoardServiceImplement implements InformationBoardService
             boolean equalWriter = informationBoardEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
+            if(informationCommentRepository.findByInformationBoardNumber(informationBoardNumber) != null)
             informationCommentRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            if(informationHeartRepository.findByInformationBoardNumber(informationBoardNumber) != null)
             informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);
-            informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            if(informationBoardHashTagRepository.findByInformationBoardNumber(informationBoardNumber) != null)
+            informationBoardHashTagRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            informationBoardRepository.delete(informationBoardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();

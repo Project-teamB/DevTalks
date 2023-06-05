@@ -44,8 +44,8 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
         private String informationBoardTitle;
         private String writeDatetime;
         private int viewCount;
-        private int commentCount;
-        private int heartCount;
+        private Integer commentCount;
+        private Integer heartCount;
 
         public BoardSummary(InformationBoardListResultSet resultSet) {
             this.informationBoardNumber = resultSet.getInformationBoardNumber();
@@ -54,9 +54,9 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
             this.writerEmail = resultSet.getWriterEmail();
             this.informationBoardTitle = resultSet.getInformationBoardTitle();
             this.viewCount = resultSet.getViewCount();
-            this.writeDatetime = resultSet.getWriteDatetime();            
-            this.commentCount = resultSet.getCommentCount();
-            this.heartCount = resultSet.getHeartCount();
+            this.writeDatetime = resultSet.getWriteDatetime();
+            this.commentCount = resultSet.getCommentCount() != null ? resultSet.getCommentCount() : 0;
+            this.heartCount = resultSet.getHeartCount() != null ? resultSet.getHeartCount() : 0;
         }
     }
 }

@@ -3,7 +3,9 @@ package com.teamproject.devTalks.repository.board;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +25,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.information_board_title AS informationBoardTitle, " +
         "I.information_board_content AS informationBoardContent, " +
         "I.information_board_image_url AS informationBoardImageUrl, " +
-        "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
         "count(C.information_comment_number) AS informationCommentCount, " +
@@ -34,7 +35,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "group by informationBoardNumber " +
         "order by writeDatetime ", nativeQuery = true)
     @Transactional
-    Integer deleteByInformationBoardNumber(Integer informationBoardNumber);
+    void deleteByInformationBoardNumber(@Param("informationBoardNumber") Integer informationBoardNumber);
 
     // 최신순 정보 게시물 목록 조회    
     @Query(value = "SELECT " +
@@ -43,9 +44,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.writer_nickname AS writerNickname, " +
         "I.writer_email AS writerEmail, " +
         "I.information_board_title AS informationBoardTitle, " +
-        "I.information_board_content AS informationBoardContent, " +
-        "I.information_board_image_url AS informationBoardImageUrl, " +
-        "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
         "count(C.information_comment_number) AS informationCommentCount, " +
@@ -66,9 +64,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
             "I.writer_nickname AS writerNickname, " +
             "I.writer_email AS writerEmail, " +
             "I.information_board_title AS informationBoardTitle, " +
-            "I.information_board_content AS informationBoardContent, " +
-            "I.information_board_image_url AS informationBoardImageUrl, " +
-            "I.content_source AS contentSource, " +
             "I.view_count AS viewCount, " +
             "I.write_datetime AS writeDatetime, " +
             "count(C.information_comment_number) AS informationCommentCount, " +
@@ -89,9 +84,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
             "I.writer_nickname AS writerNickname, " +
             "I.writer_email AS writerEmail, " +
             "I.information_board_title AS informationBoardTitle, " +
-            "I.information_board_content AS informationBoardContent, " +
-            "I.information_board_image_url AS informationBoardImageUrl, " +
-            "I.content_source AS contentSource, " +
             "I.view_count AS viewCount, " +
             "I.write_datetime AS writeDatetime, " +
             "count(C.information_comment_number) AS informationCommentCount, " +
@@ -112,9 +104,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.writer_nickname AS writerNickname, " +
         "I.writer_email AS writerEmail, " +
         "I.information_board_title AS informationBoardTitle, " +
-        "I.information_board_content AS informationBoardContent, " +
-        "I.information_board_image_url AS informationBoardImageUrl, " +
-        "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
         "count(C.information_comment_number) AS informationCommentCount, " +
@@ -135,9 +124,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.writer_nickname AS writerNickname, " +
         "I.writer_email AS writerEmail, " +
         "I.information_board_title AS informationBoardTitle, " +
-        "I.information_board_content AS informationBoardContent, " +
-        "I.information_board_image_url AS informationBoardImageUrl, " +
-        "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
         "count(C.information_comment_number) AS informationCommentCount, " +
@@ -159,9 +145,6 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "I.writer_nickname AS writerNickname, " +
         "I.writer_email AS writerEmail, " +
         "I.information_board_title AS informationBoardTitle, " +
-        "I.information_board_content AS informationBoardContent, " +
-        "I.information_board_image_url AS informationBoardImageUrl, " +
-        "I.content_source AS contentSource, " +
         "I.view_count AS viewCount, " +
         "I.write_datetime AS writeDatetime, " +
         "count(C.information_comment_number) AS informationCommentCount, " +
@@ -172,7 +155,7 @@ public interface InformationBoardRepository extends JpaRepository<InformationBoa
         "LEFT JOIN information_heart H " +
         "ON I.information_board_number = H.information_board_number " +
         "WHERE I.writer_nickname LIKE ? " +
-        "GROUP BY I.information_board_number " +
-        "ORDER BY I.write_datetime DESC", nativeQuery = true)
+        "GROUP BY informationBoardNumber " +
+        "ORDER BY writeDatetime DESC", nativeQuery = true)
         public List<InformationBoardListResultSet> findByInformationWriterNicknameContaining(String searchKeyword);
 }

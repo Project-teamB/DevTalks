@@ -5,6 +5,8 @@ import com.teamproject.devTalks.dto.request.board.notice.PostNoticeBoardRequestD
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.notice.GetNoticeBoardResponseDto;
+
+
 import org.springframework.http.ResponseEntity;
 
 public interface NoticeBoardService {

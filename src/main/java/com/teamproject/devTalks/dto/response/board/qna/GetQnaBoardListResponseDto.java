@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-// @AllArgsConstructor는 여기선 사용할수 없음
 public class GetQnaBoardListResponseDto extends ResponseDto {
 
 	private List<BoardSummary> qnaBoardList; // B
@@ -28,11 +27,8 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 
 			BoardSummary boardSummary = new BoardSummary(resultSet); // A로 B를 만든다
 			this.qnaBoardList.add(boardSummary); // 복사한 B를 B배열에 추가한다
-
 		}
-
 	}
-
 }
 
 @Data

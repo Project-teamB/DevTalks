@@ -1,4 +1,4 @@
-package com.teamproject.devTalks.dto.request.heart.information;
+package com.teamproject.devTalks.dto.request.chat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostInformationHeartRequestDto {
-    
+public class PostChatMessageDto {
     @NotNull
-    private Integer informationBoardNumber;
+    private Integer fromNumber; 
+    @NotBlank
+    private String message; 
+    @NotBlank
+    private String chatRoomNumber;
 }

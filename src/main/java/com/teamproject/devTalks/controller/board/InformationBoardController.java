@@ -120,7 +120,7 @@ public class InformationBoardController {
     @DeleteMapping("/comment/{informationCommentNumber}")
     public ResponseEntity<ResponseDto> deleteInformationComment(
         @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @Valid @RequestBody Integer InformationCommentNumber
+        @PathVariable("informationCommentNumber") Integer InformationCommentNumber
     ) {
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
@@ -128,20 +128,20 @@ public class InformationBoardController {
         return response;
     }
 
-    @PostMapping("/heart")
+    @PostMapping("/heart/{informationBoardNumber}")
     public ResponseEntity<ResponseDto> postInformationHeart(
         @AuthenticationPrincipal UserPrinciple userPrinciple,
-        @Valid @RequestBody PostInformationHeartRequestDto requestBody
+        @PathVariable("informationBoardNumber") Integer informationBoardNumber
     ) {                
         String userEmail = userPrinciple.getUserEmail();
         ResponseEntity<ResponseDto> response = 
-        informationBoardService.postInformationHeart(userEmail, requestBody);
+        informationBoardService.postInformationHeart(userEmail, informationBoardNumber);
         return response;
     }   
 
     @DeleteMapping("/heart/{informationBoardNumber}")
     public ResponseEntity<ResponseDto> deleteInformationHeart(
-        @PathVariable("informationBoardNumber") int informationBoardNumber,
+        @PathVariable("informationBoardNumber") Integer informationBoardNumber,
         @AuthenticationPrincipal UserPrinciple userPrinciple
     ) {
         String userEmail = userPrinciple.getUserEmail();

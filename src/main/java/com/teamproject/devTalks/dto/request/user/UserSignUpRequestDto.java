@@ -26,6 +26,7 @@ public class UserSignUpRequestDto {
     private List<String> userHashtag;
     private boolean chatAcceptance;
     private boolean agreePersonalInformation;
+    private boolean userStatus;
 
 
 }

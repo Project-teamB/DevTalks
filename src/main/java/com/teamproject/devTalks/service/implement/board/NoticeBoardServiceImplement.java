@@ -73,26 +73,25 @@ public class NoticeBoardServiceImplement implements NoticeBoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // TODO: 공지사항 검색기능 수정
     @Override
-    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group,
-            String searchKeyword) {
+    public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeSearchList(String group, String searchKeyword) {
         
         GetNoticeBoardListResponseDto body = null;
 
         try {
 
-            List<NoticeBoardEntity> noticeBoardEntityList = new ArrayList<>();
+            List<NoticeBoardEntity> resultSet = new ArrayList<>();
 
-            if (group.equals("title")) noticeBoardEntityList = noticeBoardRepository.findByNoticeTitleContaining(searchKeyword);
+            if (group.equals("title")) resultSet = noticeBoardRepository.findByNoticeTitleContaining(searchKeyword);
 
-            body = new GetNoticeBoardListResponseDto(noticeBoardEntityList);
+            body = new GetNoticeBoardListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
-
 
     }
 

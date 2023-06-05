@@ -30,8 +30,10 @@ public class UserEntity {
     private String userIntroduction;
     private String userProfileImageUrl;
     private boolean agreePersonalInformation;
+    @Column(columnDefinition = "TINYINT")
     private boolean chatAcceptance;
     private String createdAt;
+    private boolean userStatus;
 
     public UserEntity(UserSignUpRequestDto dto) {
 
@@ -48,6 +50,7 @@ public class UserEntity {
         this.chatAcceptance = dto.isChatAcceptance();
         this.agreePersonalInformation = dto.isAgreePersonalInformation();
         this.createdAt = now.format(formatter);
+        this.userStatus = false;
 
     }
 
@@ -65,4 +68,5 @@ public class UserEntity {
         this.chatAcceptance = dto.isChatAcceptance();
 
     }
+
 }

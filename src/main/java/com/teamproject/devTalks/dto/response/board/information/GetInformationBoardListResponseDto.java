@@ -16,21 +16,21 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetInformationBoardListResponseDto extends ResponseDto {
 
-    private List<BoardSummary> boardList;
+    private List<BoardSummary> InformationBoardList;
 
     public GetInformationBoardListResponseDto(List<InformationBoardListResultSet> resultSets) {
         super("SU", "Success");
 
-        this.boardList = new ArrayList<>();
+        this.InformationBoardList = new ArrayList<>();
 
         if (resultSets != null) {
             for (InformationBoardListResultSet resultSet : resultSets) {
                 BoardSummary boardSummary = new BoardSummary(resultSet);
-                boardList.add(boardSummary);
+                InformationBoardList.add(boardSummary);
             }
         }
 
-        }
+    }
 
     @Getter
     @Setter
@@ -44,8 +44,8 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
         private String informationBoardTitle;
         private String writeDatetime;
         private int viewCount;
-        private Integer commentCount;
-        private Integer heartCount;
+        private int commentCount;
+        private int heartCount;
 
         public BoardSummary(InformationBoardListResultSet resultSet) {
             this.informationBoardNumber = resultSet.getInformationBoardNumber();
@@ -54,9 +54,9 @@ public class GetInformationBoardListResponseDto extends ResponseDto {
             this.writerEmail = resultSet.getWriterEmail();
             this.informationBoardTitle = resultSet.getInformationBoardTitle();
             this.viewCount = resultSet.getViewCount();
-            this.writeDatetime = resultSet.getWriteDatetime();
+            this.writeDatetime = resultSet.getWriteDatetime();            
             this.commentCount = resultSet.getCommentCount() != null ? resultSet.getCommentCount() : 0;
-            this.heartCount = resultSet.getHeartCount() != null ? resultSet.getHeartCount() : 0;
-        }
+            this.heartCount = resultSet.getHeartCount() != null ? resultSet.getHeartCount() :0 ;
+            }
     }
 }

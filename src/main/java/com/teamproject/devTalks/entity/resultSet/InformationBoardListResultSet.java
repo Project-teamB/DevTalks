@@ -7,7 +7,7 @@ public interface InformationBoardListResultSet {
     public String getWriterNickname();
     public String getWriterEmail();
     public String getInformationBoardTitle();
-    public int getViewCount();
+    public Integer getViewCount();
     public String getWriteDatetime();
     public Integer getCommentCount();
     public Integer getHeartCount();

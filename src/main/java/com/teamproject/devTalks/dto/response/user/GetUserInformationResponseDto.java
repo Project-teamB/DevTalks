@@ -39,7 +39,5 @@ public class GetUserInformationResponseDto extends ResponseDto {
         this.userHashTag = hashtagList;
         this.recommendationCount = recommendationCount;
 
-
-
     }
 }

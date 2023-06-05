@@ -1,13 +1,12 @@
 package com.teamproject.devTalks.dto.request.board.information;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 public class PatchInformationBoardRequestDto {
@@ -21,13 +20,5 @@ public class PatchInformationBoardRequestDto {
     @NotBlank
     private String contentSource;
     private List<String> boardHashtag;
-
-    public PatchInformationBoardRequestDto(PatchInformationBoardRequestDto dto) {
-        this.informationBoardNumber = dto.getInformationBoardNumber();
-        this.informationBoardTitle = dto.getInformationBoardTitle();
-        this.informationBoardContent = dto.getInformationBoardContent();
-        this.informationBoardImageUrl = dto.getInformationBoardImageUrl();
-        this.contentSource = dto.getContentSource();
-        this.boardHashtag = dto.getBoardHashtag();
-    }
+    
 }

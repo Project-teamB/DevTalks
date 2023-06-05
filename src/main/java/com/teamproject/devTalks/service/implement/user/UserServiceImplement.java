@@ -7,6 +7,7 @@ import com.teamproject.devTalks.dto.response.user.FindUserEmailResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetMyInfoResponseDto;
 import com.teamproject.devTalks.dto.response.user.GetUserInformationResponseDto;
 import com.teamproject.devTalks.dto.response.user.SignInResponseDto;
+import com.teamproject.devTalks.entity.chat.UserBlockEntity;
 import com.teamproject.devTalks.entity.hashTag.UserHashtagEntity;
 import com.teamproject.devTalks.entity.recommendation.RecommendationEntity;
 import com.teamproject.devTalks.entity.report.ReportEntity;
@@ -14,6 +15,7 @@ import com.teamproject.devTalks.entity.user.BlackListEntity;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import com.teamproject.devTalks.provider.JwtProvider;
 import com.teamproject.devTalks.provider.MailProvider;
+import com.teamproject.devTalks.repository.chat.UserBlockRepository;
 import com.teamproject.devTalks.repository.hashTag.UserHashtagRepository;
 import com.teamproject.devTalks.repository.recommendation.RecommendationRepository;
 import com.teamproject.devTalks.repository.report.ReportRepository;
@@ -27,9 +29,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.security.auth.Subject;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +50,7 @@ public class UserServiceImplement implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final MailProvider mailProvider;
+    private final UserBlockRepository userBlockRepository;
 
     @Override
     public ResponseEntity<ResponseDto> userSignUp(UserSignUpRequestDto dto) {
@@ -119,7 +127,7 @@ public class UserServiceImplement implements UserService {
                 return CustomResponse.signInFailed();
 
             String jwt = jwtProvider.createJwt(userEmail, ROLE);
-            body = new SignInResponseDto(jwt);
+            body = new SignInResponseDto(jwt);     
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -134,7 +142,7 @@ public class UserServiceImplement implements UserService {
     public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail) {
 
         GetMyInfoResponseDto body = null;
-        List<String> hashtagList = new ArrayList<>();
+        List<String> hashtagList = new ArrayList<>();        
 
         try {
 
@@ -154,7 +162,9 @@ public class UserServiceImplement implements UserService {
 
             int recommendationCount = recommendation.size();
 
-            body = new GetMyInfoResponseDto(hashtagList, userEntity, recommendationCount);
+            List<String> blockUserNicknames = userBlockRepository.findAllBlockUserNicknameByUserNumber(userNumber);
+            
+            body = new GetMyInfoResponseDto(hashtagList, userEntity, recommendationCount, blockUserNicknames);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -358,6 +368,7 @@ public class UserServiceImplement implements UserService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // 비밀번호찾기
     @Override
     public ResponseEntity<ResponseDto> findUserPassword(FindUserPasswordRequestDto dto) {
         
@@ -367,11 +378,18 @@ public class UserServiceImplement implements UserService {
             // 존재하지 않는 유저
             boolean existsUser = userRepository.existsByUserEmail(userEmail);    
             if (!existsUser) return CustomResponse.noExistUser();
-
+            String text = UUID.randomUUID().toString();
             // 메일 보내기
-            mailProvider.sendMail(userEmail, "임시 비밀번호", "qwerqwer111!!");
-
-
+            mailProvider.sendMail(userEmail, "임시비밀번호", text);
+            
+            // 현재비밀번호를 임시비밀번호로 바꾸기
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+        
+            String temporaryPassword = text;
+            String encodedTemporaryPassword = passwordEncoder.encode(temporaryPassword);
+            userEntity.setUserPassword(encodedTemporaryPassword);
+            userRepository.save(userEntity);
+            
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -379,6 +397,34 @@ public class UserServiceImplement implements UserService {
         return CustomResponse.success();
     }
 
-    
+    @Override
+    public boolean isExistedUser(String userEmail) {
+        
+        boolean checkExistedUser = false;
+
+        try {
+            checkExistedUser = userRepository.existsByUserEmail(userEmail);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
+        return checkExistedUser;
+
+    }
+
+    @Override
+    public Integer findByUserEmailEquals(String userEmail) {
+
+        try { 
+            Integer userNumber = userRepository.findByUserEmailEquals(userEmail);
+            if (userNumber != null) return userNumber;
+
+         } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+         }         
+         return null;
+
+    }
 
 }

@@ -15,7 +15,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
         public QnaBoardEntity findByQnaBoardNumber(int qnaBoardNumber);
 
         @Query(value = "SELECT " +
-                        "Q.qna_board_number AS qnaBoardNumber, " +
+                        "Q.qna_board_number AS qnaBoardNumber, " + // 요안에 있는 내용을 가져옴
                         "Q.qna_title AS qnaTitle, " +
                         "Q.qna_board_image_url AS qnaBoardImageUrl, " +
                         "Q.write_datetime AS writeDatetime, " +
@@ -31,7 +31,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
                         "LEFT JOIN qna_heart H " +
                         "ON Q.qna_board_number = H.qna_board_number " +
                         "group by qnaBoardNumber " +
-                        "order by writeDatetime DESC ", nativeQuery = true // sql문법그대로 jpa에서 쓸수 있게 해주는거
+                        "order by writeDatetime DESC ", nativeQuery = true // sql문법그대로 jpa에서 쓸수 있게 해주는거, 이거 내용다같이 가져온거
         )
         public List<QnaBoardListResultSet> getListOrderByWriteDatetime();
 
@@ -115,7 +115,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
                         "ON Q.qna_board_number = C.qna_board_number " +
                         "LEFT JOIN qna_heart H " +
                         "ON Q.qna_board_number = H.qna_board_number " +
-                        "WHERE Q.qna_board_title LIKE ? " +
+                        "WHERE Q.qna_title LIKE ? " +
                         "group by qnaBoardNumber " +
                         "order by writeDatetime DESC ", nativeQuery = true // sql문법그대로 jpa에서 쓸수 있게 해주는거
         )

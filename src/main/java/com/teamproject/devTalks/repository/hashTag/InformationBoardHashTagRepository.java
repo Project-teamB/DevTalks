@@ -14,7 +14,6 @@ import com.teamproject.devTalks.entity.primaryKey.information.InformationHashtag
 public interface InformationBoardHashTagRepository extends JpaRepository<InformationBoardHashTagEntity, InformationHashtagPk> {
 
     public List<InformationBoardHashTagEntity> findByInformationBoardNumber(Integer informationBoardNumber);
-
     
     @Transactional
     void deleteByInformationBoardNumber(Integer informationBoardNumber);

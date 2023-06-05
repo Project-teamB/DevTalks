@@ -3,7 +3,9 @@ package com.teamproject.devTalks.repository.user;
 import com.teamproject.devTalks.entity.resultSet.UserListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +27,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     public UserEntity findByUserNumber(Integer userNumber);
     public UserEntity findByUserPhoneNumber(String userPhoneNumber);
 
-
     @Transactional
     public void deleteByUserEmail(String userEmail);
 
@@ -43,4 +44,34 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     )
 
     public List<UserListResultSet> getUserList();
+
+    @Query(value = "SELECT " +
+    "U.user_number AS userNumber " +
+    "FROM user U " +
+    "WHERE U.user_email = :userEmail"
+    , nativeQuery = true)
+    public Integer findByUserEmailEquals(@Param("userEmail") String userEmail);
+    
+    @Query(value = "SELECT " +
+    "U.user_number AS userNumber " +
+    "FROM user U " +
+    "WHERE U.user_nickname = :userNickname"
+    , nativeQuery = true)
+    public Integer findByUserNicknameEquals(@Param("userNickname") String userNickname);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE User U " +
+    "SET U.user_status = true " +
+    "WHERE U.user_email = :userEmail"
+    , nativeQuery = true)
+    public void setUserStatusTrue(@Param("userEmail") String userEmail);
+
+    @Query(value = "SELECT " +
+    "U.chat_acceptance AS chatAcceptance " +
+    "FROM user U " +
+    "WHERE U.user_number = :userNumber"
+    , nativeQuery = true)
+    public Byte findByChatAcceptanceTrue(@Param("userNumber") Integer userNumber);
 }

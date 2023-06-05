@@ -1,7 +1,5 @@
 package com.teamproject.devTalks.entity.hashTag;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -16,12 +14,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="RecruitHashtag")
-@Table(name="RecruitHashtag")
+@Entity(name="recruitHashtag")
+@Table(name="recruitHashtag")
 @IdClass(RecruitHashtagPk.class)
 public class RecruitBoardHashTagEntity {
     @Id
     private int recruitBoardNumber;
     @Id
     private String boardHashTag;
+
 }

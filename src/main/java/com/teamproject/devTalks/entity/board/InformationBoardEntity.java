@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 import com.teamproject.devTalks.dto.request.board.information.PatchInformationBoardRequestDto;
 import com.teamproject.devTalks.dto.request.board.information.PostInformationBoardRequestDto;
-
 import com.teamproject.devTalks.entity.user.UserEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +44,7 @@ public class InformationBoardEntity {
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
 
+        this.informationBoardNumber = getInformationBoardNumber();
         this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.writerNickname = userEntity.getUserNickname();
         this.writerEmail = userEntity.getUserEmail();
@@ -55,16 +56,19 @@ public class InformationBoardEntity {
         this.writeDatetime = writeDatetime;
     }
 
-    public InformationBoardEntity(String userEmail, PatchInformationBoardRequestDto dto) {
+    public InformationBoardEntity(UserEntity userEntity, PatchInformationBoardRequestDto dto) {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-        this.writerProfileImageUrl = getWriterProfileImageUrl();
-        this.writerNickname = getWriterNickname();
+        this.informationBoardNumber = dto.getInformationBoardNumber();
+        this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
+        this.writerNickname = userEntity.getUserNickname();
         this.writeDatetime = dateFormat.format(now);
         this.informationBoardTitle = dto.getInformationBoardTitle();
         this.informationBoardContent = dto.getInformationBoardContent();
         this.informationBoardImageUrl = dto.getInformationBoardImageUrl();
+        this.contentSource = dto.getContentSource();
+        
     }
 
 }

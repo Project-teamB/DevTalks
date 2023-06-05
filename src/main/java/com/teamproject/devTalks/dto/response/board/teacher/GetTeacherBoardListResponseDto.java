@@ -11,14 +11,15 @@ import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
-public class GetTeacherBoardListResponseDto extends ResponseDto{
+public class GetTeacherBoardListResponseDto extends ResponseDto {
     private List<TeacherBoardSummary> teacherBoardList;
+
     public GetTeacherBoardListResponseDto(List<TeacherBoardListResultSet> teacherBoardEntityList) {
         super("SU", "SUCCESS");
 
         List<TeacherBoardSummary> teacherBoardList = new ArrayList<>();
 
-        for (TeacherBoardListResultSet result: teacherBoardEntityList) {
+        for (TeacherBoardListResultSet result : teacherBoardEntityList) {
             TeacherBoardSummary teacherBoardSummary = new TeacherBoardSummary(result);
             teacherBoardList.add(teacherBoardSummary);
         }
@@ -43,17 +44,15 @@ class TeacherBoardSummary {
     private int heartCount;
     private String teacherBoardHashtag;
 
-    public TeacherBoardSummary(TeacherBoardListResultSet teacherBoardEntity){
+    public TeacherBoardSummary(TeacherBoardListResultSet teacherBoardEntity) {
         this.teacherBoardNumber = teacherBoardEntity.getteacherBoardNumber();
         this.teacherTitle = teacherBoardEntity.getteacherTitle();
-        this.teacherContent = teacherBoardEntity.getteacherContent();
         this.writeDatetime = teacherBoardEntity.getwriteDatetime();
         this.viewCount = teacherBoardEntity.getviewCount();
         this.writerEmail = teacherBoardEntity.getwriterEmail();
         this.writerNickname = teacherBoardEntity.getwriterNickname();
         this.writerProfileImageUrl = teacherBoardEntity.getwriterProfileImageUrl();
 
-        this.teacherBoardImageUrl = teacherBoardEntity.getteacherBoardImageUrl();
         this.heartCount = teacherBoardEntity.getheartCount();
         this.teacherBoardHashtag = teacherBoardEntity.gethashTag();
     }

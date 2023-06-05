@@ -39,6 +39,20 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> notExistChatRoomNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NR", "Non-Existent Chat Room Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> notExistChatMessageNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NM", "Non-Existent Chat Message Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> notExistUserPhoneNumber() {
         ResponseDto errorBody = new ResponseDto("NP", "Non-Existent userPhoneNumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
@@ -47,6 +61,20 @@ public class CustomResponse {
     public static ResponseEntity<ResponseDto> noExistUser() {
 
         ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> noExistAdmin() {
+
+        ResponseDto errorBody = new ResponseDto("NA", "Non-Existent Admin");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> neverBlockedUser() {
+
+        ResponseDto errorBody = new ResponseDto("NK", "user I've never blocked");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
 
     }
@@ -86,6 +114,14 @@ public class CustomResponse {
 
     }
 
+    
+    public static ResponseEntity<ResponseDto> existChatRoom() {
+
+        ResponseDto errorBody = new ResponseDto("EC", "Existent Chat Room");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
     public static ResponseEntity<ResponseDto> signInFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign In failed");
@@ -117,6 +153,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    public static ResponseEntity<ResponseDto> alreadyBlocked() {
+        ResponseDto body = new ResponseDto("AB", "ALREADY Blocked");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     public static ResponseEntity<ResponseDto> noExistRecommendation() {
         ResponseDto body = new ResponseDto("NR", "Non-Exist Recommendation");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
@@ -132,6 +173,20 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    public static ResponseEntity<ResponseDto> cannotBlockToSelf() {
+        ResponseDto body = new ResponseDto("CB", "You cannot Block yourself");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+    public static ResponseEntity<ResponseDto> notAcceptChatUser() {
+        ResponseDto body = new ResponseDto("NH", "This user did not accept the chat");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> blockedChatUser() {
+        ResponseDto body = new ResponseDto("BU", "The user who blocked me");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     public static ResponseEntity<ResponseDto> alreadyBlacklisted() {
         ResponseDto body = new ResponseDto("AB", "ALREADY BLACKLISTED");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
@@ -141,6 +196,5 @@ public class CustomResponse {
         ResponseDto body = new ResponseDto("NR", "No Report");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
-
 
 }

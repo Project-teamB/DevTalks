@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.teamproject.devTalks.dto.request.comment.qna.PatchQnaCommentRequestDto;
 import com.teamproject.devTalks.dto.request.comment.qna.PostQnaCommentRequestDto;

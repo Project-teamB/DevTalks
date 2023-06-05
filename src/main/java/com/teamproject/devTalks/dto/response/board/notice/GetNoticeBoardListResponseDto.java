@@ -2,6 +2,7 @@ package com.teamproject.devTalks.dto.response.board.notice;
 
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.board.NoticeBoardEntity;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

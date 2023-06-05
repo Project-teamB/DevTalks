@@ -10,7 +10,10 @@ import com.teamproject.devTalks.entity.primaryKey.teacher.TeacherHeartPk;
 
 @Repository
 public interface TeacherHeartRepository extends JpaRepository<TeacherHeartEntity, TeacherHeartPk> {
-    List<TeacherHeartEntity> findByTeacherBoardNumber(int teacherBoardNumber);
+
+    
+
+    List<TeacherHeartEntity> findAllByTeacherBoardNumber(int teacherBoardNumber);
     @Query(value="SELECT user_number FROM teacher_heart WHERE teacher_board_number = ?", nativeQuery=true)
     List<String> findByTeacherBoardNumberToUserNumber(int teacherBoardNumber);
 

@@ -3,7 +3,6 @@ package com.teamproject.devTalks.dto.response.board.teacher;
 import java.util.ArrayList;
 import java.util.List;
 import com.teamproject.devTalks.dto.response.ResponseDto;
-import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 import com.teamproject.devTalks.entity.view.GetTeacherListViewEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -60,7 +60,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
             UserEntity userEntity = userRepository.findByUserEmail(teacherBoardWriterEmail);
 
             List<TeacherHeartEntity> teacherHeartEntities = 
-                    teacherHeartRepository.findByTeacherBoardNumber(teacherBoardNumber);
+                    teacherHeartRepository.findAllByTeacherBoardNumber(teacherBoardNumber);
             List<String> heartList = teacherHeartRepository.findByTeacherBoardNumberToUserNumber(teacherBoardNumber);
 
             new GetTeacherBoardResponseDto(teacherBoardEntity, userEntity, viewCount, teacherHeartEntities, heartList);
@@ -75,7 +75,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
 
     // 모집상태에 따른 정렬
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(String teacherSort) {
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(String teacherSort) {
 
         GetTeacherBoardListResponseDto body = null;
 
@@ -104,22 +104,18 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     // 검색 기능
     @Override
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardSearchList(
-                    String group, String searchKeyword, Integer teacherBoardNumber) {
+                    String group, String searchKeyword) {
 
+            GetTeacherBoardListResponseDto body = null;
         try {
-            TeacherBoardEntity teacherBoardEntity = 
-                    teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
-            if (teacherBoardEntity == null)
-                return CustomResponse.notExistBoardNumber();
-
-            List<TeacherBoardListResultSet> resultSet = new ArrayList<>();
+            List<GetTeacherListViewEntity> resultSet = new ArrayList<>();
 
             if (group.equals("title"))
                 resultSet = teacherBoardRepository.findByTeacherBoardTitleContaining("%" + searchKeyword + "%");
             if (group.equals("nickname"))
                 resultSet = teacherBoardRepository.findByWriterNicknameContaining("%" + searchKeyword + "%");
-            // if (group.equals("content"))
-            //     resultSet = teacherBoardRepository.findByTeacherBoardContentContaining("%" + searchKeyword + "%");
+
+                body = new GetTeacherBoardListResponseDto(resultSet);
 
 
         } catch (Exception exception) {
@@ -140,7 +136,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
             if (userEntity == null)
                 return CustomResponse.authenticationFailed();
 
-            TeacherBoardEntity teacherBoardEntity = new TeacherBoardEntity(userEmail, dto);
+            TeacherBoardEntity teacherBoardEntity = new TeacherBoardEntity(userEntity, dto);
             teacherBoardRepository.save(teacherBoardEntity);
 
             for (String hashTag : hashtagList) {
@@ -162,6 +158,10 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
 
         List<String> hashtagList = dto.getBoardHashtag();
         List<TeacherBoardHashTagEntity> teacherBoardHashtagList = new ArrayList<>();
+        Integer techerBoardNumber = dto.getTeacherBoardNumber();
+        String teacherBoardTitle = dto.getTeacherTitle();
+        String teacherBoardContent = dto.getTeacherContent();
+        String teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
 
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
@@ -169,7 +169,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
                 return CustomResponse.authenticationFailed();
 
             TeacherBoardEntity teacherBoardEntity = 
-                    teacherBoardRepository.findByTeacherBoardNumber(0);
+                    teacherBoardRepository.findByTeacherBoardNumber(techerBoardNumber);
             if (teacherBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
@@ -177,8 +177,9 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
             if (!equalWriter)
                 return CustomResponse.noPermission();
 
-            TeacherBoardEntity teacherBoardEntityPathch = new TeacherBoardEntity(userEntity, dto);
-            teacherBoardRepository.save(teacherBoardEntityPathch);
+                teacherBoardEntity.setTeacherTitle(teacherBoardTitle);
+                teacherBoardEntity.setTeacherContent(teacherBoardContent);
+                teacherBoardEntity.setTeacherBoardImageUrl(teacherBoardImageUrl);
 
             int teacherBoardNumber1 = teacherBoardEntity.getTeacherBoardNumber();
             List<TeacherBoardHashTagEntity> currentTeacherBoardHashTagEntities = teacherBoardHashTagRepository
@@ -192,6 +193,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
                 teacherBoardHashtagList.add(teacherBoardHashTagEntity);
             }
             teacherBoardHashTagRepository.saveAll(teacherBoardHashtagList);
+            teacherBoardRepository.save(teacherBoardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -205,7 +207,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
 
         try {
             TeacherBoardEntity teacherBoardEntity = 
-                    teacherBoardRepository.findByTeacherBoardNumber(0);
+                    teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
             if (teacherBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
@@ -220,8 +222,11 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
             int teacherBoardNumber1 = teacherBoardEntity.getTeacherBoardNumber();
             List<TeacherBoardHashTagEntity> currentTeacherBoardHashTagEntities = teacherBoardHashTagRepository
                     .findAllByTeacherBoardNumber(teacherBoardNumber1);
-
             teacherBoardHashTagRepository.deleteAll(currentTeacherBoardHashTagEntities);
+            List<TeacherHeartEntity> currentTeacherBoardHeartEntities = teacherHeartRepository
+                    .findAllByTeacherBoardNumber(teacherBoardNumber1);
+            teacherHeartRepository.deleteAll(currentTeacherBoardHeartEntities);
+            teacherBoardRepository.delete(teacherBoardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -233,13 +238,15 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     @Override
     public ResponseEntity<ResponseDto> postTeacherHeart(String userEmail, PostTeacherHeartRequestDto dto) {
 
+        Integer techerBoardNumber = dto.getTeacherBoardNumber();
+
         try {
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null)
                 return CustomResponse.noExistUser();
 
             TeacherBoardEntity teacherBoardEntity = 
-                    teacherBoardRepository.findByTeacherBoardNumber(0);
+                    teacherBoardRepository.findByTeacherBoardNumber(techerBoardNumber);
             if (teacherBoardEntity == null)
                 return CustomResponse.notExistBoardNumber();
 
@@ -257,15 +264,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     public ResponseEntity<ResponseDto> deleteTeacherHeart(String userEmail, Integer teacherBoardNumber) {
 
         try {
-            TeacherBoardEntity teacherBoardEntity = 
-                    teacherBoardRepository.findByTeacherBoardNumber(0);
-            if (teacherBoardEntity == null)
-                return CustomResponse.notExistBoardNumber();
-
-            boolean equalWriter = teacherBoardEntity.getWriterEmail().equals(userEmail);
-            if (!equalWriter)
-                return CustomResponse.noPermission();
-
             UserEntity userEntity = userRepository.findByUserEmail(userEmail);
             if (userEntity == null)
                 return CustomResponse.noExistUser();

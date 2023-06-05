@@ -181,6 +181,8 @@ public class InformationBoardServiceImplement implements InformationBoardService
         String informationBoardTitle = dto.getInformationBoardTitle();
         String informationBoardContent = dto.getInformationBoardContent();
         String informationBoardImageUrl = dto.getInformationBoardImageUrl();
+        List<String> hashtagList = dto.getBoardHashtag();        
+        List<InformationBoardHashTagEntity> informationHashtagList = new ArrayList<>();
 
         try {
             InformationBoardEntity informationBoardEntity = 
@@ -193,7 +195,15 @@ public class InformationBoardServiceImplement implements InformationBoardService
             informationBoardEntity.setInformationBoardTitle(informationBoardTitle);
             informationBoardEntity.setInformationBoardContent(informationBoardContent);
             informationBoardEntity.setInformationBoardImageUrl(informationBoardImageUrl);
-
+            List<InformationBoardHashTagEntity> currentHashtagList = 
+            informationBoardHashTagRepository.findByInformationBoardNumber(informationBoardNumber);
+            if(currentHashtagList != null) informationBoardHashTagRepository.deleteAll(currentHashtagList);
+            for (String hashtag : hashtagList) {
+                InformationBoardHashTagEntity informationBoardHashTagEntity = 
+                new InformationBoardHashTagEntity(hashtag, informationBoardNumber);
+                informationHashtagList.add(informationBoardHashTagEntity);
+            }
+            informationBoardHashTagRepository.saveAll(informationHashtagList);
             informationBoardRepository.save(informationBoardEntity);
 
         } catch (Exception exception) {

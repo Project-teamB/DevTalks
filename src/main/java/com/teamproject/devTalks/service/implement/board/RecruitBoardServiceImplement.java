@@ -114,7 +114,7 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
 
             List<RecruitBoardListResultSet> resultSet = null;
 
-            if(recruitSort.equals("time")) 
+            if(recruitSort.equals("writeDateTime")) 
                 resultSet = recruitBoardRepository.getRecruitBoardListOrderByWriteDateTime();
             
             if(recruitSort.equals("heartCount"))
@@ -201,6 +201,8 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
         String recruitBoardTitle = dto.getRecruitBoardTitle();
         String recruitBoardContent = dto.getRecruitBoardContent();
         String recruitBoardImageUrl = dto.getRecruitBoardImageUrl();
+        List<String> boardHashTagList = dto.getBoardHashTag();
+        List<RecruitBoardHashTagEntity> recruitBoardHashTagList = new ArrayList<>();
         
 
         try {
@@ -224,6 +226,22 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             recruitBoardEntity.isRecruitmentStatus();
 
             recruitBoardRepository.save(recruitBoardEntity);
+
+            List<RecruitBoardHashTagEntity> currentBoardHashTag = 
+                recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber);
+
+            recruitBoardHashTagRepository.deleteAll(currentBoardHashTag);
+
+            if (currentBoardHashTag != null) {
+                for(String boardHashTag: boardHashTagList) {
+
+                    RecruitBoardHashTagEntity recruitBoardHashTagEntity = new RecruitBoardHashTagEntity(recruitBoardNumber, boardHashTag);
+                    recruitBoardHashTagList.add(recruitBoardHashTagEntity);
+
+                }
+            }
+
+            recruitBoardHashTagRepository.saveAll(recruitBoardHashTagList);
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -252,8 +270,12 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
             boolean equalWriter = recruitBoardEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
-            recruitCommentRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
-            recruitHeartRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            if(recruitCommentRepository.findByRecruitBoardNumber(recruitBoardNumber) != null)
+                recruitCommentRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            if(recruitHeartRepository.findByRecruitBoardNumber(recruitBoardNumber) != null)
+                recruitHeartRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            if(recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber) != null)
+                recruitBoardHashTagRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
             recruitBoardRepository.delete(recruitBoardEntity);
 
         } catch (Exception exception) {
@@ -411,12 +433,19 @@ public class RecruitBoardServiceImplement implements RecruitBoardService {
         
         try {
             boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
-            if (!existAdmin) return CustomResponse.authenticationFailed();
-
-            recruitBoardRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
-            recruitHeartRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
-            recruitBoardRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            if (!existAdmin) return CustomResponse.noExistAdmin();
             
+            RecruitBoardEntity recruitBoardEntity = recruitBoardRepository.findByRecruitBoardNumber(recruitBoardNumber);
+            if(recruitBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            if(recruitCommentRepository.findByRecruitBoardNumber(recruitBoardNumber) != null)
+                recruitCommentRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            if(recruitHeartRepository.findByRecruitBoardNumber(recruitBoardNumber) != null)
+                recruitHeartRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            if(recruitBoardHashTagRepository.findAllByRecruitBoardNumber(recruitBoardNumber) != null)
+                recruitBoardHashTagRepository.deleteByRecruitBoardNumber(recruitBoardNumber);
+            recruitBoardRepository.delete(recruitBoardEntity);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();

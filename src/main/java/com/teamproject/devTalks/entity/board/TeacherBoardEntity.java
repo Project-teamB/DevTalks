@@ -1,7 +1,10 @@
 package com.teamproject.devTalks.entity.board;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,21 +39,23 @@ public class TeacherBoardEntity {
     private String career;
     private String lectureUrl;
     private String category;
-    private boolean recruitmentStatus;
 
-    public TeacherBoardEntity(String userEmail, PostTeacherBoardRequestDto dto) {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public TeacherBoardEntity(UserEntity userEntity, PostTeacherBoardRequestDto dto) {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = 
+            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
 
         this.teacherTitle = dto.getTeacherTitle();
-        this.writeDatetime = now.format(formatter);
-        this.writerEmail = getWriterEmail();
-        this.writerNickname = getWriterNickname();
+        this.writeDatetime = writeDatetime;
+        this.viewCount = 0;
+        this.writerEmail = userEntity.getUserEmail();
+        this.writerNickname = userEntity.getUserNickname();
+        this.writerProfileImageUrl = userEntity.getUserProfileImageUrl();
         this.teacherContent = dto.getTeacherContent();
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
         this.lectureUrl = dto.getLectureUrl();
-        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 
     public TeacherBoardEntity(UserEntity userEntity, PatchTeacherBoardRequestDto dto) {
@@ -60,12 +65,11 @@ public class TeacherBoardEntity {
         this.teacherBoardNumber = getTeacherBoardNumber();
         this.teacherTitle = dto.getTeacherTitle();
         this.writeDatetime = now.format(formatter);
-        this.writerEmail = getWriterEmail();
-        this.writerNickname = getWriterNickname();
+        this.writerEmail = userEntity.getUserEmail();
+        this.writerNickname = userEntity.getUserNickname();
         this.teacherContent = dto.getTeacherContent();
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
         this.lectureUrl = dto.getLectureUrl();
-        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 }

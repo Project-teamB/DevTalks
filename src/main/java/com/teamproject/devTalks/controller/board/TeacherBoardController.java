@@ -40,11 +40,11 @@ public class TeacherBoardController {
 
     //정렬 : sort(시간, 좋아요, 조회수)
     @GetMapping("/list/{sort}")
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(
         @PathVariable("sort") String teacherSort
     ) {
         ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-            teacherBoardService.getTeacherBoardRecruitmentList(teacherSort);
+            teacherBoardService.getTeacherBoardList(teacherSort);
         return response;
     }
 
@@ -56,7 +56,7 @@ public class TeacherBoardController {
         @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
     ) {
         ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-            teacherBoardService.getTeacherBoardSearchList(group, searchKeyword, teacherBoardNumber);
+            teacherBoardService.getTeacherBoardSearchList(group, searchKeyword);
         return response;
     }
 

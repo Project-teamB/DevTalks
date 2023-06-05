@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostTeacherBoardRequestDto {
     @NotBlank
-    @Email
-    private String writerEmail;
-    @NotBlank
     private String teacherTitle;
     private String category;
     private String lectureUrl;
@@ -21,16 +18,13 @@ public class PostTeacherBoardRequestDto {
     private String teacherBoardImageUrl;
     private String career;
     private List<String> boardHashtag;
-    private boolean recruitmentStatus;
 
     public PostTeacherBoardRequestDto(PostTeacherBoardRequestDto dto){
-        this.writerEmail = dto.getWriterEmail();
         this.teacherTitle = dto.getTeacherTitle();
         this.category = dto.getCategory();
         this.lectureUrl = dto.getLectureUrl();
         this.teacherContent = dto.getTeacherContent();
         this.teacherBoardImageUrl = dto.getTeacherBoardImageUrl();
         this.career = dto.getCareer();
-        this.recruitmentStatus = dto.isRecruitmentStatus();
     }
 }

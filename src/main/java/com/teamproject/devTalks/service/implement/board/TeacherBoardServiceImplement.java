@@ -43,6 +43,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     @Override
     public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(Integer teacherBoardNumber) {
 
+        GetTeacherBoardResponseDto body = null;
         try {
             if (teacherBoardNumber == null)
                 return CustomResponse.validationFailed();
@@ -63,13 +64,13 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
                     teacherHeartRepository.findAllByTeacherBoardNumber(teacherBoardNumber);
             List<String> heartList = teacherHeartRepository.findByTeacherBoardNumberToUserNumber(teacherBoardNumber);
 
-            new GetTeacherBoardResponseDto(teacherBoardEntity, userEntity, viewCount, teacherHeartEntities, heartList);
+            body = new GetTeacherBoardResponseDto(teacherBoardEntity, userEntity, viewCount, teacherHeartEntities, heartList);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 

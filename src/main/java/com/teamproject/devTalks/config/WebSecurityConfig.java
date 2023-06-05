@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                 .antMatchers("/admin/sign-up","/admin/sign-in").permitAll()
                 .antMatchers("/web-socket/**").permitAll()
                 .antMatchers(HttpMethod.PATCH, "/user/update").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/board/notice/**", "/board/qna/admin/**", "/board/information/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/board/notice/**", "/board/qna/admin/**", "/board/information/admin/**", "/board/teacher/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/board/**", "/notice/**","/recommendation").permitAll()
                 .antMatchers(HttpMethod.POST, "/board/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/board/recruit/admin/*").hasRole("ADMIN")

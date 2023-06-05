@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.teamproject.devTalks.dto.response.ResponseDto;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
+import com.teamproject.devTalks.entity.view.GetTeacherListViewEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,17 +13,20 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class GetTeacherBoardListResponseDto extends ResponseDto {
+
     private List<TeacherBoardSummary> teacherBoardList;
 
-    public GetTeacherBoardListResponseDto(List<TeacherBoardListResultSet> teacherBoardEntityList) {
+    public GetTeacherBoardListResponseDto(List<GetTeacherListViewEntity> teacherBoardEntityList) {
         super("SU", "SUCCESS");
 
         List<TeacherBoardSummary> teacherBoardList = new ArrayList<>();
 
-        for (TeacherBoardListResultSet result : teacherBoardEntityList) {
+        for (GetTeacherListViewEntity result : teacherBoardEntityList) {
             TeacherBoardSummary teacherBoardSummary = new TeacherBoardSummary(result);
             teacherBoardList.add(teacherBoardSummary);
         }
+
+        this.teacherBoardList = teacherBoardList;
     }
 }
 
@@ -39,22 +43,19 @@ class TeacherBoardSummary {
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImageUrl;
-
     private String teacherBoardImageUrl;
     private int heartCount;
-    private String teacherBoardHashtag;
 
-    public TeacherBoardSummary(TeacherBoardListResultSet teacherBoardEntity) {
-        this.teacherBoardNumber = teacherBoardEntity.getteacherBoardNumber();
-        this.teacherTitle = teacherBoardEntity.getteacherTitle();
-        this.writeDatetime = teacherBoardEntity.getwriteDatetime();
-        this.viewCount = teacherBoardEntity.getviewCount();
-        this.writerEmail = teacherBoardEntity.getwriterEmail();
-        this.writerNickname = teacherBoardEntity.getwriterNickname();
-        this.writerProfileImageUrl = teacherBoardEntity.getwriterProfileImageUrl();
-
-        this.heartCount = teacherBoardEntity.getheartCount();
-        this.teacherBoardHashtag = teacherBoardEntity.gethashTag();
-        this.heartCount = teacherBoardEntity.getheartCount() != null ? teacherBoardEntity.getheartCount() :0 ;
+    public TeacherBoardSummary(GetTeacherListViewEntity entity) {
+        this.teacherBoardNumber = entity.getTeacherBoardNumber();
+        this.teacherTitle = entity.getTeacherBoardTitle();
+        this.teacherContent = entity.getTeacherBoardContent();
+        this.writeDatetime = entity.getWriteDatetime();
+        this.teacherBoardImageUrl = entity.getTeacherBoardImageUrl();
+        this.writerEmail = entity.getWriterEmail();
+        this.writerNickname = entity.getWriterNickname();
+        this.writerProfileImageUrl = entity.getWriterProfileImageUrl();
+        this.viewCount = entity.getViewCount();
+        this.heartCount = entity.getHeartCount();
     }
 }

@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/user/sign-up", "/user/sign-in", "/user/{userNumber}","/user/find-email","/user/find-password").permitAll()
                 .antMatchers("/admin/sign-up","/admin/sign-in").permitAll()
-                .antMatchers("/web-socket").permitAll()
+                .antMatchers("/web-socket/**").permitAll()
                 .antMatchers(HttpMethod.PATCH, "/user/update").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/board/notice/**", "/board/qna/admin/**", "/board/information/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/board/**", "/notice/**","/recommendation").permitAll()

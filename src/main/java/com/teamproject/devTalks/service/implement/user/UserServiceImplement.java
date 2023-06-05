@@ -429,8 +429,15 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public boolean changeUserStatus(String userEmail) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changeUserStatus'");
+
+        try {
+            userRepository.changeUserStatus(userEmail);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
 }

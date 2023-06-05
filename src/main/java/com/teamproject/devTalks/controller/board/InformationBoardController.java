@@ -153,7 +153,7 @@ public class InformationBoardController {
         @DeleteMapping("/admin/{informationBoardNumber}")
         public ResponseEntity<ResponseDto> deleteAdminInformationBoard(
                 @AuthenticationPrincipal AdminPrinciple adminPrinciple,
-                @PathVariable("informationBoardNumber") int informationBoardNumber) {
+                @PathVariable("informationBoardNumber") Integer informationBoardNumber) {
             String adminEmail = adminPrinciple.getAdminEmail();
             ResponseEntity<ResponseDto> response = 
             informationBoardService.deleteAdminInformationBoard(adminEmail, informationBoardNumber);
@@ -163,7 +163,7 @@ public class InformationBoardController {
         @DeleteMapping("/admin/comment/{informationCommentNumber}")
         public ResponseEntity<ResponseDto> deleteAdminInformationComment(
                 @AuthenticationPrincipal AdminPrinciple adminPrinciple,
-                @PathVariable("informationCommentNumber") int informationCommentNumber) {
+                @PathVariable("informationCommentNumber") Integer informationCommentNumber) {
             String adminEmail = adminPrinciple.getAdminEmail();
             ResponseEntity<ResponseDto> response = 
             informationBoardService.deleteAdminInformationComment(adminEmail, informationCommentNumber);

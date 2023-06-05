@@ -55,13 +55,14 @@ public class WebSecurityConfig {
                 .antMatchers("/admin/sign-up","/admin/sign-in").permitAll()
                 .antMatchers("/web-socket").permitAll()
                 .antMatchers(HttpMethod.PATCH, "/user/update").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/board/notice/**", "/board/qna/admin/**", "/board/information/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/board/**", "/notice/**","/recommendation").permitAll()
                 .antMatchers(HttpMethod.POST, "/board/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/board/**","/recommendation").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/board/**","/user/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/notice/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/notice/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "notice/**", "qna/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntiryPoint());
 

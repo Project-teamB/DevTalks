@@ -31,6 +31,6 @@ public interface InformationBoardService {
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardList(String informationSort);
     public ResponseEntity<? super GetInformationBoardListResponseDto> getInformationBoardSearchList(String group, String searchKeyword);
 
-    public ResponseEntity<ResponseDto> deleteAdminInformationBoard(String adminEmail, int informationBoardNumber);
-    public ResponseEntity<ResponseDto> deleteAdminInformationComment(String adminEmail, int informationCommentNumber);
+    public ResponseEntity<ResponseDto> deleteAdminInformationBoard(String adminEmail, Integer informationBoardNumber);
+    public ResponseEntity<ResponseDto> deleteAdminInformationComment(String adminEmail, Integer informationCommentNumber);
 }

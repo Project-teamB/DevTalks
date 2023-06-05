@@ -365,7 +365,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
     }
 
         @Override
-        public ResponseEntity<ResponseDto> deleteAdminInformationComment(String adminEmail, int informationCommentNumber) {
+        public ResponseEntity<ResponseDto> deleteAdminInformationComment(String adminEmail, Integer informationCommentNumber) {
             try {
                 boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
                 if (!existAdmin) return CustomResponse.authenticationFailed();
@@ -380,14 +380,19 @@ public class InformationBoardServiceImplement implements InformationBoardService
         }
 
         @Override
-        public ResponseEntity<ResponseDto> deleteAdminInformationBoard(String adminEmail, int informationBoardNumber) {
+        public ResponseEntity<ResponseDto> deleteAdminInformationBoard(String adminEmail, Integer informationBoardNumber) {
             try {
                 boolean existAdmin = adminRepository.existsByAdminEmail(adminEmail);
-                if (!existAdmin) return CustomResponse.authenticationFailed();
+                if (!existAdmin) return CustomResponse.noExistAdmin();
 
-                informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+                InformationBoardEntity informationBoardEntity = 
+                informationBoardRepository.findByInformationBoardNumber(informationBoardNumber);
+                if (informationBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+                informationCommentRepository.deleteByInformationBoardNumber(informationBoardNumber);
                 informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);
-                informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+                informationBoardHashTagRepository.deleteByInformationBoardNumber(informationBoardNumber);
+                informationBoardRepository.delete(informationBoardEntity);
                 
             } catch (Exception exception) {
                 exception.printStackTrace();

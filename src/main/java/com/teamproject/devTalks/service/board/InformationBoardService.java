@@ -15,7 +15,6 @@ import com.teamproject.devTalks.dto.response.board.information.GetInformationBoa
 @Service
 public interface InformationBoardService {
 
-
     public ResponseEntity<ResponseDto> postInformationBoard(String userEmail, PostInformationBoardRequestDto dto);
     public ResponseEntity<ResponseDto> postInformationComment(String userEmail, PostInformationCommentRequestDto dto);
     public ResponseEntity<ResponseDto> postInformationHeart(String userEmail, PostInformationHeartRequestDto dto);

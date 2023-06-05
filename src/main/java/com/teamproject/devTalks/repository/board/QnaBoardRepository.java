@@ -31,7 +31,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
                         "LEFT JOIN qna_heart H " +
                         "ON Q.qna_board_number = H.qna_board_number " +
                         "group by qnaBoardNumber " +
-                        "order by writeDatetime DESC ", nativeQuery = true // sql문법그대로 jpa에서 쓸수 있게 해주는거, 이거 내용다같이 가져온거
+                        "order by writeDatetime ", nativeQuery = true // sql문법그대로 jpa에서 쓸수 있게 해주는거, 이거 내용다같이 가져온거
         )
         public List<QnaBoardListResultSet> getListOrderByWriteDatetime();
 

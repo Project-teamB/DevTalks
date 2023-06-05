@@ -249,7 +249,7 @@ public class UserServiceImplement implements UserService {
 
             List<UserHashtagEntity> currentUserHashTagEntities = userHashtagRepository.findAllByUserNumber(userNumber);
 
-            userHashtagRepository.deleteAll(currentUserHashTagEntities);
+            if(currentUserHashTagEntities != null )userHashtagRepository.deleteAll(currentUserHashTagEntities);
 
             for (String hashtag : hashtagList) {
 

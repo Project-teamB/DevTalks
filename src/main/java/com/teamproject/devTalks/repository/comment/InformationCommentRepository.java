@@ -11,15 +11,15 @@ import com.teamproject.devTalks.entity.comment.InformationCommentEntity;
 @Repository
 public interface InformationCommentRepository extends JpaRepository<InformationCommentEntity, Integer> {
 
-    List<InformationCommentEntity> findByInformationBoardNumber(int informationBoardNumber);
+    List<InformationCommentEntity> findByInformationBoardNumber(Integer informationBoardNumber);
 
-    public InformationCommentEntity findByInformationCommentNumber(int informationCommentNumber);
-
-    @Transactional
-    void deleteByInformationBoardNumber(int informationBoardNumber);
+    public InformationCommentEntity findByInformationCommentNumber(Integer informationCommentNumber);
 
     @Transactional
-    void deleteByInformationCommentNumber(int informationCommentNumber);
+    void deleteByInformationBoardNumber(Integer informationBoardNumber);
+
+    @Transactional
+    void deleteByInformationCommentNumber(Integer informationCommentNumber);
 
 
 }

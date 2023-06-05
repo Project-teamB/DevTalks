@@ -32,4 +32,6 @@ public interface UserService {
 
     Integer findByUserEmailEquals(String userEmail);
 
+    boolean changeUserStatus(String userEmail);
+
 }

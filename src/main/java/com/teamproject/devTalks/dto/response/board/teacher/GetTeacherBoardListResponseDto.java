@@ -55,5 +55,6 @@ class TeacherBoardSummary {
 
         this.heartCount = teacherBoardEntity.getheartCount();
         this.teacherBoardHashtag = teacherBoardEntity.gethashTag();
+        this.heartCount = teacherBoardEntity.getheartCount() != null ? teacherBoardEntity.getheartCount() :0 ;
     }
 }

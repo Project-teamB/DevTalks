@@ -251,9 +251,11 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
             if (!equalWriter)
                 return CustomResponse.noPermission();
 
-            teacherHeartRepository.deleteByTeacherBoardNumber(teacherBoardNumber);
-            teacherBoardHashTagRepository.deleteByTeacherBoardNumber(teacherBoardNumber);
-            teacherBoardRepository.delete(teacherBoardEntity);
+            int teacherBoardNumber1 = teacherBoardEntity.getTeacherBoardNumber();
+            List<TeacherBoardHashTagEntity> currentTeacherBoardHashTagEntities = teacherBoardHashTagRepository
+                    .findAllByTeacherBoardNumber(teacherBoardNumber1);
+
+            teacherBoardHashTagRepository.deleteAll(currentTeacherBoardHashTagEntities);
 
         } catch (Exception exception) {
             exception.printStackTrace();

@@ -38,25 +38,13 @@ public class TeacherBoardController {
         return response;
     }
 
-    //전체 조회
-    @GetMapping("/list")
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(
-        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
-    ){
-        ResponseEntity<? super GetTeacherBoardListResponseDto> response = 
-            teacherBoardService.getTeacherBoardList(teacherBoardNumber);
-        return response;
-    }
-
-    //정렬 : sort(시간, 좋아요, 조회수) / recruitmentStatus(모집 상태. 모집중:0, 모집완료:1)
-    @GetMapping("/list/{sort}/{recruitmentStatus}")
+    //정렬 : sort(시간, 좋아요, 조회수)
+    @GetMapping("/list/{sort}")
     public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(
-        @PathVariable("sort") String teacherSort, 
-        @PathVariable("recruitmentStatus") String recruitmentStatus,
-        @Valid @PathVariable("teacherBoardNumber") Integer teacherBoardNumber
+        @PathVariable("sort") String teacherSort
     ) {
         ResponseEntity<? super GetTeacherBoardListResponseDto> response =
-            teacherBoardService.getTeacherBoardRecruitmentList(teacherSort, recruitmentStatus, teacherBoardNumber);
+            teacherBoardService.getTeacherBoardRecruitmentList(teacherSort);
         return response;
     }
 

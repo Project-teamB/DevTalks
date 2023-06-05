@@ -9,6 +9,5 @@ public interface TeacherBoardListResultSet {
     public String getwriterNickname();
     public String getwriterProfileImageUrl();
     public Integer getheartCount();
-    public String gethashTag();
-    public int getRecruitmentStatus();
+
 }

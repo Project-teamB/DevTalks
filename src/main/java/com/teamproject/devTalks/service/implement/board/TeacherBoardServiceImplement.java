@@ -5,15 +5,21 @@ import com.teamproject.devTalks.dto.request.board.teacher.PatchTeacherBoardReque
 import com.teamproject.devTalks.dto.request.board.teacher.PostTeacherBoardRequestDto;
 import com.teamproject.devTalks.dto.request.heart.teacher.PostTeacherHeartRequestDto;
 import com.teamproject.devTalks.dto.response.ResponseDto;
+import com.teamproject.devTalks.dto.response.board.qna.GetQnaBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardListResponseDto;
 import com.teamproject.devTalks.dto.response.board.teacher.GetTeacherBoardResponseDto;
 import com.teamproject.devTalks.entity.board.TeacherBoardEntity;
 import com.teamproject.devTalks.entity.hashTag.TeacherBoardHashTagEntity;
 import com.teamproject.devTalks.entity.heart.TeacherHeartEntity;
+import com.teamproject.devTalks.entity.resultSet.QnaBoardListResultSet;
 import com.teamproject.devTalks.entity.resultSet.TeacherBoardListResultSet;
 import com.teamproject.devTalks.entity.user.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.teamproject.devTalks.entity.view.GetTeacherListViewEntity;
+import com.teamproject.devTalks.repository.view.GetTeacherListRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.teamproject.devTalks.repository.board.TeacherBoardRepository;
@@ -32,6 +38,7 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
     private final TeacherBoardHashTagRepository teacherBoardHashTagRepository;
     private final TeacherHeartRepository teacherHeartRepository;
     private final AdminRepository adminRepository;
+    private final GetTeacherListRepository getTeacherListRepository;
 
     @Override
     public ResponseEntity<? super GetTeacherBoardResponseDto> getTeacherBoard(Integer teacherBoardNumber) {
@@ -65,73 +72,33 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
         return CustomResponse.success();
     }
 
-    // 전체 조회(최신순)
-    @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardList(Integer teacherBoardNumber) {
-
-        try {
-            TeacherBoardEntity teacherBoardEntity = 
-                teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
-            if (teacherBoardEntity == null)
-                return CustomResponse.notExistBoardNumber();
-
-            List<TeacherBoardListResultSet> teacherBoardEntityList = 
-                    teacherBoardRepository.findByOrderByWriteDatetimeDesc();
-
-            new GetTeacherBoardListResponseDto(teacherBoardEntityList);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-        return CustomResponse.success();
-    }
 
     // 모집상태에 따른 정렬
     @Override
-    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(
-                    String teacherSort, String recruitmentStatus, Integer teacherBoardNumber){
+    public ResponseEntity<? super GetTeacherBoardListResponseDto> getTeacherBoardRecruitmentList(String teacherSort) {
+
+        GetTeacherBoardListResponseDto body = null;
 
         try {
-            if (teacherBoardNumber == null)
-                return CustomResponse.validationFailed();
+            List<GetTeacherListViewEntity> boardList = null;
+            if(teacherSort.equalsIgnoreCase("time")){
+                boardList = getTeacherListRepository.findByOrderByWriteDatetimeDesc();
+                body = new GetTeacherBoardListResponseDto(boardList);
+            }else if(teacherSort.equalsIgnoreCase("heart")){
+                boardList =getTeacherListRepository.findByOrderByHeartCountDesc();
+                body = new GetTeacherBoardListResponseDto(boardList);
+            }else if(teacherSort.equalsIgnoreCase("view")){
+                boardList = getTeacherListRepository.findByOrderByViewCountDesc();
+                body = new GetTeacherBoardListResponseDto(boardList);
+            }else return CustomResponse.validationFailed();
 
-            TeacherBoardEntity teacherBoardEntity = 
-                teacherBoardRepository.findByTeacherBoardNumber(teacherBoardNumber);
-            if (teacherBoardEntity == null)
-                return CustomResponse.notExistBoardNumber();
-
-            List<TeacherBoardListResultSet> resultSets = null;
-            boolean status = recruitmentStatus.equals("true");
-            if (status) {
-                // '모집 중'인 경우
-                if (teacherSort.equals("time"))
-                    resultSets = teacherBoardRepository.getListOrderByWriteDatetimeProgress(status);
-                else if (teacherSort.equals("heart"))
-                    resultSets = teacherBoardRepository.getListOrderByHeartCountProgress(status);
-                else if (teacherSort.equals("view"))
-                    resultSets = teacherBoardRepository.getListOrderByViewCountProgress(status);
-                else
-                    return CustomResponse.validationFailed();
-            } else {
-                // '모집 완료'인 경우
-                if (teacherSort.equals("time"))
-                    resultSets = teacherBoardRepository.getListOrderByWriteDatetimeCompleted(status);
-                else if (teacherSort.equals("heart"))
-                    resultSets = teacherBoardRepository.getListOrderByHeartCountCompleted(status);
-                else if (teacherSort.equals("view"))
-                    resultSets = teacherBoardRepository.getListOrderByViewCountCompleted(status);
-                else
-                    return CustomResponse.validationFailed();
-            }
-
-            new GetTeacherBoardListResponseDto(resultSets);
-
-        } catch (Exception exception) {
+        }catch (Exception exception){
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
     }
 
     // 검색 기능
@@ -154,7 +121,6 @@ public class TeacherBoardServiceImplement implements TeacherBoardService {
             // if (group.equals("content"))
             //     resultSet = teacherBoardRepository.findByTeacherBoardContentContaining("%" + searchKeyword + "%");
 
-            new GetTeacherBoardListResponseDto(resultSet);
 
         } catch (Exception exception) {
             exception.printStackTrace();

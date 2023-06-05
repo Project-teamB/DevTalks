@@ -294,10 +294,13 @@ public class InformationBoardServiceImplement implements InformationBoardService
             boolean equalWriter = informationBoardEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
+            if(informationCommentRepository.findByInformationBoardNumber(informationBoardNumber) != null)
             informationCommentRepository.deleteByInformationBoardNumber(informationBoardNumber);
-            informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);            
+            if(informationHeartRepository.findByInformationBoardNumber(informationBoardNumber) != null)
+            informationHeartRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            if(informationBoardHashTagRepository.findByInformationBoardNumber(informationBoardNumber) != null)
             informationBoardHashTagRepository.deleteByInformationBoardNumber(informationBoardNumber);
-            informationBoardRepository.deleteByInformationBoardNumber(informationBoardNumber);
+            informationBoardRepository.delete(informationBoardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -321,7 +324,7 @@ public class InformationBoardServiceImplement implements InformationBoardService
             boolean equalWriter = informationCommentEntity.getWriterEmail().equals(userEmail);
             if (!equalWriter) return CustomResponse.noPermission();
 
-            informationCommentRepository.deleteByInformationCommentNumber(informationCommentNumber);
+            informationCommentRepository.delete(informationCommentEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();

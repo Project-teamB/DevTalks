@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.security.auth.Subject;
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -428,16 +429,17 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public boolean changeUserStatus(String userEmail) {
+    @Transactional
+    public void changeUserStatus(String userEmail, boolean status) {
 
         try {
-            userRepository.changeUserStatus(userEmail);
-
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+            if (userEntity == null) return;
+            userEntity.setUserStatus(status);
+            userRepository.save(userEntity);
         } catch (Exception exception) {
             exception.printStackTrace();
-            return false;
         }
-        return false;
     }
 
 }

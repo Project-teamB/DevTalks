@@ -59,13 +59,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     , nativeQuery = true)
     public Integer findByUserNicknameEquals(@Param("userNickname") String userNickname);
 
-    @Transactional
     @Modifying
     @Query(value = "UPDATE User U " +
             "SET U.user_status = CASE WHEN U.user_status = true THEN false ELSE true END " +
             "WHERE U.user_email = :userEmail",
             nativeQuery = true)
-    public void changeUserStatus(@Param("userEmail") String userEmail);
+    void changeUserStatus(@Param("userEmail") String userEmail);
 
     @Query(value = "SELECT " +
     "U.chat_acceptance AS chatAcceptance " +
